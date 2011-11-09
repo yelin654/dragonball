@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <server_address>192.168.1.122</server_address>
+  <server_port>12222</server_port>
+  <resource_root>../res/</resource_root>
+</config>
