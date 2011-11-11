@@ -4,7 +4,9 @@ package
 	
 	import org.musince.Config;
 	import org.musince.actions.ConnectToServer;
+	import org.musince.actions.GenTestMetaWork;
 	import org.musince.actions.GetMetaWorks;
+	import org.musince.actions.SaveMetaWork;
 	import org.musince.editor.EditorClient;
 	import org.musince.editor.EditorConfig;
 	import org.musince.editor.EditorLog;
@@ -34,11 +36,15 @@ package
 			
 			var connect:ConnectToServer = new ConnectToServer("192.168.1.122", 12222);
 			var login:EditorLogin = new EditorLogin();
-			connect.appendNext(new EditorLogin);
-			login.appendNext(new GetMetaWorks);
+			var gen:GenTestMetaWork = new GenTestMetaWork();
+			var save:SaveMetaWork = new SaveMetaWork();
+			
+			connect.appendNext(login);
+			login.appendNext(gen);
+			gen.appendNext(save);
 				
 			$athena.start();
-			$athena.addAction(connect);	
+			$athena.addTimeSlice(connect);	
 		}
 	}
 }
