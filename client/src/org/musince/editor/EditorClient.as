@@ -20,12 +20,17 @@ package org.musince.editor
 			$syner.rpc([service], method, params);
 		}
 		
-		public function queryResult(idx:int, ...result):void
+		public function querySuccess(idx:int, ...result):void
 		{
-			_pendingQuerys[idx].receive(result);
+			_pendingQuerys[idx].receiveSuccess(result);
 			delete _pendingQuerys[idx];
 		}
 		
-		
+		public function queryFailed(idx:int, reason:int):void
+		{
+			_pendingQuerys[idx].receiveFailed(reason);
+			delete _pendingQuerys[idx];
+		}
+
 	}
 }

@@ -26,13 +26,22 @@ package org.musince.editor
 			$eclient.sendQuery(this, service, method, params);
 		}
 		
-		public function receive(params:Array):void
+		public function receiveSuccess(params:Array):void
 		{
-			if (this["onResult"] != null)
+			if (this["onSuccess"] != null)
 			{
-				(this["onResult"] as Function).apply(this, params);
+				(this["onSuccess"] as Function).apply(this, params);
 			}
-			isEnd = true;
+//			isEnd = true;
+		}
+		
+		public function receiveFailed(reason:int):void
+		{
+			if (this["onFailed"] != null)
+			{
+				(this["onFailed"] as Function).call(this, reason);
+			}
+//			isEnd = true;
 		}
 	}
 }

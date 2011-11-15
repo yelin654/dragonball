@@ -1,6 +1,5 @@
 package org.musince.editor
 {
-	import org.musince.actions.GetMetaWorks;
 	import org.musince.core.TimeSlice;
 	import org.musince.data.MetaWork;
 	
@@ -16,12 +15,14 @@ package org.musince.editor
 			send("EditorService", "login", ["yelin"]);
 		}
 		
-		public function onResult(success:Boolean):void
+		public function onSuccess():void
 		{
-			if (success)
-			{
-				isEnd = true;	
-			}
+			isEnd = true;	
+		}
+		
+		public function onFailed(reason:int):void
+		{
+			
 		}
 	}
 }

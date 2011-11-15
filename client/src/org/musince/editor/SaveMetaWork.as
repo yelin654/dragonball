@@ -1,9 +1,8 @@
-package org.musince.actions
+package org.musince.editor
 {
 	import flash.utils.ByteArray;
 	
 	import org.musince.data.MetaWork;
-	import org.musince.editor.Query;
 	
 	public class SaveMetaWork extends Query
 	{	
@@ -17,10 +16,11 @@ package org.musince.actions
 			var meta:MetaWork = input as MetaWork;
 			var bytes:ByteArray = new ByteArray();
 			meta.serialize(bytes);
+			$log.debug("save metawork, length:", bytes.length); 
 			send("EditorService", "saveMetaWork", ["yelin", bytes]);
 		}
 		
-		public function onResult(success:Boolean):void
+		public function onSuccess(result:int):void
 		{
 			$log.debug("save meta work success");
 			isEnd = true;
