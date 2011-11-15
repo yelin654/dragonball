@@ -28,16 +28,20 @@ package org.musince.editor
 		
 		public function receiveSuccess(params:Array):void
 		{
-			if (this["onSuccess"] != null)
+			if (this.hasOwnProperty("onSuccess"))
 			{
 				(this["onSuccess"] as Function).apply(this, params);
+			}
+			else
+			{
+				$log.error("no success callback");
 			}
 //			isEnd = true;
 		}
 		
 		public function receiveFailed(reason:int):void
 		{
-			if (this["onFailed"] != null)
+			if (this.hasOwnProperty("onFailed"))
 			{
 				(this["onFailed"] as Function).call(this, reason);
 			}
