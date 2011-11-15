@@ -9,6 +9,7 @@ package
 	import org.musince.editor.EditorLog;
 	import org.musince.editor.EditorLogin;
 	import org.musince.editor.EditorObjectFinder;
+	import org.musince.editor.LoadMetaWorks;
 	import org.musince.editor.SaveMetaWork;
 	import org.musince.logic.Athena;
 	import org.musince.net.ServerSyner;
@@ -34,10 +35,12 @@ package
 			var login:EditorLogin = new EditorLogin();
 			var gen:GenTestMetaWork = new GenTestMetaWork();
 			var save:SaveMetaWork = new SaveMetaWork();
+			var load:LoadMetaWorks = new LoadMetaWorks();
 			
 			connect.appendNext(login);
 			login.appendNext(gen);
 			gen.appendNext(save);
+			save.appendNext(load);
 				
 			$athena.start();
 			$athena.addTimeSlice(connect);	

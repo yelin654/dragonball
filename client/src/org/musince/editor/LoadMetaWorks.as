@@ -13,12 +13,13 @@ package org.musince.editor
 		
 		public function onQuery():void
 		{
-			send("EditorService", "loadWorkMeta", ["yelin"]);
+			send("EditorService", "loadMetaWork", ["yelin"]);
 		}
 		
-		protected function onResult(bytes:ByteArray):void
+		public function onSuccess(bytes:ByteArray):void
 		{
-			
+			$log.debug("load metawork length:", bytes.length);
+			isEnd = true;
 		}
 	}
 }

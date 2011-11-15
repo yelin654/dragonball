@@ -17,6 +17,7 @@ package org.musince.editor
 		
 		public function onSuccess():void
 		{
+			$log.debug("login success");
 			isEnd = true;	
 		}
 		
