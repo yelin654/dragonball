@@ -2,22 +2,18 @@ package
 {
 	import flash.display.Sprite;
 	
-	import org.musince.Config;
 	import org.musince.actions.ConnectToServer;
 	import org.musince.actions.GenTestMetaWork;
-	import org.musince.actions.GetMetaWorks;
-	import org.musince.actions.SaveMetaWork;
 	import org.musince.editor.EditorClient;
 	import org.musince.editor.EditorConfig;
 	import org.musince.editor.EditorLog;
 	import org.musince.editor.EditorLogin;
 	import org.musince.editor.EditorObjectFinder;
+	import org.musince.editor.SaveMetaWork;
 	import org.musince.logic.Athena;
-	import org.musince.logic.GameClient;
 	import org.musince.net.ServerSyner;
 	import org.musince.net.Tunnel;
 	import org.musince.system.Cookie;
-	import org.musince.system.Log;
 	
 	public class Editor extends Sprite
 	{
