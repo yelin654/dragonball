@@ -4,6 +4,7 @@ package org.musince.logic
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
+	import flash.utils.getTimer;
 	
 	import org.musince.core.TimeSlice;
 
@@ -42,11 +43,12 @@ package org.musince.logic
 			_delete = new Dictionary();
 			_add = new Dictionary();
 			var action:TimeSlice;
+			var now:int = getTimer();
 			for each (action in _actions)
 			{
 				if (action.updateEnable)
 				{
-					action.onUpdate();
+					action.update(now);
 				}
 				if (action.isEnd)
 				{

@@ -1,6 +1,7 @@
 package org.musince.core
 {
 	import flash.utils.Dictionary;
+	import flash.utils.getTimer;
 	
 	import org.musince.logic.GameObject;
 
@@ -22,6 +23,9 @@ package org.musince.core
 		public var input:Object;
 		public var output:Object;
 		
+		public var _interval:int;
+		private var _nextUpdateTime:int;
+		
 		public function TimeSlice()
 		{
 		}
@@ -32,6 +36,15 @@ package org.musince.core
 		
 		public function onEnd():void
 		{
+		}
+		
+		public function update(now:int):void
+		{
+			if (_nextUpdateTime <= now)
+			{
+				onUpdate();
+				_nextUpdateTime = now + _interval;
+			}
 		}
 		
 		public function onUpdate():void
