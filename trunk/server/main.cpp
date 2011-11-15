@@ -170,7 +170,8 @@ int main() {
     signal_set();
     REG_SYN(GameServer, login, char*);
     REG_SYN(EditorService, login, const char*);
-    REG_SYN(EditorService, saveMetaWork, int, const char*, const ByteArray*);
+    REG_SYN(EditorService, saveMetaWork, const char*, const ByteArray*);
+    REG_SYN(EditorService, loadMetaWork, const char*);
     //init_lua();
     //    test_lua();
     test_net();

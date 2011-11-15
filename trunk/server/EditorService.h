@@ -13,12 +13,14 @@ public:
 
 
     void login(const char* name);
-    void loadMetaWork(int qid, const char* name);
-    void saveMetaWork(int qid, const char* name, const ByteArray* bytes);
+    void loadMetaWork(const char* name);
+    void saveMetaWork(const char* name, const ByteArray* bytes);
 
 protected:
     int qid;
-    void response(ParamList* params);
+    void response(ParamList* result);
+    void success(ParamList* params);
+    void failed(int reason);
 };
 
 extern EditorService* editor_service;
