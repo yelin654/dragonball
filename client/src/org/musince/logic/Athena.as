@@ -1,6 +1,7 @@
 package org.musince.logic
 {
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
@@ -15,6 +16,7 @@ package org.musince.logic
 		private var _actions:Dictionary = new Dictionary();
 		private var _add:Dictionary = new Dictionary();
 		private var _delete:Dictionary = new Dictionary();
+		private var _now:int;
 		
 		public function Athena()
 		{
@@ -22,10 +24,11 @@ package org.musince.logic
 			
 		}
 		
-		public function start():void
+		public function start(stage:Stage):void
 		{
 			_timer.addEventListener(Event.ENTER_FRAME, onTimer);
-			$root.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			_now = getTimer();
 		}
 		
 		private function onTimer(e:Event):void
@@ -43,12 +46,12 @@ package org.musince.logic
 			_delete = new Dictionary();
 			_add = new Dictionary();
 			var action:TimeSlice;
-			var now:int = getTimer();
+			_now = getTimer();
 			for each (action in _actions)
 			{
 				if (action.updateEnable)
 				{
-					action.update(now);
+					action.update(_now);
 				}
 				if (action.isEnd)
 				{
@@ -58,7 +61,7 @@ package org.musince.logic
 					{
 						_add[next] = next;
 						next.input = action.output;
-						next.onStart();
+						next.start(_now);
 					}
 				}
 			}
@@ -77,7 +80,7 @@ package org.musince.logic
 		public function addTimeSlice(action:TimeSlice):void
 		{
 			_add[action] = action;
-			action.onStart();
+			action.start(_now);
 		}
 		
 		public function removeAction(action:TimeSlice):void

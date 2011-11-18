@@ -5,7 +5,7 @@ package org.musince.core
 	
 	import org.musince.logic.GameObject;
 
-	public class TimeSlice extends GameObject implements ITimeSlice
+	public class TimeSlice extends GameObject
 	{
 		private var _nexts:Dictionary = new Dictionary();
 		
@@ -25,9 +25,17 @@ package org.musince.core
 		
 		public var _interval:int;
 		private var _nextUpdateTime:int;
+		protected var _now:int;
+		protected var _then:int;
 		
 		public function TimeSlice()
 		{
+		}
+		
+		public function start(now:int):void
+		{
+			_then = now;
+			onStart();
 		}
 		
 		public function onStart():void
@@ -42,7 +50,9 @@ package org.musince.core
 		{
 			if (_nextUpdateTime <= now)
 			{
+				_now = now;
 				onUpdate();
+				_then = now;
 				_nextUpdateTime = now + _interval;
 			}
 		}
