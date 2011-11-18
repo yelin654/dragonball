@@ -25,7 +25,7 @@ package
 			var u:UpdateProgress = new UpdateProgress(p);
 			$athena.addTimeSlice(u);
 			stage.addEventListener(MouseEvent.CLICK, onClick);
-			$athena.start();
+			$athena.start(stage);
 		}
 		
 		public function onClick(e:Event):void
