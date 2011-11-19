@@ -3,6 +3,9 @@ package org.musince.actions
 	import flash.events.Event;
 	
 	import org.musince.core.TimeSlice;
+	import org.musince.global.$log;
+	import org.musince.global.$syner;
+	import org.musince.global.$tunnel;
 	
 	public class ConnectToServer extends TimeSlice
 	{

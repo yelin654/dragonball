@@ -9,6 +9,8 @@ package org.musince.logic
 	import org.musince.net.ILocal;
 	import org.musince.net.ISynchronizer;
 	import org.musince.system.Log;
+	import org.musince.global.$athena;
+	import org.musince.global.$log;
 
 	public class GameClient extends GameObject implements ILocal
 	{

@@ -6,6 +6,7 @@ package org.musince.actions
 	
 	import org.musince.core.TimeSlice;
 	import org.musince.core.ITimeSlice;
+	import org.musince.global.$config;
 	
 	public class LoadConfigFile extends TimeSlice
 	{

@@ -4,6 +4,7 @@ package org.musince.net
 	
 	import org.musince.logic.GameObject;
 	import org.musince.logic.ParamList;
+	import org.musince.global.$finder;
 
 	public class ServerSyner implements IDataReceiver, ISynchronizer
 	{

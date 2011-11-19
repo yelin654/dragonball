@@ -15,6 +15,15 @@ package
 	import org.musince.net.ServerSyner;
 	import org.musince.net.Tunnel;
 	import org.musince.system.Cookie;
+	import org.musince.global.$athena;
+	import org.musince.global.$cookie;
+	import org.musince.global.$eclient;
+	import org.musince.global.$editorConfig;
+	import org.musince.global.$finder;
+	import org.musince.global.$log;
+	import org.musince.global.$root;
+	import org.musince.global.$syner;
+	import org.musince.global.$tunnel;
 	
 	public class Editor extends Sprite
 	{
@@ -42,7 +51,7 @@ package
 			gen.appendNext(save);
 			save.appendNext(load);
 				
-			$athena.start();
+			$athena.start(stage);
 			$athena.addTimeSlice(connect);	
 		}
 	}

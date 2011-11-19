@@ -3,6 +3,7 @@ package org.musince.editor
 	import flash.utils.Dictionary;
 	
 	import org.musince.logic.GameObject;
+	import org.musince.global.$syner;
 	
 	public class EditorClient extends GameObject
 	{

@@ -6,6 +6,11 @@ package org.musince.actions
 	
 	import org.musince.core.TimeSlice;
 	import org.musince.load.SimpleLoader;
+	import org.musince.global.$config;
+	import org.musince.global.$cookie;
+	import org.musince.global.$log;
+	import org.musince.global.$root;
+	import org.musince.global.$syner;
 	
 	public class Login extends TimeSlice 
 	{
@@ -40,10 +45,10 @@ package org.musince.actions
 		private function onLoaded(content:MovieClip):void 
 		{
 			_mc = content;
-			_mc.txt_name.addEventListener(KeyboardEvent.KEY_DOWN, onEnterDown);
+//			_mc.txt_name.addEventListener(KeyboardEvent.KEY_DOWN, onEnterDown);
 			$root.addChild(_mc);
 			_loader = null;
-			enableKeyDown(Keyboard.ENTER, onEnterDown);
+			enableKeyDown(Keyboard.ENTER, _mc.txt_name, onEnterDown);
 		}
 		
 		private function onEnterDown():void

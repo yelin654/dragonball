@@ -6,6 +6,7 @@ package org.musince.logic
 	import flash.utils.getDefinitionByName;
 	
 	import org.musince.util.ClassUtil;
+	import org.musince.global.$finder;
 	
 	public class Param implements ISerializable
 	{
