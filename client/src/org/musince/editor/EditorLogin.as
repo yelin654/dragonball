@@ -2,6 +2,7 @@ package org.musince.editor
 {
 	import org.musince.core.TimeSlice;
 	import org.musince.data.MetaWork;
+	import org.musince.global.$log;
 	
 	public class EditorLogin extends Query
 	{

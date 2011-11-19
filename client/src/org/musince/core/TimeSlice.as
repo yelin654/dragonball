@@ -62,12 +62,12 @@ package org.musince.core
 			updateEnable = false;
 		}
 		
-		public function appendNext(ts:ITimeSlice):void
+		public function appendNext(ts:TimeSlice):void
 		{
 			_nexts[ts] = ts; 
 		}
 		
-		public function removeNext(ts:ITimeSlice):void
+		public function removeNext(ts:TimeSlice):void
 		{
 			delete _nexts[ts];
 		}
@@ -77,14 +77,14 @@ package org.musince.core
 			return _nexts;
 		}
 		
-		public function enableKeyDown(code:int, callback:Function):void
+		public function enableKeyDown(code:int, target:Object, callback:Function):void
 		{
-			keyDownEnable[code] = callback;
+			keyDownEnable[code] = [target, callback];
 		}
 		
-		public function enableKeyUp(code:int, callback:Function):void
+		public function enableKeyUp(code:int, target:Object, callback:Function):void
 		{
-			keyDownEnable[code] = callback;
+			keyDownEnable[code] = [target, callback];
 		}
 		
 //		public function onKeyDown(code:int):void

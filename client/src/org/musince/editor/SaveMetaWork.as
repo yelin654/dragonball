@@ -3,6 +3,7 @@ package org.musince.editor
 	import flash.utils.ByteArray;
 	
 	import org.musince.data.MetaWork;
+	import org.musince.global.$log;
 	
 	public class SaveMetaWork extends Query
 	{	

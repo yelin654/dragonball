@@ -1,6 +1,8 @@
 package org.musince.editor
 {
 	import org.musince.core.TimeSlice;
+	import org.musince.global.$eclient;
+	import org.musince.global.$log;
 	
 	public class Query extends TimeSlice
 	{

@@ -92,13 +92,13 @@ package org.musince.logic
 		
 		private function onKeyDown(e:KeyboardEvent):void
 		{
-			var callback:Function;
+			var arr:Array;
 			for each (var slice:TimeSlice in _actions)
 			{
-				callback = slice.keyDownEnable[e.keyCode];
-				if (callback != null)
+				arr = slice.keyDownEnable[e.keyCode];
+				if (arr != null && arr[0] == e.target)
 				{
-					callback();
+					arr[1]();
 				}
 			}
 		}

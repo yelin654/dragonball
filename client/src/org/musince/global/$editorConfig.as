@@ -1,4 +1,4 @@
-package
+package org.musince.global
 {
 	import org.musince.editor.EditorConfig;
 

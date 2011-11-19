@@ -1,6 +1,8 @@
 package org.musince.logic
 {
 	import org.musince.actions.Login;
+	import org.musince.global.$client;
+	import org.musince.global.$login;
 
 	public class ObjectFinder implements IObjectFinder
 	{

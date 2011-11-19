@@ -7,6 +7,8 @@ package
 	import org.musince.actions.Progress;
 	import org.musince.actions.UpdateProgress;
 	import org.musince.logic.Athena;
+	import org.musince.global.$athena;
+	import org.musince.global.$root;
 	
 	[SWF(width='1280',height='720', backgroundColor='0x000000')]
 	

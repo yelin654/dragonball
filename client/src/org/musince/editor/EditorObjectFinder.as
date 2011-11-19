@@ -2,6 +2,7 @@ package org.musince.editor
 {
 	import org.musince.logic.GameObject;
 	import org.musince.logic.IObjectFinder;
+	import org.musince.global.$eclient;
 
 	public class EditorObjectFinder implements IObjectFinder
 	{

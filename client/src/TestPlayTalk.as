@@ -7,6 +7,7 @@ package
 	
 	import org.musince.actions.PlayTalk;
 	import org.musince.data.MetaTalk;
+	import org.musince.global.$athena;
 	import org.musince.logic.Athena;
 	
 	[SWF(width='800',height='600', backgroundColor='0x000000')]

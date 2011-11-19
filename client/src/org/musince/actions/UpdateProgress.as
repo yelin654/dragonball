@@ -6,6 +6,7 @@ package org.musince.actions
 	import flash.text.TextFormatAlign;
 	
 	import org.musince.core.TimeSlice;
+	import org.musince.global.$root;
 	
 	public class UpdateProgress extends TimeSlice
 	{
