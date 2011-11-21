@@ -6,6 +6,7 @@ package
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	
+	import org.musince.actions.PlayTalk;
 	import org.musince.editor.InputTalk;
 	import org.musince.global.$athena;
 	import org.musince.logic.Athena;
@@ -41,10 +42,13 @@ package
 //			tfin.wordWrap = true;
 //			tfin.width = 400;
 			
-			var input:InputTalk = new InputTalk(tfin, tf);
+			var edit:InputTalk = new InputTalk(tfin, tf);
+			var play:PlayTalk = new PlayTalk(tf);
+			edit.appendNext(play);
+			play.appendNext(edit);
 
 			$athena.start(stage);
-			$athena.addTimeSlice(input);
+			$athena.addTimeSlice(edit);
 			
 			addChild(tf);
 			addChild(tfin);

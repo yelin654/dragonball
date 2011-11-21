@@ -34,7 +34,8 @@ package org.musince.core
 		
 		public function start(now:int):void
 		{
-			_then = now;
+			_then = _now = now;
+			isEnd = false;
 			onStart();
 		}
 		

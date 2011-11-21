@@ -1,5 +1,6 @@
 package org.musince.data
 {
+	import flash.utils.Dictionary;
 	import flash.utils.IDataInput;
 	import flash.utils.IDataOutput;
 	
@@ -8,7 +9,8 @@ package org.musince.data
 	public class MetaStory extends GameObject
 	{
 		public var idx:int;
-		public var name:String; 
+		public var name:String;
+		public var talks:Dictionary = new Dictionary();
 		
 		public function MetaStory()
 		{

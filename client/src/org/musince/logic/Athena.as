@@ -98,7 +98,7 @@ package org.musince.logic
 				arr = slice.keyDownEnable[e.keyCode];
 				if (arr != null && arr[0] == e.target)
 				{
-					arr[1]();
+					arr[1](e);
 				}
 			}
 		}

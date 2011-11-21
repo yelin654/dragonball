@@ -6,11 +6,12 @@ package org.musince.logic
 	import flash.utils.getDefinitionByName;
 	
 	import org.musince.actions.Login;
+	import org.musince.data.MetaStory;
+	import org.musince.global.$athena;
+	import org.musince.global.$log;
 	import org.musince.net.ILocal;
 	import org.musince.net.ISynchronizer;
 	import org.musince.system.Log;
-	import org.musince.global.$athena;
-	import org.musince.global.$log;
 
 	public class GameClient extends GameObject implements ILocal
 	{
@@ -32,6 +33,21 @@ package org.musince.logic
 		{
 			var login:Login = new Login();
 			$athena.addTimeSlice(login);
+		}
+		
+		public function startStory(idx:int):void
+		{
+			
+		}
+		
+		public function talk(idx:int):void
+		{
+			
+		}
+		
+		public function choice(idx:int):void
+		{
+			
 		}
 		
 //		public function login_r(result:int):void {
