@@ -6,7 +6,7 @@ package
 	import flash.text.TextFormat;
 	
 	import org.musince.actions.PlayTalk;
-	import org.musince.data.MetaTalk;
+	import org.musince.data.MetaTalkText;
 	import org.musince.global.$athena;
 	import org.musince.logic.Athena;
 	
@@ -26,7 +26,7 @@ package
 			tft.color = 0xFFFFFF;
 			tft.size = 40;
 			tf.defaultTextFormat = tft;
-			var talk:PlayTalk = new PlayTalk(tf, new MetaTalk());
+			var talk:PlayTalk = new PlayTalk(tf);
 			$athena.start(stage);
 			$athena.addTimeSlice(talk);
 			addChild(tf);
