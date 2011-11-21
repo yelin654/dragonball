@@ -52,6 +52,7 @@ package
 			
 			addChild(tf);
 			addChild(tfin);
+			
 		}
 	}
 }
