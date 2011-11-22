@@ -1,6 +1,7 @@
 package org.musince.actions
 {
 	import org.musince.core.TimeSlice;
+	import org.musince.data.MetaTalkText;
 	
 	public class LoadMetaStory extends TimeSlice
 	{
@@ -8,5 +9,13 @@ package org.musince.actions
 		{
 			super();
 		}
+		
+		override public function onStart():void
+		{
+			var meta:MetaTalkText = new MetaTalkText();
+			
+		}
+		
+		
 	}
 }
