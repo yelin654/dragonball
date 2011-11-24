@@ -35,8 +35,7 @@ package org.musince.editor
 			_last = 0;
 			enableKeyDown(Keyboard.ENTER, inputText, onClickEnter);
 			enableKeyDown(117, inputText, onFinish);
-//			inputText.text = "";
-//			outputText.text = "";
+			outputText.text = "";
 		}
 		
 		public function onClickEnter(e:KeyboardEvent):void

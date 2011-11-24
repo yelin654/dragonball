@@ -6,7 +6,7 @@ package org.musince.data
 	
 	public class MetaTalkText extends GameObject
 	{
-		public static const DEFAULT_INTERVAL:int = 100; 
+		public static const DEFAULT_INTERVAL:int = 1000; 
 		
 		public var text:String = "";
 		public var interval:Array = [];
