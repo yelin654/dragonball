@@ -9,10 +9,10 @@ package org.musince.actions
 	
 	public class PlayTalk extends TimeSlice
 	{
-		private var _data:MetaTalkText;
 		private var _index:int = 0;
 		private var _tf:TextField;
 		private var _nextTime:int;
+		protected var _text:String;
 		
 		public function PlayTalk(tf:TextField)
 		{
@@ -22,27 +22,48 @@ package org.musince.actions
 		
 		override public function onStart():void
 		{
-			_tf.text = "";
-			_data = input as MetaTalkText;
-			_nextTime = _now + _data.interval[0];
-			_tf.text = _data.text.charAt(0);
+			_index = 0;
+			showText(_index);
+			next();
 		}
 		
 		override public function onUpdate():void
 		{
-			if (_nextTime > _now)
-				return;
+			if (_nextTime > _now) return;
+			
 			_index++;
-			_tf.text = _data.text.substring(0, _index + 1);
-			if (_index == _data.interval.length)
-				isEnd = true;
-			else
-				_nextTime = _now + _data.interval[_index];
+			
+			showText(_index);
+			
+			next();
+
 		}
 		
-		private function showNextChar():void
-		{			
-
+		private function next():void
+		{
+			if (isLast(_index))
+			{
+				isEnd = true;
+			}
+			else
+			{
+				_nextTime = _now + nextInterval(_index);
+			}
+		}
+		
+		protected function showText(index:int):void
+		{
+			_tf.text = _text.substring(0, index + 1);
+		}
+		
+		protected function isLast(index:int):Boolean
+		{
+			return true;
+		}
+		
+		protected function nextInterval(index:int):int
+		{
+			return  0;
 		}
 		
 		override public function onEnd():void
