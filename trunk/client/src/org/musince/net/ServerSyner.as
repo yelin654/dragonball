@@ -2,15 +2,19 @@ package org.musince.net
 {
 	import flash.utils.IDataInput;
 	
+	import org.musince.global.$finder;
 	import org.musince.logic.GameObject;
 	import org.musince.logic.ParamList;
-	import org.musince.global.$finder;
 
 	public class ServerSyner implements IDataReceiver, ISynchronizer
 	{
 		private var _tunnel:Tunnel;
 		
 		public static const COMMAND_INVOKE_METHOD:int = 1;
+		public static const COMMAND_GROUP_START:int = 2;
+		public static const COMMAND_GROUP_END:int = 3;
+		
+		private var _group_cache:Array;
 		
 		public function ServerSyner()
 		{
@@ -26,6 +30,12 @@ package org.musince.net
 			switch(command) {
 				case COMMAND_INVOKE_METHOD:
 					invoke_method_recv(data);
+					break;
+				case COMMAND_GROUP_START:
+					cache_invoke(data);
+					break;
+				case COMMAND_GROUP_END:
+					finish_group(data);
 					break;
 			}
 		}
@@ -44,15 +54,36 @@ package org.musince.net
 			return stream;
 		}
 		
+		private var key:ParamList;
+		private var object:GameObject;
+		private var method_name:String;
+		private var params:ParamList;
 		
-		public function invoke_method_recv(stream:IDataInput):void { 
-			var key:ParamList = new ParamList;
+		private function read_method(stream:IDataInput):void { 
+			key = new ParamList;
 			key.unserialize(stream);
-			var object:GameObject = $finder.find(key.toArray());
-			var method_name:String = stream.readUTF();
-			var params:ParamList = new ParamList;
+			object = $finder.find(key.toArray());
+			method_name = stream.readUTF();
+			params = new ParamList;
 			params.unserialize(stream);
+		}
+		
+		private function invoke_method_recv(stream:IDataInput):void { 
+			read_method(stream);
 			object.invokeMethod(method_name, params.toArray());
+		}
+		
+		private function cache_invoke(stream:IDataInput):void {
+			read_method(stream);
+			_group_cache.push([object, method_name, params.toArray()]);
+		}
+		
+		private function finish_group(stream:IDataInput):void {
+			cache_invoke(stream);
+			for each (var invoke:Array in _group_cache)	{
+				invoke[0].invokeMethod(invoke[1], invoke[2]);
+			}
+			_group_cache = null;
 		}
 		
 //		public function on_connect(tunnel:Tunnel):void {
