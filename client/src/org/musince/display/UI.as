@@ -10,11 +10,19 @@ package org.musince.display
 			super();
 		}
 		
-		public function playTalk(id:int):void
+		public function changeBackground(url:String):void
 		{
 			
 		}
 		
+		public function playSimpleTalk(text:String):void
+		{
+			
+		}
 		
+		public function playMetaTalk(id:int):void
+		{
+			
+		}
 	}
 }
