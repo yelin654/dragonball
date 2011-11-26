@@ -50,8 +50,12 @@ void ClientSyner::_rpc(GameObject* object, const char* method_name, ParamList* p
 }
 
 void ClientSyner::_rpc(ParamList* key, const char* method_name, ParamList* params) {
+    _command(COMMAND_INVOKE_METHOD, key, method_name, params);
+}
+
+void ClientSyner::_command(int id, ParamList* key, const char* method_name, ParamList* params) {
     int size = key->size() + strlen(method_name);
-    TunnelOutputStream* stream = get_command_stream(COMMAND_INVOKE_METHOD, size);
+    TunnelOutputStream* stream = get_command_stream(id, size);
     key->serialize(stream);
     stream->write_string(method_name);
     params->serialize(stream);

@@ -62,4 +62,7 @@ function Sound(idx)
    return s
 end
 
-dofile("yelin/1/2.lua")
+function load(name, idx)
+
+end
+

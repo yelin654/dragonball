@@ -13,4 +13,6 @@ void GameServer::login(char* name) {
     _invoke_from->rpc(&key, "loginR", 1);
 }
 
+void GameServer::enter_story(char* name, int idx) {
 
+}

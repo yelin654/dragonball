@@ -16,6 +16,7 @@ public:
 
 public:
     void login(char* name);
+    void enter_story(char* name, int idx);
 };
 
 extern GameServer* server;

@@ -15,6 +15,7 @@ public:
     void login(const char* name);
     void loadMetaWork(const char* name);
     void saveMetaWork(const char* name, const ByteArray* bytes);
+    void loadStory(const char* name, int idx);
 
 protected:
     int qid;

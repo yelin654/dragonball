@@ -19,3 +19,15 @@ void LUA_tointeger_array(int index, int num, int* result)
     }
 }
 
+template<>
+void push_one<int>(int t) {
+    lua_pushinteger(L, t);
+}
+
+template<>
+void push_one<const char*>(const char* t) {
+    lua_pushstring(L, t);
+}
+
+
+
