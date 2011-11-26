@@ -24,8 +24,11 @@ private:
 
 public:
     static const short COMMAND_INVOKE_METHOD = 1;
-    static const short COMMAND_NEW_INSTANCE = 2;
-    static const short COMMAND_DISPATCH_EVENT = 3;
+    static const short COMMAND_GROUP_START = 2;
+    static const short COMMAND_GROUP_RPC = 3;
+    static const short COMMAND_GROUP_END = 4;
+    static const short COMMAND_NEW_INSTANCE = 5;
+    static const short COMMAND_DISPATCH_EVENT = 6;
 
 public:
     TunnelOutputStream* get_command_stream(short id, int size);
@@ -58,6 +61,42 @@ public:
     };
 public:
     void _rpc(ParamList* key, const char* method_name, ParamList* params);
+
+public:
+    void _command(int id, ParamList* key, const char* method_name, ParamList* params);
+
+public:
+    void group_start(ParamList* key, const char* method_name) {
+        ParamList params;
+        _command(COMMAND_GROUP_START, key, method_name, &params);
+    };
+    template<class ...ARGS>
+    void group_start(ParamList* key, const char* method_name, ARGS ...args) {
+        ParamList params(args...);
+        _command(COMMAND_GROUP_START, key,  method_name, &params);
+    };
+
+// public:
+//     void group_rpc(ParamList* key, const char* method_name) {
+//         ParamList params;
+//         _command(COMMAND_GROUP_RPC, key, method_name, &params);
+//     };
+//     template<class ...ARGS>
+//     void group_rpc(ParamList* key, const char* method_name, ARGS ...args) {
+//         ParamList params(args...);
+//         _command(COMMAND_GROUP_RPC, key,  method_name, &params);
+//     };
+
+public:
+    void group_end(ParamList* key, const char* method_name) {
+        ParamList params;
+        _command(COMMAND_GROUP_START, key, method_name, &params);
+    };
+    template<class ...ARGS>
+    void group_end(ParamList* key, const char* method_name, ARGS ...args) {
+        ParamList params(args...);
+        _command(COMMAND_GROUP_START, key,  method_name, &params);
+    };
 
 
 // public:

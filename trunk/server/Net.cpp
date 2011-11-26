@@ -124,7 +124,6 @@ void Net::handle_in(struct epoll_event* e) {
         mod_in(tunnel);
 
     if (!tunnel->connecting) {
-        debug("delete socket");
         epoll_ctl(_epoll_fd, EPOLL_CTL_DEL, tunnel->_socket_fd, NULL);
         _tunnel_factory->destroy(tunnel);
     }

@@ -3,6 +3,7 @@
 
 #include "Tunnel.h"
 #include "IDataReceiver.h"
+#include "Log.h"
 
 char Tunnel::_READ_BUF[READ_MAX];
 char Tunnel::_WRITE_BUF[WRITE_MAX];
@@ -13,6 +14,7 @@ Tunnel::Tunnel(int socket_fd, IDataReceiver* receiver):connecting(true), _socket
     _expectRead = HEAD_LENGTH;
     _out_stream = new TunnelOutputStream(this, WRITE_MAX);
     _in_stream = new TunnelInputStream(this, 0);
+    write_pending = false;
 }
 
 Tunnel::~Tunnel() {
@@ -122,6 +124,7 @@ void Tunnel::on_data_in() {
     int last = nread;
     char* index = _READ_BUF;
     while (_expectRead <=last) {
+        // TODO:check 4 length
         _in_stream->append(index, _expectRead);
         index += _expectRead;
         last -= _expectRead;
@@ -143,16 +146,19 @@ void Tunnel::on_data_in() {
 
     if (0 == nread) {
         close(_socket_fd);
+        debug("close socket %d", _socket_fd);
         connecting = false;
         read_pending = false;
         return;
     }
 
     if (nread < 0) {
-        if (errno == EAGAIN)
-            printf("[socket] read buff end\n");
-        else
-            printf("[error] socket read\n");
+        if (errno == EAGAIN) {
+            debug("read socket(%d) buff end", _socket_fd);
+        } else {
+            debug("close socket %d", _socket_fd);
+            connecting = false;
+        }
         read_pending = false;
         return;
     }
