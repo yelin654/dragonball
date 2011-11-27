@@ -1,10 +1,6 @@
-function D(...)
-   print("[LUA_DEBUG]", ...)
-end
+package.path = "script/?.lua;;"
 
-function E(...)
-   print("[LUA_ERROR]", ...)
-end
+require "log"
 
 storys = {}
 
@@ -62,7 +58,12 @@ function Sound(idx)
    return s
 end
 
-function load(name, idx)
-
+function load_story(name, idx)
+   local file = "script/"..name.."/"..idx.."/meta.lua"
+   D(file)
+   local meta = dofile(file)
+   D(meta.spaces)
 end
+
+load_story("yelin", 1)
 

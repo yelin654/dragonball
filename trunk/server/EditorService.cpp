@@ -7,7 +7,7 @@
 #include "PlayerWorks.h"
 #include "ClientSyner.h"
 #include "Log.h"
-#include "luastory.h"
+#include "script.h"
 
 DEFINE_GAME_OBJECT(EditorService)
 
@@ -68,5 +68,5 @@ void EditorService::saveMetaWork(const char* name, const ByteArray* bytes) {
 }
 
 void EditorService::loadStory(const char* name, int idx) {
-    load_story(name, idx);
+    lc("load_story", 0, name, idx);
 }
