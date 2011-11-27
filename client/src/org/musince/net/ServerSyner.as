@@ -6,7 +6,7 @@ package org.musince.net
 	import org.musince.logic.GameObject;
 	import org.musince.logic.ParamList;
 
-	public class ServerSyner implements IDataReceiver, ISynchronizer
+	public class ServerSyner implements IDataReceiver
 	{
 		private var _tunnel:Tunnel;
 		
@@ -29,7 +29,10 @@ package org.musince.net
 			var command:int = data.readShort();
 			switch(command) {
 				case COMMAND_INVOKE_METHOD:
-					invoke_method_recv(data);
+					if (grouping())
+						cache_invoke(data);
+					else
+						invoke_method_recv(data);
 					break;
 				case COMMAND_GROUP_START:
 					cache_invoke(data);
@@ -84,6 +87,11 @@ package org.musince.net
 				invoke[0].invokeMethod(invoke[1], invoke[2]);
 			}
 			_group_cache = null;
+		}
+		
+		private function grouping():Boolean
+		{
+			return _group_cache != null;
 		}
 		
 //		public function on_connect(tunnel:Tunnel):void {
