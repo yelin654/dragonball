@@ -1,16 +1,27 @@
 package org.musince.display
 {
+	import flash.display.DisplayObject;
+	import flash.display.Sprite;
+	
 	import org.musince.data.MetaTalkText;
 	import org.musince.logic.GameObject;
 	
 	public class UI extends GameObject
 	{
-		public function UI()
+		private var _root:Sprite; 
+		
+		public function UI(root:Sprite)
 		{
 			super();
+			_root = root;
 		}
 		
-		public function changeBackground(url:String):void
+		public function changeBackground(v:DisplayObject):void
+		{
+			
+		}
+		
+		public function changeBackgroundU(url:String):void
 		{
 			
 		}

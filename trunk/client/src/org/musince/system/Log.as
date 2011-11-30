@@ -9,5 +9,9 @@ package org.musince.system
 		public function error(...args):void {
 			trace("[ERROR]", args.join(" "));	
 		}
+		
+		public function flush():String {
+			return "";
+		}
 	}
 }
