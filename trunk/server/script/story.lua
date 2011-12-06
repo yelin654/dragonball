@@ -1,6 +1,7 @@
 package.path = "script/?.lua;;"
 
 require "log"
+require "lfs"
 
 storys = {}
 
@@ -37,12 +38,19 @@ end
 function Space(idx)
    local s = {}
    s.idx = idx
+   s.chapters = {}
    return s
 end
 
-function Talk(idx)
+function Chapter(idx)
+   local c = {}
+   c.idx = idx
+   return c
+end
+
+function Talk()
    local s = {}
-   s.idx = idx
+--   s.idx = idx
    return s
 end
 
@@ -59,11 +67,35 @@ function Sound(idx)
 end
 
 function load_story(name, idx)
-   local file = "script/"..name.."/"..idx.."/meta.lua"
-   D(file)
+   local root = "script/"..name.."/s"..idx.."/"
+   local file = root.."meta.lua"
+   D("to load "..file)
    local meta = dofile(file)
-   D(meta.spaces)
+   local space
+   local chapter
+   local spr
+   local fullname
+   for i, spaceid in ipairs(meta.spaces) do
+      space = Space(spaceid)
+      storys[spaceid] = space
+      spr = root.."p"..spaceid.."/"
+      for file in lfs.dir(spr) do
+         if string.match(file, "%.lua$") then
+            fullname = spr..file
+            D("to load chapter file("..fullname..")")
+            chapter = dofile(fullname)
+            D("load chapter("..chapter.idx..")")
+            space.chapters[chapter.idx] = chapter
+         end
+      end
+   end
 end
+
+-- for file in lfs.dir("script/yelin/s1/p1") do
+--    if string.match(file, "%.lua$") then
+--       D(file)
+--    end
+-- end
 
 load_story("yelin", 1)
 
