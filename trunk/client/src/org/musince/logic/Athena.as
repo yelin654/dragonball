@@ -21,13 +21,14 @@ package org.musince.logic
 		public function Athena()
 		{
 			super();
-			
+
 		}
 		
 		public function start(stage:Stage):void
 		{
 			_timer.addEventListener(Event.ENTER_FRAME, onTimer);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			stage.frameRate = 60;
 			_now = getTimer();
 		}
 		
@@ -44,9 +45,17 @@ package org.musince.logic
 			}
 
 			_delete = new Dictionary();
-			_add = new Dictionary();
-			var action:TimeSlice;
+			
 			_now = getTimer();
+			
+			for each (action in _add)
+			{
+				_actions[action] = action;
+				action.start(_now);
+			}
+			_add = new Dictionary();
+			
+			var action:TimeSlice;
 			for each (action in _actions)
 			{
 				if (action.updateEnable)
@@ -61,7 +70,6 @@ package org.musince.logic
 					{
 						_add[next] = next;
 						next.input = action.output;
-						next.start(_now);
 					}
 				}
 			}
@@ -69,6 +77,7 @@ package org.musince.logic
 			for each (action in _add)
 			{
 				_actions[action] = action;
+				action.start(_now);
 			}
 			
 			for each (action in _delete)
@@ -80,7 +89,6 @@ package org.musince.logic
 		public function addTimeSlice(action:TimeSlice):void
 		{
 			_add[action] = action;
-			action.start(_now);
 		}
 		
 		public function removeAction(action:TimeSlice):void
