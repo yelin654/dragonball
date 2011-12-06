@@ -7,11 +7,11 @@ package org.musince.actions
 	{	
 		public var panel:TalkPanel;
 		
-		private var tyEnd:int = 600;
-		private var tyStart:int = 600;
+		public var yEnd:int = 520;
+		public var yStart:int = 600;
 		
 		public var va:Number = 0.05;
-		public var vy:Number = 0.1;
+		public var vy:Number = 0.4;
 				
 		public function FadeInTalk(panel:TalkPanel)
 		{
@@ -21,22 +21,28 @@ package org.musince.actions
 		
 		override public function onStart():void
 		{
-			
+			panel.y = yStart;
+			vy = yStart>yEnd ? -vy:vy;
+			trace("start:", _now);
 		}
 		
 		override public function onUpdate():void
 		{
 			var dt:int = _now - _then;
-			panel.y += vy * dt;
-			panel.alpha = (panel.y-tyStart) / (tyEnd - tyStart);
-			if (panel.y <= tyEnd)
+			panel.y += int(vy * dt);
+			panel.alpha = (panel.y-yStart) / (yEnd - yStart);
+			trace("dt:", dt, "  y:", panel.y, "  a:", panel.alpha);
+			if (panel.y <= yEnd)
 			{
 				panel.alpha = 1;
-				panel.y = tyEnd;
+				panel.y = yEnd;
 				isEnd = true;
 			}
 		}
 		
-		
+		override public function onEnd():void
+		{
+			trace("fade in talk end");
+		}
 	}
 }
