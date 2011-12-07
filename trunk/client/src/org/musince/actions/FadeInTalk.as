@@ -42,6 +42,7 @@ package org.musince.actions
 		
 		override public function onEnd():void
 		{
+			output = input;
 			trace("fade in talk end");
 		}
 	}

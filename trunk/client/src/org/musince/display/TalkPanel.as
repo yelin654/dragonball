@@ -22,21 +22,24 @@ package org.musince.display
 			super();
 			addChild(_bg);
 			addChild(text);
+			initTextFormat();
 		}
 		
 		private function initTextFormat():void
 		{
 			text.selectable = false;
 			var tf:TextFormat = new TextFormat();
-			tf.font = "楷体_GB2312";
+			tf.color = 0xFFFFFF;
+			tf.font = "KaiTi_GB2312";
 			tf.size = 24;
-			text.setTextFormat(tf);
+			tf.leading = 6;
 			text.defaultTextFormat = tf;
+			text.wordWrap = true;
 			text.x = 20;
 			text.y = 20;
 			text.width = 1240;
-			text.height = 680;
-			text.filters = [new GlowFilter(0x33FF00, 1, 1, 1, 2)];
+			text.height = 160;
+			text.filters = [new GlowFilter(0x33FF00, 1, 2, 2, 3)];
 		}
 		
 		private function drawBackGround(w:int, h:int):void

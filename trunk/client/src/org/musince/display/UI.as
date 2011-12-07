@@ -5,7 +5,11 @@ package org.musince.display
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	
+	import org.musince.actions.FadeInTalk;
+	import org.musince.actions.PlayTalk;
+	import org.musince.actions.PlayTalkAvg;
 	import org.musince.data.MetaTalkText;
+	import org.musince.global.$athena;
 	import org.musince.logic.GameObject;
 	
 	public class UI extends GameObject
@@ -26,7 +30,7 @@ package org.musince.display
 			_root.addChild(_backLayer);
 			_talk.setSize(WIDTH, 200);
 			_talk.y = 520;
-			_root.addChild(_talk);
+//			_root.addChild(_talk);
 		}
 		
 		public function changeBackground(v:DisplayObject):void
@@ -49,7 +53,22 @@ package org.musince.display
 		
 		public function playSimpleTalk(text:String):void
 		{
-			
+			var talk:PlayTalk = new PlayTalkAvg(_talk.text);
+			if (_root.contains(_talk))
+			{
+				talk.input = text;
+				$athena.addTimeSlice(talk);
+			}
+			else
+			{
+				_talk.alpha = 0;
+				_root.addChild(_talk);
+				var fade:FadeInTalk = new FadeInTalk(_talk);
+				fade.input = text;
+				fade.appendNext(talk);
+				$athena.addTimeSlice(fade);
+			}
+			_talk.alpha = 0;
 		}
 		
 		public function playMetaTalk(id:int):void
