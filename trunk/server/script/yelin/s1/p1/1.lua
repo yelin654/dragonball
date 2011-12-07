@@ -1,6 +1,6 @@
 local chapter = Chapter(0)
-local talk1 = Talk()
-talk1.text = "离去之前叫醒我"
+local talk1 = Talk(chapter, 1)
+talk1.text_str = "离去之前叫醒我"
 function talk1.on_start()
    play_sound(1)
 end
@@ -8,8 +8,8 @@ function talk1.on_end()
    stop_sound(1)
 end
 
-local talk2 = Talk()
-talk1.text = "石头在歌唱"
+local talk2 = Talk(chapter, 2)
+talk1.text_id  = 5
 function talk2.on_start()
    play_sound(1)
 end
@@ -27,7 +27,14 @@ end
 
 local choice1 = Choice()
 choice1.text = {"A", "B", "C"}
-choice1.callback = {}
+function choice1.on_result1()
+end
+
+function choice1.on_result2()
+end
+
+function choice1.on_result3()
+end
 
 talk1.next = choice1
 

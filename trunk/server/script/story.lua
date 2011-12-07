@@ -45,12 +45,14 @@ end
 function Chapter(idx)
    local c = {}
    c.idx = idx
+   c.actions = {}
    return c
 end
 
-function Talk()
+function Talk(c, idx)
    local s = {}
---   s.idx = idx
+   s.idx = idx
+   c.actions[idx] = s
    return s
 end
 
