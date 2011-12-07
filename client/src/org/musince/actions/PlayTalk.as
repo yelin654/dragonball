@@ -2,6 +2,7 @@ package org.musince.actions
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	import org.musince.core.TimeSlice;
 	import org.musince.data.MetaTalkText;
@@ -53,7 +54,9 @@ package org.musince.actions
 		
 		protected function showText(index:int):void
 		{
+			var filters:Array = _tf.filters;
 			_tf.text = _text.substring(0, index + 1);
+			_tf.filters = filters;
 		}
 		
 		protected function isLast(index:int):Boolean
