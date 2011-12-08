@@ -5,6 +5,7 @@ package org.musince.display
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	
+	import org.musince.actions.BlankTime;
 	import org.musince.actions.FadeInTalk;
 	import org.musince.actions.PlayTalk;
 	import org.musince.actions.PlayTalkAvg;
@@ -64,8 +65,11 @@ package org.musince.display
 				_talk.alpha = 0;
 				_root.addChild(_talk);
 				var fade:FadeInTalk = new FadeInTalk(_talk);
+				var blank:BlankTime = new BlankTime();
+				blank.last = 500;
 				fade.input = text;
-				fade.appendNext(talk);
+				fade.appendNext(blank);
+				blank.appendNext(talk);
 				$athena.addTimeSlice(fade);
 			}
 			_talk.alpha = 0;
