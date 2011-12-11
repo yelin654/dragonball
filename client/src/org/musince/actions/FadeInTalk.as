@@ -31,7 +31,7 @@ package org.musince.actions
 			var dt:int = _now - _then;
 			panel.y += int(vy * dt);
 			panel.alpha = (panel.y-yStart) / (yEnd - yStart);
-			trace("dt:", dt, "  y:", panel.y, "  a:", panel.alpha);
+			trace("now:", _now, "dt:", dt, "  y:", panel.y, "  a:", panel.alpha);
 			if (panel.y <= yEnd)
 			{
 				panel.alpha = 1;

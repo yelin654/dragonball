@@ -24,6 +24,10 @@ package org.musince.actions
 			{
 				current = Math.min(current+_speed, _to);
 			}
+			else
+			{
+				isEnd = true;
+			}
 		}
 	}
 }
