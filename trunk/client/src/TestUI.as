@@ -3,11 +3,17 @@ package
 	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.TimerEvent;
 	import flash.net.URLRequest;
+	import flash.utils.Timer;
 	
 	import org.musince.display.TalkPanel;
 	import org.musince.display.UI;
 	import org.musince.global.$athena;
+	import org.musince.global.$log;
+	import org.musince.load.GroupLoader;
+	import org.musince.load.LoadManager;
+	import org.musince.system.Log;
 	
 	[SWF(width='1280',height='720', backgroundColor='0x000000')]
 	
@@ -20,10 +26,17 @@ package
 		public function TestUI()
 		{
 			super();
+			$log = new Log();
 			ui = new UI(this);
-			loader.load(new URLRequest("../res/1441121_1321877662.jpg"));
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoad);
-			$athena.start(stage);
+//			loader.load(new URLRequest("../res/1441121_1321877662.jpg"));
+//			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoad);
+			graphics.beginFill(0xffffff);
+			graphics.drawRect(0, 0, 1280, 720);
+			graphics.endFill();
+			$athena.start(stage);LoadManager;GroupLoader;
+			var timer:Timer = new Timer(1000, 1);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE, onLoad);
+			timer.start();
 		}
 		
 		public function onLoad(e:Event):void

@@ -34,28 +34,21 @@ package org.musince.logic
 		
 		private function onTimer(e:Event):void
 		{
-			for each (action in _add)
-			{
-				_actions[action] = action;
-			}
-			
-			for each (action in _delete)
-			{
-				delete _actions[action];
-			}
-
-			_delete = new Dictionary();
-			
+			var action:TimeSlice;
 			_now = getTimer();
 			
 			for each (action in _add)
 			{
 				_actions[action] = action;
-				action.start(_now);
 			}
 			_add = new Dictionary();
 			
-			var action:TimeSlice;
+			for each (action in _delete)
+			{
+				delete _actions[action];
+			}
+			_delete = new Dictionary();
+			
 			for each (action in _actions)
 			{
 				if (action.updateEnable)
@@ -70,6 +63,7 @@ package org.musince.logic
 					{
 						_add[next] = next;
 						next.input = action.output;
+						next.start(_now);
 					}
 				}
 			}
@@ -77,24 +71,26 @@ package org.musince.logic
 			for each (action in _add)
 			{
 				_actions[action] = action;
-				action.start(_now);
 			}
+			_add = new Dictionary();
 			
 			for each (action in _delete)
 			{
 				delete _actions[action];
 			}
+			_delete = new Dictionary();
 		}
 		
 		public function addTimeSlice(action:TimeSlice):void
 		{
 			_add[action] = action;
+			action.start(_now);
 		}
 		
 		public function removeAction(action:TimeSlice):void
 		{
-			action.onEnd();
 			_delete[action] = action;
+			action.onEnd();
 		}
 		
 		

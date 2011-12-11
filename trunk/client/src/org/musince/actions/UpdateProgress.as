@@ -36,9 +36,7 @@ package org.musince.actions
 			g.lineStyle(1, 0xFFFFFF);
 			g.moveTo(0, $root.stage.stageHeight/2);
 			g.lineTo($root.stage.stageWidth * scale, $root.stage.stageHeight/2);
-//			var tft:TextFormat = _tf.getTextFormat();
 			_tf.text = int(scale * 100) + "%";
-//			_tf.setTextFormat(tft);
 		}
 	}
 }
