@@ -8,6 +8,8 @@ package org.musince.actions
 		private var _speed:Number = 0.02;
 		private var _to:Number = 0;
 		
+		public var onEndHook:Function;
+		
 		public function Progress()
 		{
 			super();
@@ -27,6 +29,16 @@ package org.musince.actions
 			else
 			{
 				isEnd = true;
+			}
+		}
+		
+		override public function onEnd():void
+		{
+			trace("progress end");
+			if (onEndHook != null)
+			{
+				onEndHook();
+				onEndHook = null;
 			}
 		}
 	}
