@@ -6,6 +6,7 @@ package org.musince.actions
 	
 	import org.musince.core.TimeSlice;
 	import org.musince.data.MetaResource;
+	import org.musince.global.$ui;
 	import org.musince.load.GroupLoader;
 	import org.musince.load.LoadItem;
 	import org.musince.load.LoadManager;
@@ -14,8 +15,6 @@ package org.musince.actions
 	{
 		private var _meta:MetaResource;
 		private var _loader:GroupLoader;
-		private var _progress:Progress;
-		private var _updateProgress:UpdateProgress;
 		
 		public function LoadChapterResource()
 		{
@@ -28,9 +27,8 @@ package org.musince.actions
 			output = new Object;
 			output.image = new Dictionary;
 			output.sound = new Dictionary;
-			_progress = new Progress();
 			loadImage();
-			_updateProgress = new UpdateProgress(_progress);
+			$ui.startProgress();
 		}
 		
 		private function loadImage():void
@@ -53,7 +51,7 @@ package org.musince.actions
 		
 		private function onImageProgress(v:Number):void
 		{
-			_progress.setNow(v / 2);
+			$ui.updateProgress(v / 2);
 		}
 		
 		private function loadSound():void
@@ -76,7 +74,7 @@ package org.musince.actions
 		
 		private function onSoundProgress(v:Number):void
 		{
-			_progress.setNow(0.5 + v/2);
+			$ui.updateProgress(0.5 + v/2);
 		}
 		
 		private function onImageLoad(loader:GroupLoader):void

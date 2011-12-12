@@ -2,14 +2,14 @@ package org.musince.display
 {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.geom.Rectangle;
 	
 	import org.musince.actions.BlankTime;
 	import org.musince.actions.FadeInTalk;
 	import org.musince.actions.PlayTalk;
 	import org.musince.actions.PlayTalkAvg;
-	import org.musince.data.MetaTalkText;
+	import org.musince.actions.Progress;
+	import org.musince.actions.UpdateProgress;
 	import org.musince.global.$athena;
 	import org.musince.logic.GameObject;
 	
@@ -22,6 +22,8 @@ package org.musince.display
 		
 		private var _talk:TalkPanel;
 		private var _backLayer:Sprite = new Sprite();
+		private var _progress:Progress;
+		private var _updateProgress:UpdateProgress;
 		
 		public function UI(root:Sprite)
 		{
@@ -76,6 +78,25 @@ package org.musince.display
 		}
 		
 		public function playMetaTalk(id:int):void
+		{
+			
+		}
+		
+		public function startProgress():void
+		{
+			_progress = new Progress();
+			_progress.onEndHook = closeProgress;
+			_updateProgress = new UpdateProgress(_progress);
+			$athena.addTimeSlice(_progress);
+			$athena.addTimeSlice(_updateProgress);
+		}
+		
+		public function updateProgress(v:Number):void
+		{
+			_progress.setNow(v);
+		}
+		
+		public function closeProgress():void
 		{
 			
 		}
