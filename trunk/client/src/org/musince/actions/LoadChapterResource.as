@@ -15,6 +15,7 @@ package org.musince.actions
 		private var _meta:MetaResource;
 		private var _loader:GroupLoader;
 		private var _progress:Progress;
+		private var _updateProgress:UpdateProgress;
 		
 		public function LoadChapterResource()
 		{
@@ -28,7 +29,8 @@ package org.musince.actions
 			output.image = new Dictionary;
 			output.sound = new Dictionary;
 			_progress = new Progress();
-			loadImage();	
+			loadImage();
+			_updateProgress = new UpdateProgress(_progress);
 		}
 		
 		private function loadImage():void

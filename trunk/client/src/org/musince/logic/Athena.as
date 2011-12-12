@@ -87,7 +87,7 @@ package org.musince.logic
 			action.start(_now);
 		}
 		
-		public function removeAction(action:TimeSlice):void
+		public function removeTimeSlice(action:TimeSlice):void
 		{
 			_delete[action] = action;
 			action.onEnd();
