@@ -103,7 +103,6 @@ package org.musince.actions
 		private function onProgressEnd():void
 		{
 			isEnd = true;
-			$ui.closeProgress();
 		}
 	}
 }
