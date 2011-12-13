@@ -12,6 +12,7 @@ package org.musince.display
 	import org.musince.actions.UpdateProgress;
 	import org.musince.global.$athena;
 	import org.musince.logic.GameObject;
+	import org.musince.util.DisplayUtil;
 	
 	public class UI extends GameObject
 	{
@@ -23,6 +24,7 @@ package org.musince.display
 		private var _talk:TalkPanel;
 		private var _backLayer:Sprite = new Sprite();
 		private var _updateProgress:UpdateProgress;
+		private var _progressLayer:Sprite = new Sprite();
 		
 		public function UI(root:Sprite)
 		{
@@ -83,14 +85,20 @@ package org.musince.display
 		
 		public function startProgress(_progress:Progress):void
 		{
-			_updateProgress = new UpdateProgress(_progress);
-			$athena.addTimeSlice(_progress);
+			while (_root.numChildren > 0)
+			{
+				_root.removeChildAt(0);
+			}
+			_root.addChild(_progressLayer);
+			_updateProgress = new UpdateProgress(_progress, _progressLayer);
+//			$athena.addTimeSlice(_progress);
 			$athena.addTimeSlice(_updateProgress);
 		}
 		
 		public function closeProgress():void
 		{
 			_updateProgress.isEnd = true;
+			_updateProgress = null;
 		}
 	}
 }

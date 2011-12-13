@@ -1,6 +1,9 @@
 package org.musince.actions
 {
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Graphics;
+	import flash.display.Sprite;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
@@ -10,10 +13,11 @@ package org.musince.actions
 	
 	public class UpdateProgress extends TimeSlice
 	{
-		public var _progress:Progress;
-		public var _tf:TextField;
+		private var _progress:Progress;
+		private var _tf:TextField;
+		private var _container:Sprite;
 		
-		public function UpdateProgress(progress:Progress)
+		public function UpdateProgress(progress:Progress, container:Sprite)
 		{
 			super();
 			_progress = progress;
@@ -25,13 +29,14 @@ package org.musince.actions
 			_tf.defaultTextFormat = tft;
 			_tf.y = $root.stage.stageHeight / 2 + 10;
 			_tf.x = $root.stage.stageWidth / 2;
-			$root.addChild(_tf);
+			_container = container;
+			container.addChild(_tf);
 		}
 		
 		override public function onUpdate():void
 		{
 			var scale:Number = _progress.current;
-			var g:Graphics = $root.graphics;
+			var g:Graphics = _container.graphics;
 			g.clear();
 			g.lineStyle(1, 0xFFFFFF);
 			g.moveTo(0, $root.stage.stageHeight/2);
