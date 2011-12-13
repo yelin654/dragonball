@@ -15,6 +15,7 @@ package org.musince.actions
 	{
 		private var _meta:MetaResource;
 		private var _loader:GroupLoader;
+		private var _progress:Progress;
 		
 		public function LoadChapterResource()
 		{
@@ -28,7 +29,9 @@ package org.musince.actions
 			output.image = new Dictionary;
 			output.sound = new Dictionary;
 			loadImage();
-			$ui.startProgress();
+			_progress = new Progress();
+			_progress.onEndHook = onProgressEnd;
+			$ui.startProgress(_progress);
 		}
 		
 		private function loadImage():void
@@ -51,7 +54,7 @@ package org.musince.actions
 		
 		private function onImageProgress(v:Number):void
 		{
-			$ui.updateProgress(v / 2);
+			_progress.setNow(v / 2);
 		}
 		
 		private function loadSound():void
@@ -74,7 +77,7 @@ package org.musince.actions
 		
 		private function onSoundProgress(v:Number):void
 		{
-			$ui.updateProgress(0.5 + v/2);
+			_progress.setNow(0.5 + v/2);
 		}
 		
 		private function onImageLoad(loader:GroupLoader):void
@@ -94,7 +97,13 @@ package org.musince.actions
 			{
 				sound[item.param] = item.content;
 			}
+			_progress.setNow(1);
+		}
+		
+		private function onProgressEnd():void
+		{
 			isEnd = true;
+			$ui.closeProgress();
 		}
 	}
 }
