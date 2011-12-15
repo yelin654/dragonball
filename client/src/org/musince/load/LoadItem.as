@@ -13,9 +13,6 @@ package org.musince.load
 		
 		public var type:int;
 		public var priority:int;		
-		public var bytesLoaded:int;
-		public var bytesTotal:int;
-		public var content:Object;
 		public var param:Object;
 		public var error:String;
 		public var context:LoaderContext;

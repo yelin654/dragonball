@@ -1,11 +1,13 @@
 package org.musince.actions
 {
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	
 	import mx.messaging.AbstractConsumer;
 	
 	import org.musince.core.TimeSlice;
 	import org.musince.data.MetaResource;
+	import org.musince.global.$loadManager;
 	import org.musince.global.$ui;
 	import org.musince.load.GroupLoader;
 	import org.musince.load.LoadItem;
@@ -24,14 +26,27 @@ package org.musince.actions
 		
 		override public function onStart():void
 		{
-			_meta = input;
+			var url:String =  input as String;
+			$loadManager.add(url, onMetaLoad, onMetaProgress, null, LoadManager.TYPE_BINARY);
+			_progress = new Progress();
+			_progress.onEndHook = onProgressEnd;
+			$ui.startProgress(_progress);
+		}
+		
+		private function onMetaProgress(item:LoadItem):void
+		{
+			_progress.setNow(item.loader.getBytesLoaded()/item.loader.getBytesTotal());
+		}
+		
+		private function onMetaLoad(item:LoadItem):void
+		{
+			var data:ByteArray = item.loader.getContent() as ByteArray;
+			_meta = new MetaResource;
+			_meta.unserialize(data);
 			output = new Object;
 			output.image = new Dictionary;
 			output.sound = new Dictionary;
 			loadImage();
-			_progress = new Progress();
-			_progress.onEndHook = onProgressEnd;
-			$ui.startProgress(_progress);
 		}
 		
 		private function loadImage():void
@@ -85,7 +100,7 @@ package org.musince.actions
 			var image:Dictionary = output.image;
 			for each (var item:LoadItem in _loader.items)
 			{
-				image[item.param] = item.content;
+				image[item.param] = item.loader.getContent();
 			}
 			loadSound();
 		}
@@ -95,7 +110,7 @@ package org.musince.actions
 			var sound:Dictionary = output.sound;
 			for each (var item:LoadItem in _loader.items)
 			{
-				sound[item.param] = item.content;
+				sound[item.param] = item.loader.getContent();
 			}
 			_progress.setNow(1);
 		}
