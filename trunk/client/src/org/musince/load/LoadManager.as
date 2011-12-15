@@ -2,7 +2,6 @@ package org.musince.load
 {
 	import flash.events.IOErrorEvent;
 	import flash.events.TimerEvent;
-	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.utils.Dictionary;
 	
@@ -168,8 +167,7 @@ package org.musince.load
 		public function onComplete(loader:ILoader):void{
 			var item:LoadItem = loader.getItem();
 			$log.debug("[LOAD_FILE] "+ item.url);
-			if(item.onComplete != null){
-				item.content = loader.getContent();
+			if (item.onComplete != null) {
 				item.onComplete(item);	
 			}
 			loadingItems[item.url] = null;

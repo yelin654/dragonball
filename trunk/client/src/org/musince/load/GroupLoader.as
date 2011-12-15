@@ -46,12 +46,12 @@ package org.musince.load
 		public function onOneProgress(item:LoadItem):void{
 			var t:Number = 0;
 			for each(var item:LoadItem in items){
-				if(item.bytesTotal == 0){
+				if (item.loader.getBytesTotal() == 0){
 					continue;
 				}
-				t+= Number(item.loader.getBytesLoaded())/item.loader.getBytesTotal();
+				t += Number(item.loader.getBytesLoaded())/item.loader.getBytesTotal();
 			}
-			if(onProgress != null){
+			if (onProgress != null) {
 				onProgress(t/total);
 			}
 		}
