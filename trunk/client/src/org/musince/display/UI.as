@@ -100,5 +100,15 @@ package org.musince.display
 			_updateProgress.isEnd = true;
 			_updateProgress = null;
 		}
+		
+		public function playChoice(choices:Array):void
+		{
+			
+		}
+		
+		public function playSound():void
+		{
+			
+		}
 	}
 }
