@@ -39,7 +39,7 @@ package org.musince.display
 			text.y = 20;
 			text.width = 1240;
 			text.height = 160;
-			text.filters = [new GlowFilter(0x33FF00, 1, 2, 2, 3)];
+//			text.filters = [new GlowFilter(0x33FF00, 1, 2, 2, 3)];
 		}
 		
 		private function drawBackGround(w:int, h:int):void
@@ -64,6 +64,11 @@ package org.musince.display
 		public function setSize(w:int, h:int):void
 		{
 			drawBackGround(w, h);
+		}
+		
+		public function createChoice(num:int):void
+		{
+			
 		}
 	}
 }
