@@ -11,7 +11,7 @@ extern lua_State* L;
 
 void init_lua();
 
-void lua_tointeger_array(int index, int num, int* result);
+void lua_tointeger_array(int index, int& len, int*& result);
 
 
 template<class T>
@@ -81,6 +81,7 @@ void lt(ARGS ...args) {
     to_params(args...);
     //    lua_pop(L, sizeof...(args));
 };
+
 
 
 #endif

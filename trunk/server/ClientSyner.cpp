@@ -39,24 +39,32 @@ void ClientSyner::invoke_method_recv(TunnelInputStream* stream) {
     delete [] name;
 }
 
-void ClientSyner::_rpc(GameObject* object, const char* method_name, ParamList* params) {
+void ClientSyner::_roc(GameObject* object, const char* method_name, ParamList* params) {
     const Stream* key = object->key();
     int size = key->length() + strlen(method_name);
-    TunnelOutputStream* stream = get_command_stream(COMMAND_INVOKE_METHOD, size);
+    TunnelOutputStream* stream = get_command_stream(COMMAND_ROC, size);
     stream->copy(key);
     stream->write_string(method_name);
     params->serialize(stream);
     stream->flush();
 }
 
-void ClientSyner::_rpc(ParamList* key, const char* method_name, ParamList* params) {
-    _command(COMMAND_INVOKE_METHOD, key, method_name, params);
+void ClientSyner::_roc(ParamList* key, const char* method_name, ParamList* params) {
+    _command(COMMAND_ROC, key, method_name, params);
 }
 
 void ClientSyner::_command(int id, ParamList* key, const char* method_name, ParamList* params) {
     int size = key->size() + strlen(method_name);
     TunnelOutputStream* stream = get_command_stream(id, size);
     key->serialize(stream);
+    stream->write_string(method_name);
+    params->serialize(stream);
+    stream->flush();
+}
+
+void ClientSyner::_rpc(const char* method_name, ParamList* params) {
+    int size = strlen(method_name);
+    TunnelOutputStream* stream = get_command_stream(COMMAND_RPC, size);
     stream->write_string(method_name);
     params->serialize(stream);
     stream->flush();
@@ -74,7 +82,7 @@ void ClientSyner::on_data(TunnelInputStream* stream) {
     fcontext = client;
     short command = stream->read_short();
     switch (command) {
-    case COMMAND_INVOKE_METHOD:
+    case COMMAND_ROC:
         invoke_method_recv(stream);
         break;
     default:
