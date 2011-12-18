@@ -16,7 +16,7 @@ package org.musince.logic
 			var bytes:ByteArray = new ByteArray();
 			bytes.writeShort(type);
 			params.serialize(bytes);
-			_tunnel.sendRPC(bytes);
+			_tunnel.send(bytes);
 		} 
 		
 		

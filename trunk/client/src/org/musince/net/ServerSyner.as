@@ -1,6 +1,7 @@
 package org.musince.net
 {
 	import flash.utils.IDataInput;
+	import flash.utils.getDefinitionByName;
 	
 	import org.musince.global.$finder;
 	import org.musince.logic.GameObject;
@@ -10,9 +11,11 @@ package org.musince.net
 	{
 		private var _tunnel:Tunnel;
 		
-		public static const COMMAND_INVOKE_METHOD:int = 1;
+		public static const COMMAND_ROC:int = 1;
 		public static const COMMAND_GROUP_START:int = 2;
 		public static const COMMAND_GROUP_END:int = 3;
+		public static const COMMAND_GROUP_ROC:int = 4;
+		public static const COMMAND_RPC:int = 5;
 		
 		private var _group_cache:Array;
 		
@@ -28,11 +31,8 @@ package org.musince.net
 		public function on_data(tunnel:Tunnel, data:IDataInput):void {
 			var command:int = data.readShort();
 			switch(command) {
-				case COMMAND_INVOKE_METHOD:
-					if (grouping())
-						cache_invoke(data);
-					else
-						invoke_method_recv(data);
+				case COMMAND_ROC:
+					invoke_object_method_recv(data);
 					break;
 				case COMMAND_GROUP_START:
 					cache_invoke(data);
@@ -40,11 +40,17 @@ package org.musince.net
 				case COMMAND_GROUP_END:
 					finish_group(data);
 					break;
+				case COMMAND_GROUP_ROC:
+					cache_invoke(data);
+					break;
+				case COMMAND_RPC:
+					invoke_global_method_recv(data);
+					break;
 			}
 		}
 		
 		public function rpc(key:Array, method_name:String, params:Array):void {
-			var stream:OutputStream = get_command_stream(COMMAND_INVOKE_METHOD);
+			var stream:OutputStream = get_command_stream(COMMAND_ROC);
 			(new ParamList(key)).serialize(stream);
 			stream.writeUTF(method_name);
 			(new ParamList(params)).serialize(stream);
@@ -71,9 +77,17 @@ package org.musince.net
 			params.unserialize(stream);
 		}
 		
-		private function invoke_method_recv(stream:IDataInput):void { 
+		private function invoke_object_method_recv(stream:IDataInput):void { 
 			read_method(stream);
 			object.invokeMethod(method_name, params.toArray());
+		}
+		
+		private function invoke_global_method_recv(stream:IDataInput):void { 
+			method_name = stream.readUTF();
+			params = new ParamList;
+			params.unserialize(stream);
+			var f:Function = getDefinitionByName(method_name) as Function;
+			f.apply(null, params.toArray());
 		}
 		
 		private function cache_invoke(stream:IDataInput):void {

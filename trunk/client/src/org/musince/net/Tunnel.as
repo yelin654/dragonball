@@ -29,12 +29,12 @@ package org.musince.net
 			addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
 		}
 		
-		public function setReceiver(receiver:IDataReceiver):void
+		public function attachReceiver(receiver:IDataReceiver):void
 		{
 			_receiver = receiver;
 		}
 		
-		public function sendRPC(bytes:ByteArray):void {
+		public function send(bytes:ByteArray):void {
 			bytes.position = 0;
 			this.writeInt(bytes.length);
 			this.writeBytes(bytes);
