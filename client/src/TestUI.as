@@ -13,6 +13,7 @@ package
 	import org.musince.global.$log;
 	import org.musince.load.GroupLoader;
 	import org.musince.load.LoadManager;
+	import org.musince.rpc.rpc_test;
 	import org.musince.system.Log;
 	
 	[SWF(width='1280',height='720', backgroundColor='0x000000')]
@@ -44,6 +45,7 @@ package
 			ui.changeBackground(loader);
 			var txt:String = "人之初，性本善。性相近，习相远。苟不教，性乃迁。教之道，贵以专。昔孟母，择邻处，子不学，断机杼。窦燕山，有义方，教五子，名俱扬。养不教，父之过。教不严，师之惰。子不学，非所宜。幼不学，老何为。";
 			ui.playSimpleTalk(txt);
+						
 		}
 	}
 }

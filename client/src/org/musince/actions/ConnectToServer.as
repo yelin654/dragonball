@@ -29,7 +29,7 @@ package org.musince.actions
 		private function onConnect(e:Event):void
 		{
 			$log.debug("connected");
-			$tunnel.setReceiver($syner);
+			$tunnel.attachReceiver($syner);
 			$syner.bind($tunnel);
 			isEnd = true;
 		}
