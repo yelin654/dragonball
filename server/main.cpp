@@ -1,4 +1,9 @@
 #include <stdio.h>
+#include <time.h>
+#include <sys/stat.h>
+#include <sys/fcntl.h>
+#include <syslog.h>
+#include <signal.h>
 #include <typeinfo>
 
 #include "Param.h"
@@ -14,11 +19,7 @@
 #include "script.h"
 #include "LuaStory.h"
 #include "EditorService.h"
-#include <time.h>
-#include <sys/stat.h>
-#include <sys/fcntl.h>
-#include <syslog.h>
-#include <signal.h>
+#include "luaapi.h"
 
 Net* net;
 
@@ -167,6 +168,8 @@ int main() {
     // ed.dispatch_event(e);
 
     //    test_param();
+    register_lua();
+
     signal_set();
     REG_SYN(GameServer, login, char*);
     REG_SYN(EditorService, login, const char*);

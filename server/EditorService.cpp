@@ -25,20 +25,20 @@ void EditorService::response(ParamList* result) {
     ParamList key("EditorClient");
     Param* id = new Param(qid);
     result->unshift(id);
-    _invoke_from->_rpc(&key, "queryResult", result);
+    _invoke_from->_roc(&key, "queryResult", result);
 }
 
 void EditorService::success(ParamList* result) {
     ParamList key("EditorClient");
     Param* id = new Param(qid);
     result->unshift(id);
-    _invoke_from->_rpc(&key, "querySuccess", result);
+    _invoke_from->_roc(&key, "querySuccess", result);
 }
 
 void EditorService::failed(int reason) {
     ParamList key("EditorClient");
     ParamList result(qid, reason);
-    _invoke_from->_rpc(&key, "queryResult", &result);
+    _invoke_from->_roc(&key, "queryResult", &result);
 }
 
 void EditorService::login(const char* name) {

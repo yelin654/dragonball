@@ -1,6 +1,6 @@
 local chapter = Chapter(0)
 local talk1 = Talk(chapter, 1)
-talk1.text_str = "离去之前叫醒我"
+talk1.text = "离去之前叫醒我"
 function talk1.on_start()
    play_sound(1)
 end
@@ -9,7 +9,7 @@ function talk1.on_end()
 end
 
 local talk2 = Talk(chapter, 2)
-talk1.text_id  = 5
+talk1.text = 5
 function talk2.on_start()
    play_sound(1)
 end
@@ -27,13 +27,13 @@ end
 
 local choice1 = Choice()
 choice1.text = {"A", "B", "C"}
-function choice1.on_result1()
+function choice1.on1()
 end
 
-function choice1.on_result2()
+function choice1.on2()
 end
 
-function choice1.on_result3()
+function choice1.on3()
 end
 
 talk1.next = choice1

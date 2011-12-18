@@ -9,8 +9,23 @@ void init_lua()
     luaL_dofile(L, "script/story.lua");
 }
 
-void LUA_tointeger_array(int index, int num, int* result)
+int lua_table_length(int index)
 {
+    int num = 0;
+    lua_pushnil(L);
+    int i = index - 1;
+    while (lua_next(L, i) != 0)
+    {
+        num++;
+        lua_pop(L, 1);
+    }
+    return num;
+}
+
+void lua_tointeger_array(int index, int& len, int*& result)
+{
+    int num = lua_table_length(index);
+    result = new int[num];
     for (int i=0; i<num; ++i)
     {
         lua_rawgeti(L, index, i+1);

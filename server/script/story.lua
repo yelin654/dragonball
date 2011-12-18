@@ -3,6 +3,11 @@ package.path = "script/?.lua;;"
 require "log"
 require "lfs"
 
+ACTION_GEN = 0
+ACTION_TALK = 1
+ACTION_CHOICE = 2
+ACTION_SOUND = 3
+
 storys = {}
 
 function add_story(idx)
@@ -32,6 +37,7 @@ end
 function Story(idx)
    local s = {}
    s.idx = idx
+   s.spaces = {}
    return s
 end
 
@@ -50,22 +56,29 @@ function Chapter(idx)
 end
 
 function Talk(c, idx)
-   local s = {}
-   s.idx = idx
-   c.actions[idx] = s
-   return s
+   local a = Action(c, idx)
+   a.type = ACTION_TALK
+   return a
 end
 
-function Choice(idx)
-   local s = {}
-   s.idx = idx
-   return s
+function Choice(c, idx)
+   local a =  Action(c, idx)
+   a.type = ACTION_CHOICE
+   return a
 end
 
-function Sound(idx)
-   local s = {}
-   s.idx = idx
-   return s
+function Sound(c, idx)
+   local a =  Action(c, idx)
+   a.type = ACTION_SOUND
+   return a
+end
+
+function Action(c, idx)
+   local a = {}
+   a.idx = idx
+   a.type = ACTION_GEN
+   c.actions[idx] = a
+   return a
 end
 
 function load_story(name, idx)
@@ -77,9 +90,11 @@ function load_story(name, idx)
    local chapter
    local spr
    local fullname
+   local story = Story(idx)
+   storys[idx] = story
    for i, spaceid in ipairs(meta.spaces) do
       space = Space(spaceid)
-      storys[spaceid] = space
+      story.spaces[spaceid] = space
       spr = root.."p"..spaceid.."/"
       for file in lfs.dir(spr) do
          if string.match(file, "%.lua$") then
@@ -100,4 +115,54 @@ end
 -- end
 
 load_story("yelin", 1)
+
+function action_on_start(story_idx, space_idx, chapter_idx, action_idx)
+   local action = find_action(story_idx, space_idx, chapter_idx, action_idx)
+   action.on_start()
+end
+
+function find_action(story_idx, space_idx, chapter_idx, action_idx)
+
+end
+
+function find_story(idx)
+   return storys[idx]
+end
+
+function start_story(idx)
+   local story = find_story(idx)
+   local cpt = story.spaces[1].chapters[1]
+   local action = cpt.start
+end
+
+function do_gen(action)
+
+end
+
+function do_talk(action)
+   if type(action.text == "string") then
+      play_talk_text(action.text)
+   else
+      play_talk_id(action.id)
+   end
+end
+
+function do_choice(action)
+
+end
+
+function do_sound_action(action)
+end
+
+do_vt[ACTION_GEN] = do_gen
+do_vt[ACTION_TALK] = do_talk
+do_vt[ACTION_CHOICE] = do_choice
+do_vt[ACTION_SOUND] = do_sound_action
+
+function do_action(action)
+   do_vt[action.type](action)
+   if action.on_start ~= nil then
+      action.on_start()
+   end
+end
 
