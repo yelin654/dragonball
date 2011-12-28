@@ -4,6 +4,7 @@ package org.musince.logic
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 	
@@ -28,6 +29,7 @@ package org.musince.logic
 		{
 			_timer.addEventListener(Event.ENTER_FRAME, onTimer);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 			stage.frameRate = 60;
 			_now = getTimer();
 		}
@@ -96,13 +98,24 @@ package org.musince.logic
 		
 		private function onKeyDown(e:KeyboardEvent):void
 		{
-			var arr:Array;
+			var fun:Function;
 			for each (var slice:TimeSlice in _actions)
 			{
-				arr = slice.keyDownEnable[e.keyCode];
-				if (arr != null && arr[0] == e.target)
+				fun = slice.globalKeyDownEnable[e.keyCode];
+				if (fun != null) 
 				{
-					arr[1](e);
+					fun(e);
+				}
+			}
+		}
+		
+		private function onMouseWheel(e:MouseEvent):void
+		{
+			for each (var slice:TimeSlice in _actions)
+			{
+				if (slice.enableMouseWheel != null) 
+				{
+					slice.enableMouseWheel(e);
 				}
 			}
 		}
