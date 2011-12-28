@@ -33,9 +33,20 @@ package org.musince.editor
 		{
 			meta = new MetaTalkText();
 			_last = 0;
-			enableKeyDown(Keyboard.ENTER, inputText, onClickEnter);
-			enableKeyDown(117, inputText, onFinish);
+			inputText.addEventListener(KeyboardEvent.KEY_DOWN, onClickEnter);
 			outputText.text = "";
+		}
+		
+		public function onKeyDown(e:KeyboardEvent):void
+		{
+			if (e.keyCode == Keyboard.ENTER)
+			{
+				onClickEnter(e);
+			}
+			if (e.keyCode == 117)
+			{
+				onFinish(e);
+			}
 		}
 		
 		public function onClickEnter(e:KeyboardEvent):void

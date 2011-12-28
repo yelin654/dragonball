@@ -5,12 +5,12 @@ package org.musince.actions
 	import flash.ui.Keyboard;
 	
 	import org.musince.core.TimeSlice;
-	import org.musince.load.SimpleLoader;
 	import org.musince.global.$config;
 	import org.musince.global.$cookie;
 	import org.musince.global.$log;
 	import org.musince.global.$root;
 	import org.musince.global.$syner;
+	import org.musince.load.SimpleLoader;
 	
 	public class Login extends TimeSlice 
 	{
@@ -45,14 +45,14 @@ package org.musince.actions
 		private function onLoaded(content:MovieClip):void 
 		{
 			_mc = content;
-//			_mc.txt_name.addEventListener(KeyboardEvent.KEY_DOWN, onEnterDown);
+			_mc.txt_name.addEventListener(KeyboardEvent.KEY_DOWN, onEnterDown);
 			$root.addChild(_mc);
 			_loader = null;
-			enableKeyDown(Keyboard.ENTER, _mc.txt_name, onEnterDown);
 		}
 		
-		private function onEnterDown():void
+		private function onEnterDown(e:KeyboardEvent):void
 		{	
+			if (e.keyCode != Keyboard.ENTER) return;
 			$cookie.set("u", _mc.txt_name.text);
 			send(_mc.txt_name.text);
 			_mc.txt_name.selectable = false;

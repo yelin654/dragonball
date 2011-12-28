@@ -1,5 +1,9 @@
 package org.musince.core
 {
+	import flash.display.InteractiveObject;
+	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
+	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 	
@@ -13,8 +17,8 @@ package org.musince.core
 		
 		public var updateEnable:Boolean = true;
 		
-		public var keyDownEnable:Dictionary = new Dictionary();
-		public var keyUpEnable:Dictionary = new Dictionary();		
+		public var globalKeyDownEnable:Dictionary = new Dictionary();
+		public var globalkeyUpEnable:Dictionary = new Dictionary();		
 		
 		public var mouseClickEnable:Boolean = true;
 		public var mouseUpEnable:Boolean = true;
@@ -26,7 +30,7 @@ package org.musince.core
 		public var _interval:int;
 		private var _nextUpdateTime:int;
 		protected var _now:int;
-		protected var _then:int;
+		protected var _then:int;		
 		
 		public function TimeSlice()
 		{
@@ -78,25 +82,37 @@ package org.musince.core
 			return _nexts;
 		}
 		
-		public function enableKeyDown(code:int, target:Object, callback:Function):void
+		public function enableGlobalKeyDown(code:int, callback:Function):void
 		{
-			keyDownEnable[code] = [target, callback];
+			globalKeyDownEnable[code] = callback;
 		}
 		
-		public function enableKeyUp(code:int, target:Object, callback:Function):void
+		public function enableKeyUp(code:int, callback:Function):void
 		{
-			keyDownEnable[code] = [target, callback];
+			globalkeyUpEnable[code] = callback;
 		}
 		
-//		public function onKeyDown(code:int):void
-//		{
-//			
-//		}
-//		
-//		public function onKeyUp(code:int):void
-//		{
-//			
-//		}
+		private var _keyDownCallback:Dictionary = new Dictionary();
+		
+		public function enableKeyDown(code:int, target:InteractiveObject, callback:Function):void
+		{
+			target.addEventListener(KeyboardEvent.KEY_DOWN, _onKeyDown);
+			_keyDownCallback[target] = [code, callback];
+		}
+		
+		private function _onKeyDown(e:KeyboardEvent):void
+		{
+			var arr:Array = _keyDownCallback[e.currentTarget];
+			if (arr != null && e.keyCode == arr[0])
+			{
+				arr[1]();
+			}
+		}
+		
+		private function _onKeyUp(code:int):void
+		{
+			
+		}
 		
 		public function onMouseDown(code:int):void
 		{
@@ -108,6 +124,7 @@ package org.musince.core
 			
 		}
 		
-		
+		public var enableMouseWheel:Function;
+
 	}
 }

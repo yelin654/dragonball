@@ -57,7 +57,7 @@ package org.musince.display
 		
 		public function playSimpleTalk(text:String):void
 		{
-			var talk:PlayTalk = new PlayTalkAvg(_talk.text);
+			var talk:PlayTalk = new PlayTalkAvg(_talk.talkText);
 			if (_root.contains(_talk))
 			{
 				talk.input = text;
