@@ -30,6 +30,8 @@ package org.musince.logic
 			_timer.addEventListener(Event.ENTER_FRAME, onTimer);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 			stage.frameRate = 60;
 			_now = getTimer();
 		}
@@ -64,7 +66,8 @@ package org.musince.logic
 					for each (var next:TimeSlice in action.getNexts())
 					{
 						_add[next] = next;
-						next.input = action.output;
+						if (action.output != null)
+							next.input = action.output;
 						next.start(_now);
 					}
 				}
@@ -113,9 +116,31 @@ package org.musince.logic
 		{
 			for each (var slice:TimeSlice in _actions)
 			{
-				if (slice.enableMouseWheel != null) 
+				if (slice.globalMouseWheel != null) 
 				{
-					slice.enableMouseWheel(e);
+					slice.globalMouseWheel(e);
+				}
+			}
+		}
+		
+		private function onMouseDown(e:MouseEvent):void
+		{
+			for each (var slice:TimeSlice in _actions)
+			{
+				if (slice.globalMouseDown != null) 
+				{
+					slice.globalMouseDown(e);
+				}
+			}
+		}
+		
+		private function onMouseUp(e:MouseEvent):void
+		{
+			for each (var slice:TimeSlice in _actions)
+			{
+				if (slice.globalMouseUp != null) 
+				{
+					slice.globalMouseUp(e);
 				}
 			}
 		}

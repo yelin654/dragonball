@@ -49,7 +49,7 @@ package org.musince.net
 			}
 		}
 		
-		public function rpc(key:Array, method_name:String, params:Array):void {
+		public function roc(key:Array, method_name:String, params:Array):void {
 			var stream:OutputStream = get_command_stream(COMMAND_ROC);
 			(new ParamList(key)).serialize(stream);
 			stream.writeUTF(method_name);

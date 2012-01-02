@@ -6,10 +6,13 @@ package org.musince.display
 	
 	import org.musince.actions.BlankTime;
 	import org.musince.actions.FadeInTalk;
+	import org.musince.actions.PlayChoice;
 	import org.musince.actions.PlayTalk;
 	import org.musince.actions.PlayTalkAvg;
 	import org.musince.actions.Progress;
 	import org.musince.actions.UpdateProgress;
+	import org.musince.actions.WaitingForChoose;
+	import org.musince.core.TimeSlice;
 	import org.musince.global.$athena;
 	import org.musince.logic.GameObject;
 	import org.musince.util.DisplayUtil;
@@ -65,17 +68,9 @@ package org.musince.display
 			}
 			else
 			{
-				_talk.alpha = 0;
-				_root.addChild(_talk);
-				var fade:FadeInTalk = new FadeInTalk(_talk);
-				var blank:BlankTime = new BlankTime();
-				blank.last = 500;
-				fade.input = text;
-				fade.appendNext(blank);
-				blank.appendNext(talk);
-				$athena.addTimeSlice(fade);
+				fadeInTalk(text, talk);
 			}
-			_talk.alpha = 0;
+//			_talk.alpha = 0;
 		}
 		
 		public function playMetaTalk(id:int):void
@@ -102,8 +97,34 @@ package org.musince.display
 		}
 		
 		public function playChoice(choices:Array):void
-		{
+		{	
+			var play:PlayChoice = new PlayChoice(_talk);
+			var wait:WaitingForChoose = new WaitingForChoose(_talk);
+			play.appendNext(wait);
 			
+			if (_root.contains(_talk))
+			{
+				play.input = choices;
+				$athena.addTimeSlice(play);
+			}
+			else
+			{
+				fadeInTalk(choices, play);
+			}
+//			_talk.alpha = 0;
+		}
+		
+		public function fadeInTalk(input:Object, next:TimeSlice):void
+		{
+			_talk.alpha = 0;
+			_root.addChild(_talk);
+			var fade:FadeInTalk = new FadeInTalk(_talk);
+			var blank:BlankTime = new BlankTime();
+			blank.last = 500;
+			fade.input = input;
+			fade.appendNext(blank);
+			blank.appendNext(next);
+			$athena.addTimeSlice(fade);
 		}
 		
 		public function playSound():void

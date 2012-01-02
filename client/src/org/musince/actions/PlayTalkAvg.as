@@ -7,11 +7,15 @@ package org.musince.actions
 	
 	public class PlayTalkAvg extends PlayTalk
 	{
-		private var _max:int; 
+		public static const DEFAULT_INTERVAL:int = 200; 
 		
-		public function PlayTalkAvg(tf:TextField)
+		private var _max:int; 
+		private var _speed:int;
+		
+		public function PlayTalkAvg(tf:TextField, interval:int=DEFAULT_INTERVAL)
 		{
 			super(tf);
+			_speed = interval;
 		}
 		
 		override public function onStart():void
@@ -28,7 +32,7 @@ package org.musince.actions
 		
 		override protected function nextInterval(index:int):int
 		{
-			return MetaTalkText.DEFAULT_INTERVAL;
+			return _speed;
 		}
 		
 	}
