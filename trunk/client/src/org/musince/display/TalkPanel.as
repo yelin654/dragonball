@@ -121,7 +121,11 @@ package org.musince.display
 		{
 			select(Math.min(_selectIndex+1, choices.length));
 		}
-			
+		
+		public function selecting():int
+		{
+			return _selectIndex;
+		}
 		
 	}
 }

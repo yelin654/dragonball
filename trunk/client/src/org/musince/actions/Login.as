@@ -60,7 +60,7 @@ package org.musince.actions
 		
 		private function send(name:String):void
 		{
-			$syner.rpc(["LoginService"], "login", [name]);
+			$syner.roc(["LoginService"], "login", [name]);
 		}
 		
 		public function login_r(result:int):void

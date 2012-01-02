@@ -1,5 +1,6 @@
 package org.musince.actions
 {
+	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.ui.Keyboard;
@@ -23,8 +24,10 @@ package org.musince.actions
 		{
 			enableGlobalKeyDown(Keyboard.UP, onUp);
 			enableGlobalKeyDown(Keyboard.DOWN, onDown);
-			
-			enableMouseWheel = onMouseWheel;
+			enableGlobalKeyDown(Keyboard.ENTER, onSure);
+
+			globalMouseWheel = onMouseWheel;
+			globalMouseUp = onSure;
 		}
 		
 		private function onUp(e:Object):void
@@ -47,6 +50,17 @@ package org.musince.actions
 			{
 				onDown(null);
 			}
+		}
+		
+		private function onSure(e:Event):void
+		{
+			output = talk.selecting();
+			isEnd = true;
+		}
+		
+		override public function onEnd():void
+		{
+			trace("select " + output);
 		}
 	}
 }

@@ -20,9 +20,10 @@ package org.musince.core
 		public var globalKeyDownEnable:Dictionary = new Dictionary();
 		public var globalkeyUpEnable:Dictionary = new Dictionary();		
 		
-		public var mouseClickEnable:Boolean = true;
-		public var mouseUpEnable:Boolean = true;
-		public var mouseDownEnable:Boolean = true;
+		public var globalMouseClick:Function;
+		public var globalMouseUp:Function;
+		public var globalMouseDown:Function;
+		public var globalMouseWheel:Function;
 		
 		public var input:Object;
 		public var output:Object;
@@ -114,17 +115,7 @@ package org.musince.core
 			
 		}
 		
-		public function onMouseDown(code:int):void
-		{
-			
-		}
 		
-		public function onMouseUp(code:int):void
-		{
-			
-		}
-		
-		public var enableMouseWheel:Function;
 
 	}
 }

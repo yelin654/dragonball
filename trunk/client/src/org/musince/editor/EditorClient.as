@@ -18,7 +18,7 @@ package org.musince.editor
 		{
 			params.unshift(query.rtid);
 			_pendingQuerys[query.rtid] = query;
-			$syner.rpc([service], method, params);
+			$syner.roc([service], method, params);
 		}
 		
 		public function querySuccess(idx:int, ...result):void
