@@ -20,7 +20,7 @@ package org.musince.actions
 		
 		override public function onStart():void
 		{
-			_text = input as String;
+			_text = input["text"] as String;
 			_max = _text.length - 1;
 			super.onStart();
 		}

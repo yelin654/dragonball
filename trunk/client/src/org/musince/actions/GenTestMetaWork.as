@@ -1,5 +1,7 @@
 package org.musince.actions
 {
+	import flash.utils.Dictionary;
+	
 	import org.musince.core.TimeSlice;
 	import org.musince.data.MetaStory;
 	import org.musince.data.MetaWork;
@@ -22,7 +24,8 @@ package org.musince.actions
 			story.idx = 2;
 			story.name = "七龙珠";
 			meta.addStory(story);
-			output = meta;
+			output = new Dictionary();
+			output["meta"] = meta;
 			isEnd = true;
 		}
 	}
