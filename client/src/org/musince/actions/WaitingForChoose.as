@@ -5,6 +5,7 @@ package org.musince.actions
 	import flash.events.MouseEvent;
 	import flash.ui.Keyboard;
 	import flash.ui.Mouse;
+	import flash.utils.Dictionary;
 	
 	import org.musince.core.TimeSlice;
 	import org.musince.display.TalkPanel;
@@ -54,7 +55,8 @@ package org.musince.actions
 		
 		private function onSure(e:Event):void
 		{
-			output = talk.selecting();
+			output = new Dictionary();
+			output["choice"] = talk.selecting();
 			isEnd = true;
 		}
 		

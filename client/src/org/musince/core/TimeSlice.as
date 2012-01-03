@@ -25,8 +25,8 @@ package org.musince.core
 		public var globalMouseDown:Function;
 		public var globalMouseWheel:Function;
 		
-		public var input:Object;
-		public var output:Object;
+		public var input:Dictionary;
+		public var output:Dictionary;
 		
 		public var _interval:int;
 		private var _nextUpdateTime:int;

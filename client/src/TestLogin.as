@@ -2,6 +2,7 @@ package
 {
 	import flash.display.Sprite;
 	
+	import org.musince.actions.InputLogin;
 	import org.musince.display.LoginPanel;
 	import org.musince.global.$athena;
 	import org.musince.global.$root;
@@ -16,7 +17,8 @@ package
 			$athena.start(stage);
 			var login:LoginPanel = new LoginPanel();
 			addChild(login);
-			login.fadeIn();
+			var input:InputLogin = new InputLogin(login.u, login.tip);
+			login.fadeIn(input);
 		}
 		
 		

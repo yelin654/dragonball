@@ -6,6 +6,7 @@ package org.musince.editor
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.ui.Keyboard;
+	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 	
 	import org.musince.core.TimeSlice;
@@ -70,7 +71,8 @@ package org.musince.editor
 		{
 			meta.interval.shift();
 			meta.text = outputText.text;
-			output = meta;
+			output = new Dictionary();
+			output["meta"] = meta;
 			isEnd = true;
 		}
 		

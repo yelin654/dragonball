@@ -3,6 +3,7 @@ package org.musince.display
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 	
 	import org.musince.actions.BlankTime;
 	import org.musince.actions.FadeInTalk;
@@ -63,12 +64,14 @@ package org.musince.display
 			var talk:PlayTalk = new PlayTalkAvg(_talk.talkText);
 			if (_root.contains(_talk))
 			{
-				talk.input = text;
+				talk.input["text"] = text;
 				$athena.addTimeSlice(talk);
 			}
 			else
 			{
-				fadeInTalk(text, talk);
+				var input:Dictionary = new Dictionary();
+				input["text"] = text;
+				fadeInTalk(input, talk);
 			}
 //			_talk.alpha = 0;
 		}
@@ -104,17 +107,19 @@ package org.musince.display
 			
 			if (_root.contains(_talk))
 			{
-				play.input = choices;
+				play.input["choices"] = choices;
 				$athena.addTimeSlice(play);
 			}
 			else
 			{
-				fadeInTalk(choices, play);
+				var input:Dictionary = new Dictionary();
+				input["choices"] = choices;
+				fadeInTalk(input, play);
 			}
 //			_talk.alpha = 0;
 		}
 		
-		public function fadeInTalk(input:Object, next:TimeSlice):void
+		public function fadeInTalk(input:Dictionary, next:TimeSlice):void
 		{
 			_talk.alpha = 0;
 			_root.addChild(_talk);

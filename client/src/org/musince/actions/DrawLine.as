@@ -26,8 +26,8 @@ package org.musince.actions
 		
 		override public function onStart():void
 		{
-			_from = input.from;
-			_to = input.to;
+			_from = input["from"];
+			_to = input["to"];
 		}
 		
 		override public function onUpdate():void
