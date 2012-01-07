@@ -4,6 +4,7 @@ package org.musince.editor
 	
 	import org.musince.logic.GameObject;
 	import org.musince.global.$syner;
+	import org.musince.core.Query;
 	
 	public class EditorClient extends GameObject
 	{
