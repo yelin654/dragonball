@@ -4,6 +4,7 @@ package org.musince.editor
 	
 	import org.musince.data.MetaWork;
 	import org.musince.global.$log;
+	import org.musince.core.Query;
 	
 	public class SaveMetaWork extends Query
 	{	
