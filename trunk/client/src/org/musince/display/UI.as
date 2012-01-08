@@ -12,7 +12,7 @@ package org.musince.display
 	import org.musince.actions.PlayTalkAvg;
 	import org.musince.actions.Progress;
 	import org.musince.actions.UpdateProgress;
-	import org.musince.actions.WaitingForChoose;
+	import org.musince.actions.Choosing;
 	import org.musince.core.TimeSlice;
 	import org.musince.global.$athena;
 	import org.musince.logic.GameObject;
@@ -102,7 +102,7 @@ package org.musince.display
 		public function playChoice(choices:Array):void
 		{	
 			var play:PlayChoice = new PlayChoice(_talk);
-			var wait:WaitingForChoose = new WaitingForChoose(_talk);
+			var wait:Choosing = new Choosing(_talk);
 			play.appendNext(wait);
 			
 			if (_root.contains(_talk))

@@ -119,7 +119,7 @@ package org.musince.display
 		
 		public function chooseDown():void
 		{
-			select(Math.min(_selectIndex+1, choices.length));
+			select(Math.min(_selectIndex+1, choices.length-1));
 		}
 		
 		public function selecting():int
