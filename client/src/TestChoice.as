@@ -6,7 +6,7 @@ package
 	import flash.utils.Timer;
 	
 	import org.musince.actions.PlayChoice;
-	import org.musince.actions.WaitingForChoose;
+	import org.musince.actions.Choosing;
 	import org.musince.display.TalkPanel;
 	import org.musince.display.UI;
 	import org.musince.global.$athena;
