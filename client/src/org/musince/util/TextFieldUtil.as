@@ -1,6 +1,7 @@
 package org.musince.util
 {
 	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 
@@ -17,6 +18,14 @@ package org.musince.util
 			tf.color = 0xFFFFFF;
 			tf.font = "KaiTi_GB2312";
 			tf.size = 40;
+			return tf;
+		}
+		
+		public static function getTextField():TextField
+		{
+			var tf:TextField = new TextField();
+			tf.defaultTextFormat = getTextFormat();
+			tf.autoSize = TextFieldAutoSize.LEFT;
 			return tf;
 		}
 	}

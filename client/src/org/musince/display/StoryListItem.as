@@ -19,6 +19,10 @@ package org.musince.display
 		public var w:int;
 		public var h:int;
 		
+//		public var selecting
+		public var options:Vector.<TextField>;
+		
+		
 		public function StoryListItem(w:int, h:int, data:DataStory)
 		{
 			super();
@@ -54,30 +58,32 @@ package org.musince.display
 		public function enter():void
 		{
 			removeChild(nameText);
+			
 			if (startText == null)
 			{
-				startText = new TextField();
-				continueText = new TextField();
-				cancelText = new TextField();
-				var tf:TextFormat = TextFieldUtil.getTextFormat();		
-				startText.defaultTextFormat = tf;
-				continueText.defaultTextFormat = tf;
-				cancelText.defaultTextFormat = tf;
+				startText = TextFieldUtil.getTextField();
 				startText.text = "start";
-				continueText.text = "continue";
+				
+				cancelText = TextFieldUtil.getTextField();
 				cancelText.text = "cancel";
-				startText.autoSize = TextFieldAutoSize.LEFT;
-				continueText.autoSize = TextFieldAutoSize.LEFT;
-				cancelText.autoSize = TextFieldAutoSize.LEFT;
+				cancelText.x = w * 2 / 3 ;
+
+				continueText = TextFieldUtil.getTextField();
+				continueText.text = "continue";
+				continueText.x = w / 3 ;
 			}
-			continueText.x = w / 3 ;
-			cancelText.x = w * 2 / 3 ;
+			
 			addChild(startText);
 			addChild(continueText);
 			addChild(cancelText);
 		}
 		
-		public function canel():void
+		public function selectUp():void
+		{
+			
+		}
+		
+		public function selectDown():void
 		{
 			
 		}
