@@ -66,8 +66,10 @@ package org.musince.logic
 					for each (var next:TimeSlice in action.getNexts())
 					{
 						_add[next] = next;
-						if (action.output != null)
-							next.input = action.output;
+						for (var key:Object in action.output)
+						{
+							next.input[key] = action.output[key];
+						}
 						next.start(_now);
 					}
 				}

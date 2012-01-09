@@ -43,9 +43,8 @@ package org.musince.actions
 			var data:ByteArray = item.loader.getContent() as ByteArray;
 			_meta = new MetaResource;
 			_meta.unserialize(data);
-			output = new Object;
-			output.image = new Dictionary;
-			output.sound = new Dictionary;
+			output["image"] = new Dictionary;
+			output["sound"] = new Dictionary;
 			loadImage();
 		}
 		

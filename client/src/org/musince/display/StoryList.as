@@ -8,9 +8,9 @@ package org.musince.display
 		public var cw:int;
 		public var ch:int;
 		
-		public var items:Vector.<StoryListItem>;
-		public var _selecting:int;
-//		public var marglin
+		public var colnum:int = 2;
+		public var items:Vector.<Vector.<StoryListItem>>;
+		public var selecting:int;
 		
 		public function StoryList(w:int=1280, h:int=720)
 		{
@@ -23,43 +23,67 @@ package org.musince.display
 		
 		public function update(datas:Array):void
 		{
+			items = new Vector.<Vector.<StoryListItem>>(colnum);
+			var i:int = 0;
+			var rownum:int = Math.ceil(datas.length/colnum);
+			for (i = 0; i < colnum; i++)
+			{
+				items[i] = new Vector.<StoryListItem>();
+			}
 			var x:int;
 			var y:int;
 			var item:StoryListItem;
-			items = new Vector.<StoryListItem>(datas.length);
-			for (var i:int = 0; i < datas.length; i++)
+			for (i = 0; i < datas.length; i++)
 			{
-				x = i % 2 * cw;
-				y = int(i / 2) * ch;
+				x = i % colnum;
+				y = int(i / colnum);
 				item = new StoryListItem(cw, ch, datas[i]);
-				item.x = x;
-				item.y = y;
+				item.x = x * cw;
+				item.y = y * ch;
 				addChild(item);
-				items[i] = item;
+				items[x][y] = item;
 			}
-			select(0);
+			focus(0);
 		}
 		
-		public function select(i:int):void
+		public function focus(i:int):void
 		{
-			items[_selecting].unselect();
-			items[i].select();
-			_selecting = i;
+//			items[selecting].unmark();
+//			items[i].mark();
+//			selecting = i;
 		}
 		
-		public function selectUp():void
+		public function focusUp():void
 		{
-			select(Math.max(_selecting-1, 0));
+			var next:int = selecting - 2;
+			if (next < 0) return;
+			selecting = next;
+			focus(Math.max(selecting-1, 0));
 		}
 		
-		public function selectDown():void
+		public function focusDown():void
 		{
-			select(Math.min(_selecting+1, items.length-1));
+			focus(Math.min(selecting+1, items.length-1));
+		}
+		
+		public function focusLeft():void
+		{
+			focus(Math.max(selecting-1, 0));
+		}
+		
+		public function focusRight():void
+		{
+			focus(Math.min(selecting+1, items.length-1));
 		}
 		
 		public function enter():void
 		{
-			items[_selecting].enter();
+//			items[selecting].enter();
+		}
+		
+		public function get selectingItem():StoryListItem
+		{
+			return items[selecting][0];
 		}
 
 	}

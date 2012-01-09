@@ -5,6 +5,7 @@ package
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
+	import flash.utils.Dictionary;
 	
 	import org.musince.actions.PlayTalk;
 	import org.musince.actions.PlayTalkAvg;
@@ -41,7 +42,7 @@ package
 			//			tfin.width = 400;
 			
 			var play:PlayTalk = new PlayTalkAvg(tf);
-			play.input = "abcdefg";
+			play.input["text"] = "abcdefg";
 			
 			$athena.start(stage);
 			$athena.addTimeSlice(play);
