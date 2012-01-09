@@ -25,17 +25,19 @@ package org.musince.actions
 		{
 			if (e.delta > 0)
 			{
-				list.selectUp();
+				list.focusUp();
 			}
 			else
 			{
-				list.selectDown();
+				list.focusDown();
 			}
 		}
 		
 		public function onMouseDown(e:MouseEvent):void
 		{
 			list.enter();
+			isEnd = true;
+			appendNext(new SelectProgress(list.selectingItem, list)); 
 		}
 	}
 }

@@ -26,6 +26,7 @@ package org.musince.util
 			var tf:TextField = new TextField();
 			tf.defaultTextFormat = getTextFormat();
 			tf.autoSize = TextFieldAutoSize.LEFT;
+			tf.selectable = false;
 			return tf;
 		}
 	}

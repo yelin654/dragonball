@@ -3,15 +3,19 @@ package org.musince.actions
 	import flash.events.MouseEvent;
 	
 	import org.musince.core.TimeSlice;
+	import org.musince.display.StoryList;
 	import org.musince.display.StoryListItem;
 	
 	public class SelectProgress extends TimeSlice
 	{
-		public var item:StoryListItem; 
-		
-		public function SelectProgress()
+		public var item:StoryListItem;
+		public var list:StoryList;
+
+		public function SelectProgress(item:StoryListItem, list:StoryList)
 		{
 			super();
+			this.item = item;
+			this.list =  list;
 		}
 		
 		override public function onStart():void
@@ -24,17 +28,17 @@ package org.musince.actions
 		{
 			if (e.delta > 0)
 			{
-				item;
+				item.selectUp();
 			}
 			else
 			{
-				item;
+				item.selectDown();
 			}
 		}
 		
 		public function onMouseDown(e:MouseEvent):void
 		{
-			item;
+//			isEnd = true;
 		}
 	}
 }

@@ -23,6 +23,7 @@ package
 			for (var i:int = 0 ; i < num; i++)
 			{
 				data[i] = new DataStory();
+				data[i].name = "name" + i;
 			}
 			list.update(data);
 			addChild(list);

@@ -61,12 +61,12 @@ package org.musince.display
 			var graphics:Graphics = this.graphics;
 			graphics.lineStyle(2, 0xFFFFFF);
 			var drawline:DrawLine = new DrawLine(graphics, 0.04, {t:2, c:0xFFFFFF});
-			drawline.input = new Dictionary();
+//			drawline.input = new Dictionary();
 			drawline.input["from"] = new Point(int(w/3), int(h/2));
 			drawline.input["to"] = new Point(int(w-w/3), int(h/2));
 			var playText:PlayTalkAvg = new PlayTalkAvg(tip, 100);
-			playText.input = new Dictionary();
-			playText.input["text"] = "input name";
+//			playText.input = new Dictionary();
+			playText.input["text"] = "input login name";
 			drawline.appendNext(playText);
 			playText.appendNext(next);
 			$athena.addTimeSlice(drawline);
