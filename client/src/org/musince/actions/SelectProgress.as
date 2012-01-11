@@ -38,7 +38,24 @@ package org.musince.actions
 		
 		public function onMouseDown(e:MouseEvent):void
 		{
+			this["onSelect"+item.selecting]();
 //			isEnd = true;
 		}
+		
+		public function onSelect0():void
+		{
+			
+		}
+		
+		public function onSelect1():void
+		{
+			
+		}
+		
+		public function onSelect2():void
+		{
+			
+		}
+		
 	}
 }

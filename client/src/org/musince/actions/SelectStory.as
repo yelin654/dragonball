@@ -25,11 +25,11 @@ package org.musince.actions
 		{
 			if (e.delta > 0)
 			{
-				list.focusUp();
+				list.focusPre();
 			}
 			else
 			{
-				list.focusDown();
+				list.focusNext();
 			}
 		}
 		
