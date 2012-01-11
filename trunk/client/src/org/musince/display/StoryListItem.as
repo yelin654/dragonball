@@ -23,6 +23,11 @@ package org.musince.display
 		public var selecting:int;
 		public var options:Vector.<TextField>;
 		public var data:DataStory;
+		public var next:StoryListItem;
+		public var pre:StoryListItem;
+		
+		public var col:int;
+		public var row:int;
 		
 		public static var selectFilters:Array = [new GlowFilter(0x7D7D7D)]; 
 		
@@ -34,11 +39,7 @@ package org.musince.display
 			this.data = data;
 			addChild(selectMask);
 			
-			var tf:TextFormat = TextFieldUtil.getTextFormat();
-			tf.align = TextFormatAlign.LEFT;
-			nameText = new TextField();
-			nameText.defaultTextFormat = tf;
-			nameText.selectable = false;			
+			nameText = TextFieldUtil.getTextField();
 			nameText.text = data.name;
 			addChild(nameText);
 			graphics.lineStyle(1, 0x7D7D7D);
