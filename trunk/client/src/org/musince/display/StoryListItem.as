@@ -91,6 +91,16 @@ package org.musince.display
 			}
 		}
 		
+		public function cancel():void
+		{
+			for each (var tf:TextField in options)
+			{
+				removeChild(tf);
+			}
+			addChild(nameText);
+			mark();
+		}
+		
 		public function select(i:int):void
 		{
 			options[selecting].filters = null;

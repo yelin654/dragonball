@@ -38,23 +38,35 @@ package org.musince.actions
 		
 		public function onMouseDown(e:MouseEvent):void
 		{
-			this["onSelect"+item.selecting]();
-//			isEnd = true;
+			if (item.selecting == item.options.length-1)
+			{
+				onSelectCancel();
+				return;
+			}
+			if (item.selecting == 0)
+			{
+				onSelectStart();
+				return;
+			}
+			onSelectContinue();
 		}
 		
-		public function onSelect0():void
+		public function onSelectStart():void
 		{
 			
 		}
 		
-		public function onSelect1():void
+		public function onSelectContinue():void
 		{
 			
 		}
 		
-		public function onSelect2():void
+		public function onSelectCancel():void
 		{
-			
+			item.cancel();
+			var selectStroy:SelectStory = new SelectStory(list);
+			appendNext(selectStroy);
+			isEnd = true;
 		}
 		
 	}
