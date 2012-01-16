@@ -2,15 +2,16 @@ package org.musince.editor
 {
 	import flash.utils.ByteArray;
 	
-	import org.musince.data.MetaWork;
-	import org.musince.global.$log;
 	import org.musince.core.Query;
+	import org.musince.data.MetaWork;
+	import org.musince.global.$eclient;
+	import org.musince.global.$log;
 	
 	public class LoadMetaWorks extends Query
 	{
 		public function LoadMetaWorks()
 		{
-			super();
+			super($eclient);
 		}
 		
 		public function onQuery():void
@@ -18,8 +19,9 @@ package org.musince.editor
 			send("EditorService", "loadMetaWork", ["yelin"]);
 		}
 		
-		public function onSuccess(bytes:ByteArray):void
+		override public function onSuccess(result:Array):void
 		{
+			var bytes:ByteArray = result[0];
 			$log.debug("load metawork length:", bytes.length);
 			isEnd = true;
 		}

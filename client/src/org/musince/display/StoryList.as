@@ -1,6 +1,6 @@
 package org.musince.display
 {
-	import org.musince.data.DataStory;
+	import org.musince.data.StoryProgress;
 
 	public class StoryList extends UC
 	{
@@ -40,7 +40,7 @@ package org.musince.display
 			}
 			var x:int;
 			var y:int;
-			var data:DataStory = new DataStory();
+			var data:StoryProgress = new StoryProgress();
 			data.name = "";
 			var itemPre:StoryListItem = new StoryListItem(0, 0, data);
 			var item:StoryListItem = null;
