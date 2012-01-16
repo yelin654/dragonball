@@ -1,6 +1,6 @@
 package org.musince.global
 {
-	import org.musince.editor.EditorClient;
+	import org.musince.logic.Client;
 
-	public var $eclient:EditorClient;
+	public var $eclient:Client;
 }

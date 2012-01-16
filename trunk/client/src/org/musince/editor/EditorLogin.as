@@ -1,15 +1,14 @@
 package org.musince.editor
 {
-	import org.musince.core.TimeSlice;
-	import org.musince.data.MetaWork;
-	import org.musince.global.$log;
 	import org.musince.core.Query;
+	import org.musince.global.$eclient;
+	import org.musince.global.$log;
 	
 	public class EditorLogin extends Query
 	{
 		public function EditorLogin()
 		{
-			super();
+			super($eclient);
 		}
 		
 		public function onQuery():void
@@ -17,13 +16,13 @@ package org.musince.editor
 			send("EditorService", "login", ["yelin"]);
 		}
 		
-		public function onSuccess():void
+		override public function onSuccess(result:Array):void
 		{
 			$log.debug("login success");
 			isEnd = true;	
 		}
 		
-		public function onFailed(reason:int):void
+		override public function onFailed(reason:int):void
 		{
 			
 		}

@@ -3,6 +3,8 @@ package
     import flash.display.Sprite;
     
     import org.musince.Config;
+    import org.musince.actions.ConnectToServer;
+    import org.musince.actions.Login;
     import org.musince.global.$athena;
     import org.musince.global.$client;
     import org.musince.global.$config;
@@ -36,7 +38,13 @@ package
             $config = new Config();
             $tunnel = new Tunnel();
             $cookie = new Cookie();
-            $athena = new Athena();
+			
+			var connect:ConnectToServer = new ConnectToServer("192.168.1.122", 12222);
+			var login:Login;
+			connect.appendNext(login);
+			
+			$athena.start(stage);
+			$athena.addTimeSlice(connect);
         }
     }
 }

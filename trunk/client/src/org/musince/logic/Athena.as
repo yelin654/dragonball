@@ -61,7 +61,7 @@ package org.musince.logic
 				}
 				if (action.isEnd)
 				{
-					action.onEnd();
+					action.end();
 					_delete[action] = action;
 					for each (var next:TimeSlice in action.getNexts())
 					{
@@ -97,7 +97,7 @@ package org.musince.logic
 		public function removeTimeSlice(action:TimeSlice):void
 		{
 			_delete[action] = action;
-			action.onEnd();
+			action.end();
 		}
 		
 		

@@ -1,10 +1,14 @@
 package org.musince.actions
 {
+	import flash.display.Graphics;
 	import flash.display.MovieClip;
 	import flash.events.KeyboardEvent;
+	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
 	import org.musince.core.TimeSlice;
+	import org.musince.display.LoginPanel;
+	import org.musince.global.$athena;
 	import org.musince.global.$config;
 	import org.musince.global.$cookie;
 	import org.musince.global.$log;
@@ -14,8 +18,7 @@ package org.musince.actions
 	
 	public class Login extends TimeSlice 
 	{
-		private var _loader:SimpleLoader = new SimpleLoader();
-		private var _mc:MovieClip;
+		public var panel:LoginPanel;
 		
 		public function Login()
 		{
@@ -26,46 +29,38 @@ package org.musince.actions
 		{
 			var name:String = $cookie.get("u") as String;
 			if (name != null) {
-				send(name);
+				var query:LoginQuery = new LoginQuery();
+				query.endHook = onQueryEnd;
+				$athena.addTimeSlice(query);
 			} else {
-				_loader.load($config.ResourceRoot+"login.swf", onLoaded);
+				panel = new LoginPanel();
+				fadeIn();
 			}
 		}
 		
-		override public function onUpdate():void
+		public function fadeIn():void
 		{
-			
+			var inputName:InputLogin = new InputLogin(panel.u, panel.tip);
+			var graphics:Graphics = panel.graphics;
+			graphics.lineStyle(2, 0xFFFFFF);
+			var drawline:DrawLine = new DrawLine(graphics, 0.04, {t:2, c:0xFFFFFF});
+			drawline.input["from"] = new Point(int(panel.w/3), int(panel.h/2));
+			drawline.input["to"] = new Point(int(panel.w-panel.w/3), int(panel.h/2));
+			var playText:PlayTalkAvg = new PlayTalkAvg(panel.tip, 100);
+			playText.input["text"] = "input login name";
+			var query:LoginQuery = new LoginQuery();
+			query.endHook = onQueryEnd;
+			drawline.appendNext(playText);
+			playText.appendNext(inputName);
+			inputName.appendNext(query);
+			$athena.addTimeSlice(drawline);
+			$root.stage.focus = panel.u;
 		}
 		
-		override public function onEnd():void
+		public function onQueryEnd(ts:TimeSlice):void
 		{
-			
-		}
-		
-		private function onLoaded(content:MovieClip):void 
-		{
-			_mc = content;
-			_mc.txt_name.addEventListener(KeyboardEvent.KEY_DOWN, onEnterDown);
-			$root.addChild(_mc);
-			_loader = null;
-		}
-		
-		private function onEnterDown(e:KeyboardEvent):void
-		{	
-			if (e.keyCode != Keyboard.ENTER) return;
-			$cookie.set("u", _mc.txt_name.text);
-			send(_mc.txt_name.text);
-			_mc.txt_name.selectable = false;
-		}
-		
-		private function send(name:String):void
-		{
-			$syner.roc(["LoginService"], "login", [name]);
-		}
-		
-		public function login_r(result:int):void
-		{
-			$log.debug("login result:", result);
+			isEnd = true;
+			appendNext(new GetGameProgress());
 		}
 	}
 }

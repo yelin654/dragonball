@@ -31,7 +31,9 @@ package org.musince.core
 		public var _interval:int;
 		private var _nextUpdateTime:int;
 		protected var _now:int;
-		protected var _then:int;		
+		protected var _then:int;
+		
+		public var endHook:Function;
 		
 		public function TimeSlice()
 		{
@@ -42,6 +44,15 @@ package org.musince.core
 			_then = _now = now;
 			isEnd = false;
 			onStart();
+		}
+		
+		public function end():void
+		{
+			onEnd();
+			if (endHook != null)
+			{
+				endHook(this);
+			}
 		}
 		
 		public function onStart():void

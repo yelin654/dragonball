@@ -2,15 +2,16 @@ package org.musince.editor
 {
 	import flash.utils.ByteArray;
 	
-	import org.musince.data.MetaWork;
-	import org.musince.global.$log;
 	import org.musince.core.Query;
+	import org.musince.data.MetaWork;
+	import org.musince.global.$eclient;
+	import org.musince.global.$log;
 	
 	public class SaveMetaWork extends Query
 	{	
 		public function SaveMetaWork()
 		{
-			super();
+			super($eclient);
 		}
 		
 		public function onQuery():void
@@ -22,7 +23,7 @@ package org.musince.editor
 			send("EditorService", "saveMetaWork", ["yelin", bytes]);
 		}
 		
-		public function onSuccess(result:int):void
+		override public function onSuccess(result:Array):void
 		{
 			$log.debug("save meta work success");
 			isEnd = true;

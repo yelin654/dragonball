@@ -5,7 +5,7 @@ package
 	import flashx.textLayout.edit.SelectionState;
 	
 	import org.musince.actions.SelectStory;
-	import org.musince.data.DataStory;
+	import org.musince.data.StoryProgress;
 	import org.musince.display.StoryList;
 	import org.musince.global.$athena;
 	import org.musince.global.$root;
@@ -22,7 +22,7 @@ package
 			var data:Array = new Array(num);
 			for (var i:int = 0 ; i < num; i++)
 			{
-				data[i] = new DataStory();
+				data[i] = new StoryProgress();
 				data[i].name = "name" + i;
 			}
 			list.update(data);
@@ -30,6 +30,7 @@ package
 			$root = this;
 			$athena.start(stage);
 			$athena.addTimeSlice(new SelectStory(list));
+
 		}
 		
 		

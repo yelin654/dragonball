@@ -1,17 +1,20 @@
 package org.musince.core
 {
-	import org.musince.global.$eclient;
 	import org.musince.global.$log;
+	import org.musince.logic.Client;
 	
 	public class Query extends TimeSlice
 	{
 		private static var _acc:int = 0; 
 		
-		public var rtid:int = _acc++; 
+		public var rtid:int = _acc++;
 		
-		public function Query()
+		public var client:Client;
+		
+		public function Query(client:Client)
 		{
 			super();
+			this.client = client;
 		}
 		
 		override public function onStart():void
@@ -24,29 +27,17 @@ package org.musince.core
 		
 		protected function send(service:String, method:String, params:Array):void
 		{
-			$eclient.sendQuery(this, service, method, params);
+			client.sendQuery(this, service, method, params);
 		}
 		
-		public function receiveSuccess(params:Array):void
+		public function onSuccess(result:Array):void
 		{
-			if (this.hasOwnProperty("onSuccess"))
-			{
-				(this["onSuccess"] as Function).apply(this, params);
-			}
-			else
-			{
-				$log.error("no success callback");
-			}
-//			isEnd = true;
+			
 		}
 		
-		public function receiveFailed(reason:int):void
+		public function onFailed(reason:int):void
 		{
-			if (this.hasOwnProperty("onFailed"))
-			{
-				(this["onFailed"] as Function).call(this, reason);
-			}
-//			isEnd = true;
+			
 		}
 	}
 }

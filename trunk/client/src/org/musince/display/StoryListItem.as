@@ -7,7 +7,7 @@ package org.musince.display
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	
-	import org.musince.data.DataStory;
+	import org.musince.data.StoryProgress;
 	import org.musince.util.TextFieldUtil;
 
 	public class StoryListItem extends UC
@@ -22,7 +22,7 @@ package org.musince.display
 		
 		public var selecting:int;
 		public var options:Vector.<TextField>;
-		public var data:DataStory;
+		public var data:StoryProgress;
 		public var next:StoryListItem;
 		public var pre:StoryListItem;
 		
@@ -31,7 +31,7 @@ package org.musince.display
 		
 		public static var selectFilters:Array = [new GlowFilter(0x7D7D7D)]; 
 		
-		public function StoryListItem(w:int, h:int, data:DataStory)
+		public function StoryListItem(w:int, h:int, data:StoryProgress)
 		{
 			super();
 			this.w = w;
