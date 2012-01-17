@@ -1,4 +1,4 @@
-local chapter = Chapter(0)
+local chapter = Chapter(1)
 local talk1 = Talk(chapter, 1)
 talk1.text = "离去之前叫醒我"
 function talk1.on_start()
@@ -41,6 +41,6 @@ talk1.next = choice1
 local choice1 = Choice()
 talk2.next = choice2
 
-chapter.start = talk1
+chapter.pre = 1
 
 return chapter
