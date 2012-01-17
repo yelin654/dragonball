@@ -19,6 +19,7 @@
 #include "script.h"
 #include "LuaStory.h"
 #include "EditorService.h"
+#include "LoginService.h"
 #include "luaapi.h"
 
 Net* net;
@@ -175,6 +176,7 @@ int main() {
     REG_SYN(EditorService, login, const char*);
     REG_SYN(EditorService, saveMetaWork, const char*, const ByteArray*);
     REG_SYN(EditorService, loadMetaWork, const char*);
+    REG_SYN(LoginService, login, const char*);
     //init_lua();
     //    test_lua();
     test_net();

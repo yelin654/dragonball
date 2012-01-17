@@ -7,14 +7,17 @@ using namespace std;
 
 #include "GameObject.h"
 
-class Progress;
+class StoryProgress;
 class ClientSyner;
 
 class Player: public GameObject {
     DECLARE_GAME_OBJECT(Player, GameObject)
 
 private:
-    map<int, Progress*> _progress;
+    map<int, StoryProgress*> _progress;
+public:
+    StoryProgress* current;
+
 public:
     void continue_story(int idx);
     void start_story(int idx);

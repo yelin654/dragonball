@@ -13,34 +13,6 @@ DEFINE_GAME_OBJECT(EditorService)
 
 EditorService* editor_service = new EditorService;
 
-void EditorService::invoke_method_from(ClientSyner* syner, const string& name, ParamList* params) {
-    _invoke_from = syner;
-    Param* p = params->shift();
-    qid = p->to_int();
-    invoke_method(name, params);
-    delete p;
-}
-
-void EditorService::response(ParamList* result) {
-    ParamList key("EditorClient");
-    Param* id = new Param(qid);
-    result->unshift(id);
-    _invoke_from->_roc(&key, "queryResult", result);
-}
-
-void EditorService::success(ParamList* result) {
-    ParamList key("EditorClient");
-    Param* id = new Param(qid);
-    result->unshift(id);
-    _invoke_from->_roc(&key, "querySuccess", result);
-}
-
-void EditorService::failed(int reason) {
-    ParamList key("EditorClient");
-    ParamList result(qid, reason);
-    _invoke_from->_roc(&key, "queryResult", &result);
-}
-
 void EditorService::login(const char* name) {
     debug("login, name(%s)", name);
     ParamList result;
