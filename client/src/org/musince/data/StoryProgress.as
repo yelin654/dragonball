@@ -8,6 +8,11 @@ package org.musince.data
 	{
 		public var name:String;
 		public var hasProgress:Boolean;
+		public var story_idx:int;
+		public var space_idx:int;
+		public var chapter_idx:int;
+		public var action_idx:int;
+		public var offset:int;
 		
 		public function StoryProgress()
 		{
