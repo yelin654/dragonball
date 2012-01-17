@@ -7,6 +7,7 @@
 #include "GameServer.h"
 #include "GameClient.h"
 #include "EditorService.h"
+#include "LoginService.h"
 
 IObjectFinder* finder = new ObjectFinder();
 
@@ -27,6 +28,8 @@ Object* ObjectFinder::find(ParamList* key) {
         return ::server;
     if (0 == strcmp(name, "EditorService"))
         return ::editor_service;
+    if (0 == strcmp(name, "Service"))
+        return ::login_service;
     return NULL;
     //    return (this->*_finders[className])(key);
 }

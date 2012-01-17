@@ -73,11 +73,19 @@ function Sound(c, idx)
    return a
 end
 
+function on_action_start()end
+function on_action_end()end
+
 function Action(c, idx)
    local a = {}
+
    a.idx = idx
    a.type = ACTION_GEN
    c.actions[idx] = a
+
+   a.on_start = on_action_start
+   a.on_end = on_action_end
+
    return a
 end
 
@@ -92,6 +100,7 @@ function load_story(name, idx)
    local fullname
    local story = Story(idx)
    storys[idx] = story
+   local pre
    for i, spaceid in ipairs(meta.spaces) do
       space = Space(spaceid)
       story.spaces[spaceid] = space
@@ -105,6 +114,12 @@ function load_story(name, idx)
             space.chapters[chapter.idx] = chapter
          end
       end
+      for id, chapter in pairs(space.chapters) do
+         if chapter.pre ~= nil then
+            pre = space.chapters[id]
+            pre.next = chapter
+         end
+      end
    end
 end
 
@@ -116,13 +131,58 @@ end
 
 load_story("yelin", 1)
 
-function action_on_start(story_idx, space_idx, chapter_idx, action_idx)
-   local action = find_action(story_idx, space_idx, chapter_idx, action_idx)
+function lua_update_progress(story_idx, space_idx, chapter_idx, action_idx)
+   progress.story_idx = story_idx
+   progress.space_idx = space_idx
+   progress.chapter_idx = chapter_idx
+   progress.action_idx = action_idx
+end
+
+function update_progress(progress)
+   c_update_progress(progress.story_idx, progress.space_idx, progress.chapter_idx, progress.action_idx)
+end
+
+function action_on_start()
+   local action = find_action(progress)
    action.on_start()
 end
 
-function find_action(story_idx, space_idx, chapter_idx, action_idx)
+function find_action(progress)
+   local chapter = find_chapter(progress)
+   return chapter[progress.action_idx]
+end
 
+function find_chapter(progress)
+   return storys[progress.story_idx].spaces[progress.space_idx].chapters[progress.chapter_idx]
+end
+
+progress = {}
+progress.story_idx = 0
+progress.space_idx = 0
+progress.chapter_idx = 0
+progress.action_idx = 0
+
+function next_action()
+   local action = find_action(progress)
+   local chapter
+   action.on_end()
+   action = action.next
+   if action ~= nil then
+      progress.action_idx = action.idx
+      update_progress(progress)
+      action.on_start()
+   else
+      chapter = find_chapter(progress)
+      if chapter.next ~= nil then
+         chapter = chapter.next
+         progress.action_idx = 1
+         progress.chapter_idx = chapter.idx
+         update_progress(progress)
+         do_action(chapter.actions[1])
+      else
+
+      end
+   end
 end
 
 function find_story(idx)
@@ -130,9 +190,12 @@ function find_story(idx)
 end
 
 function start_story(idx)
-   local story = find_story(idx)
-   local cpt = story.spaces[1].chapters[1]
-   local action = cpt.start
+   progress.story_idx = idx
+   progress.space_idx = 1
+   progress.chapter_idx = 1
+   progress.action_idx = 1
+   update_progress(progress)
+   do_action(find_action(progress))
 end
 
 function do_gen(action)
@@ -148,7 +211,7 @@ function do_talk(action)
 end
 
 function do_choice(action)
-
+   play_choice(action.text)
 end
 
 function do_sound_action(action)
@@ -161,8 +224,10 @@ do_vt[ACTION_SOUND] = do_sound_action
 
 function do_action(action)
    do_vt[action.type](action)
-   if action.on_start ~= nil then
-      action.on_start()
-   end
+   action.on_start()
 end
 
+function on_choose(id)
+   local action = find_action(progress)
+   action["on"..id]()
+end
