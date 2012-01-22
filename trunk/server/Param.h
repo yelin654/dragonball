@@ -36,14 +36,14 @@ public:
     static const int TYPE_BYTE_ARRAY = 6;
 
     Param(){};
-    Param(int v):_data((const void*)v), _type(TYPE_INT), _delete(false){};
-    Param(const char* v):_data(v), _type(TYPE_STRING), _delete(false){};
-    Param(const Object* v):_data(v), _type(TYPE_OBJECT), _delete(false){};
-    Param(const Array<int>& v):_data(&v), _type(TYPE_INT_ARRAY), _delete(false){};
-    Param(const Array<char*>& v):_data(&v), _type(TYPE_STRING_ARRAY), _delete(false){};
-    Param(const Array<const char*>& v):_data(&v), _type(TYPE_STRING_ARRAY), _delete(false){};
-    Param(const Array<Object*>& v):_data(&v), _type(TYPE_INT_ARRAY), _delete(false){};
-    Param(const ByteArray* v):_data(v), _type(TYPE_BYTE_ARRAY), _delete(false){};
+    Param(int v):_data((void*)v), _type(TYPE_INT), _delete(false){};
+    Param(const char* v, bool copy=false);
+    Param(Object* v):_data(v), _type(TYPE_OBJECT), _delete(false){};
+    Param(const Array<int>* v, bool del=false):_data(v), _type(TYPE_INT_ARRAY), _delete(del){};
+    Param(const Array<char*>* v, bool del=false):_data(v), _type(TYPE_INT_ARRAY), _delete(del){};
+    Param(const Array<const char*>* v, bool del=false):_data(v), _type(TYPE_INT_ARRAY), _delete(del){};
+    Param(const Array<Object*>* v):_data(&v), _type(TYPE_INT_ARRAY), _delete(false){};
+    Param(const ByteArray* v):_data(&v), _type(TYPE_INT_ARRAY), _delete(false){};
 
     ~Param();
 
@@ -88,7 +88,7 @@ public:
     operator const Array<Object*>() const {return *((Array<Object*>*)_data);};
     operator const ByteArray*() const {return (ByteArray*)_data;};
 
-private:
+public:
 
     const void* _data;
     int _data_len;
@@ -136,19 +136,19 @@ public:
     ParamList(ARGS ...args) {
         //  _params = new _List(sizeof...(args));
         //        _param_acc = 0;
-        add_param(args...);
+        _add_param(args...);
     };
 
     template<class T, class ...ARGS>
-    void add_param(T t, ARGS ...args) {
+    void _add_param(T t, ARGS ...args) {
         //        cout << "add param " << t << endl;
         //        (*_params)[_param_acc++] = new Param(t);
         _list.push_back(new Param(t));
-        add_param(args...);
+        _add_param(args...);
     };
 
     template<class T>
-    void add_param(T t) {
+    void _add_param(T t) {
         //        (*_params)[_param_acc] = new Param(t);
         _list.push_back(new Param(t));
         //        cout << "add param " << t << endl;
@@ -156,6 +156,8 @@ public:
 
     Param* shift();
     void unshift(Param*);
+
+    void push(Param*);
 
     // ParamList(const Param&);
     // ParamList(const Param&, const Param&);
@@ -173,10 +175,12 @@ public:
 
     void add(const Param& param);
 
+    list<Param*> _list;
+
 private:
     int _param_acc;
     //vector<Param*>* _params;
-    list<Param*> _list;
+
     bool _delete;
 };
 

@@ -7,8 +7,13 @@ void Service::invoke_method_from(ClientSyner* syner, const string& name, ParamLi
     _invoke_from = syner;
     Param* p = params->shift();
     qid = p->to_int();
-    invoke_method(name, params);
+    invoke_service_method(name, params);
     delete p;
+}
+
+inline void Service::invoke_service_method(const string& name, ParamList* params)
+{
+    invoke_method(name, params);
 }
 
 void Service::success(ParamList* result) {
@@ -18,9 +23,10 @@ void Service::success(ParamList* result) {
     _invoke_from->_roc(&key, "querySuccess", result);
 }
 
-void Service::failed(int reason) {
+void Service::failed(ParamList* reason) {
     ParamList key("Client");
-    ParamList result(qid, reason);
-    _invoke_from->_roc(&key, "queryResult", &result);
+    Param* id = new Param(qid);
+    reason->unshift(id);
+    _invoke_from->_roc(&key, "queryFailed", reason);
 }
 
