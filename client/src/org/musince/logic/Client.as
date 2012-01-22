@@ -27,7 +27,7 @@ package org.musince.logic
 			delete _pendingQuerys[idx];
 		}
 		
-		public function queryFailed(idx:int, reason:int):void
+		public function queryFailed(idx:int, ...reason):void
 		{
 			_pendingQuerys[idx].onFailed(reason);
 			delete _pendingQuerys[idx];

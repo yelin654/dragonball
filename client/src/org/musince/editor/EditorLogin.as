@@ -22,7 +22,7 @@ package org.musince.editor
 			isEnd = true;	
 		}
 		
-		override public function onFailed(reason:int):void
+		override public function onFailed(reason:Array):void
 		{
 			
 		}

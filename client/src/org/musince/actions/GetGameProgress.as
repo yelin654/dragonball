@@ -23,7 +23,7 @@ package org.musince.actions
 			var progress:GameProgress = result[0];
 		}
 		
-		override public function onFailed(reason:int):void
+		override public function onFailed(reason:Array):void
 		{
 			
 		}

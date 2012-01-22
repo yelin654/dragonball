@@ -22,9 +22,9 @@ package org.musince.actions
 			isEnd = true;
 		}
 		
-		override public function onFailed(reason:int):void
+		override public function onFailed(reason:Array):void
 		{
-			
+			isEnd = true;
 		}
 	}
 }

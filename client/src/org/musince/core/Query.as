@@ -35,7 +35,7 @@ package org.musince.core
 			
 		}
 		
-		public function onFailed(reason:int):void
+		public function onFailed(result:Array):void
 		{
 			
 		}
