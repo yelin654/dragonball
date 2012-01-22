@@ -11,7 +11,7 @@ extern lua_State* L;
 
 void init_lua();
 
-void lua_tointeger_array(int index, int& len, int*& result);
+void lua_newinteger_array(int index, int& len, int*& result);
 
 
 template<class T>

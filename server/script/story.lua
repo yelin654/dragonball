@@ -1,7 +1,8 @@
 package.path = "script/?.lua;;"
 
-require "log"
 require "lfs"
+require "log"
+require "util"
 
 ACTION_GEN = 0
 ACTION_TALK = 1
@@ -129,7 +130,7 @@ end
 --    end
 -- end
 
-load_story("yelin", 1)
+
 
 function lua_update_progress(story_idx, space_idx, chapter_idx, action_idx)
    progress.story_idx = story_idx
@@ -217,6 +218,7 @@ end
 function do_sound_action(action)
 end
 
+do_vt = {}
 do_vt[ACTION_GEN] = do_gen
 do_vt[ACTION_TALK] = do_talk
 do_vt[ACTION_CHOICE] = do_choice
@@ -231,3 +233,22 @@ function on_choose(id)
    local action = find_action(progress)
    action["on"..id]()
 end
+
+function get_story_list(name)
+   local root = "script/"..name.."/"
+   local meta
+   local metaname
+   local result = {}
+   for file in lfs.dir(root) do
+      if string.match(file, "^s") then
+         metaname = root..file.."/meta.lua"
+         D("start load meta file("..metaname..")")
+         meta = dofile(metaname)
+         D("finish load meta file("..metaname..")")
+         result[meta.idx] = meta.name
+      end
+   end
+   return result
+end
+
+get_story_list("yelin")

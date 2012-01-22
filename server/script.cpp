@@ -22,7 +22,7 @@ int lua_table_length(int index)
     return num;
 }
 
-void lua_tointeger_array(int index, int& len, int*& result)
+void lua_newinteger_array(int index, int& len, int*& result)
 {
     int num = lua_table_length(index);
     result = new int[num];

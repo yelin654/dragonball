@@ -55,10 +55,10 @@ void test_param() {
     Param ps_c_str("中");
     int int_array[5] = {2, 3, 4, 5, 6};
     Array<int> t_int_array(int_array, 5);
-    Param ps_int_array(t_int_array);
+    Param ps_int_array(&t_int_array);
     const char* c_str_array[3] = {"hello", "the", "world"};
     Array<const char*> t_string_array(c_str_array, 3);
-    Param ps_c_str_array(t_string_array);
+    Param ps_c_str_array(&t_string_array);
 
     Stream stream(10);
 

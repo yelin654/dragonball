@@ -42,7 +42,7 @@ void ClientSyner::invoke_method_recv(TunnelInputStream* stream) {
 void ClientSyner::_roc(GameObject* object, const char* method_name, ParamList* params) {
     const Stream* key = object->key();
     int size = key->length() + strlen(method_name);
-    TunnelOutputStream* stream = get_command_stream(COMMAND_ROC, size);
+    TunnelOutputStream* stream = get_command_stream(COMMAND_ROC, size+2);
     stream->copy(key);
     stream->write_string(method_name);
     params->serialize(stream);
@@ -55,7 +55,7 @@ void ClientSyner::_roc(ParamList* key, const char* method_name, ParamList* param
 
 void ClientSyner::_command(int id, ParamList* key, const char* method_name, ParamList* params) {
     int size = key->size() + strlen(method_name);
-    TunnelOutputStream* stream = get_command_stream(id, size);
+    TunnelOutputStream* stream = get_command_stream(id, size+2);
     key->serialize(stream);
     stream->write_string(method_name);
     params->serialize(stream);
@@ -64,7 +64,7 @@ void ClientSyner::_command(int id, ParamList* key, const char* method_name, Para
 
 void ClientSyner::_rpc(const char* method_name, ParamList* params) {
     int size = strlen(method_name);
-    TunnelOutputStream* stream = get_command_stream(COMMAND_RPC, size);
+    TunnelOutputStream* stream = get_command_stream(COMMAND_RPC, size+2);
     stream->write_string(method_name);
     params->serialize(stream);
     stream->flush();

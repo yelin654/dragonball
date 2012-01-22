@@ -7,6 +7,17 @@
 #include "IObjectFinder.h"
 #include "macro.h"
 
+Param::Param(const char* v, bool copy):_data(v), _type(TYPE_STRING), _delete(copy)
+{
+    int len;
+    if (copy)
+    {
+        len = strlen(v) + 1;
+        _data = new char[len];
+        memcpy((void*)_data, v, len);
+    }
+}
+
 typedef void (Param::*SERIALIZE_FUNC)(Stream* stream) const;
 const SERIALIZE_FUNC Param::_serialize_func_table[TYPE_NUM] = {
     &Param::serialize_int,
@@ -328,5 +339,9 @@ Param* ParamList::shift() {
 
 void ParamList::unshift(Param* p) {
     _list.push_front(p);
+}
+
+void ParamList::push(Param* p) {
+    _list.push_back(p);
 }
 
