@@ -21,6 +21,7 @@
 #include "EditorService.h"
 #include "LoginService.h"
 #include "luaapi.h"
+#include "LuaService.h"
 
 Net* net;
 
@@ -142,21 +143,37 @@ void signal_set() {
     sigaction(SIGINT,&act,NULL);
 }
 
-int main() {
-    //REG_SYN(ClientSynchronizer, login, char*);
-    // Param p(6);
+LuaService* lua_service;
+
+void init_services() {
+    lua_service = new LuaService;
+
+}
+
+void roll() {
+    net = new Net(new ClientTunnelFactory);
+    net->init("192.168.1.122", 12222, 20, 20, 50);
+    while(true) {
+        net->dispatch();
+    }
+}
+
+void register_funcs() {
+    REG_SYN(GameServer, login, char*);
+    REG_SYN(EditorService, login, const char*);
+    REG_SYN(EditorService, saveMetaWork, const char*, const ByteArray*);
+    REG_SYN(EditorService, loadMetaWork, const char*);
+    REG_SYN(LoginService, login, const char*);
+    REG_SYN(GameServer, enter_story, char*, int);
+}
+
+void print_classes() {
     //    FOR_MAP(string, Class*, Class::CLASS_INDEX) {
     //        printf("%s , %s \n", it->first.c_str(), it->second->name);
     //    }
+}
 
-
-    //    test_net();
-
-    // int i = 1;
-    // int j = htonl(i);
-    // char* p= (char*)&j;
-    // printf("%d\n", *p);
-
+void test_event() {
     // EventListener el;
     // EventDispatcher ed;
     // REGISTER_EVENT_LISTENER(&ed, 1, &el, EventListener, method_b);
@@ -169,19 +186,25 @@ int main() {
     // ed.dispatch_event(e);
 
     //    test_param();
+}
+
+void load_lua_files() {
+    load_lua_file("script/story.lua");
+}
+
+
+int main() {
+    init_lua();
+
     register_lua();
 
     signal_set();
-    REG_SYN(GameServer, login, char*);
-    REG_SYN(EditorService, login, const char*);
-    REG_SYN(EditorService, saveMetaWork, const char*, const ByteArray*);
-    REG_SYN(EditorService, loadMetaWork, const char*);
-    REG_SYN(LoginService, login, const char*);
-    //init_lua();
-    //    test_lua();
-    test_net();
-    //    error("print none");
-    //    error("print int(%d) string(%s)", 2, "hello");
+
+    register_funcs();
+
+    load_lua_files();
+
+    roll();
 
     return 0;
 }

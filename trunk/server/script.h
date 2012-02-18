@@ -9,6 +9,10 @@ extern "C" {
 
 extern lua_State* L;
 
+void load_lua_file(const char* name);
+
+void log_lua_error();
+
 void init_lua();
 
 void lua_newinteger_array(int index, int& len, int*& result);
@@ -38,16 +42,20 @@ void push_params(T t, ARGS ...args) {
     push_params(args...);
 };
 
+extern char* luaerror;
+
+void luaerrorcall(int num_in, int num_out);
+
 template<class ...ARGS>
 void lc(const char* method_name, int num_out, ARGS ...args) {
     lua_getglobal(L, method_name);
     push_params(args...);
-    lua_pcall(L, sizeof...(args), num_out, 0);
+    luaerrorcall(sizeof...(args), num_out);
 };
 
 inline void lc(const char* method_name, int num_out) {
     lua_getglobal(L, method_name);
-    lua_pcall(L, 0, num_out, 0);
+    luaerrorcall(0, num_out);
 };
 
 template<class T>

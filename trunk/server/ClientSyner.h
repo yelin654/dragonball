@@ -13,6 +13,7 @@ class TunnelOutputStream;
 class TunnelInputStream;
 class IObjectFinder;
 class GameClient;
+class Player;
 
 class ClientSyner: public IDataReceiver {
 public:
@@ -106,6 +107,9 @@ public:
 private:
     void invoke_method_recv(TunnelInputStream* stream);
 
+
+public:
+    Player* player;
 };
 
 #endif

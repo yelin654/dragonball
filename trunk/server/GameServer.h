@@ -3,11 +3,12 @@
 
 #include "ILocal.h"
 #include "GameObject.h"
+#include "Service.h"
 
 class GameClient;
 
-class GameServer: public GameObject, public ILocal {
-    DECLARE_GAME_OBJECT(GameServer, GameObject)
+class GameServer: public Service, public ILocal {
+    DECLARE_GAME_OBJECT(GameServer, Service)
 public:
     GameServer(){};
     virtual const ParamList* find_key() {return NULL;};
@@ -16,7 +17,7 @@ public:
 
 public:
     void login(char* name);
-    void enter_story(char* name, int idx);
+    void enter_story(char* owner, int idx);
 };
 
 extern GameServer* server;

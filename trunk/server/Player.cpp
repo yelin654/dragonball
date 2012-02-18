@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "StoryProgress.h"
 
+map<string, Player*> G_players;
+
 DEFINE_GAME_OBJECT(Player)
 
 void Player::continue_story(int idx) {

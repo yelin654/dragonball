@@ -2,6 +2,9 @@
 #include "GameClient.h"
 #include "ClientSyner.h"
 #include "Log.h"
+#include "Player.h"
+#include "StoryProgress.h"
+#include "script.h"
 
 DEFINE_GAME_OBJECT(GameServer)
 
@@ -13,6 +16,14 @@ void GameServer::login(char* name) {
     _invoke_from->roc(&key, "loginR", 1);
 }
 
-void GameServer::enter_story(char* name, int idx) {
+void find_progress(char* name, int idx) {
 
+}
+
+void GameServer::enter_story(char* owner, int idx) {
+    ParamList result;
+    success(&result);
+    Player* player = _invoke_from->player;
+    player->current = new StoryProgress();
+    lc("start_story", 0, idx);
 }
