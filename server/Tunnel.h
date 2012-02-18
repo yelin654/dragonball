@@ -9,7 +9,7 @@ class Tunnel;
 
 class TunnelOutputStream: public Stream {
 public:
-    TunnelOutputStream(Tunnel* t, int cap): Stream(cap), tunnel(t) {};
+    TunnelOutputStream(Tunnel* t, int cap): Stream(cap), tunnel(t), writing(false) {};
     void new_block(int size);
     Tunnel* tunnel;
     void flush();

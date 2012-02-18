@@ -90,6 +90,8 @@ function Action(c, idx)
    return a
 end
 
+
+
 function load_story(name, idx)
    local root = "script/"..name.."/s"..idx.."/"
    local file = root.."meta.lua"
@@ -129,8 +131,6 @@ end
 --       D(file)
 --    end
 -- end
-
-
 
 function lua_update_progress(story_idx, space_idx, chapter_idx, action_idx)
    progress.story_idx = story_idx
@@ -191,6 +191,7 @@ function find_story(idx)
 end
 
 function start_story(idx)
+   D("start story", idx)
    progress.story_idx = idx
    progress.space_idx = 1
    progress.chapter_idx = 1
@@ -251,4 +252,5 @@ function get_story_list(name)
    return result
 end
 
-get_story_list("yelin")
+--get_story_list("yelin")
+load_story("yelin", 1)

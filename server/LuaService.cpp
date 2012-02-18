@@ -2,6 +2,8 @@
 #include "script.h"
 #include "luaapi.h"
 
+DEFINE_GAME_OBJECT(LuaService)
+
 void LuaService::invoke_service_method(const string& name, ParamList* params)
 {
     Param* p = params->shift();

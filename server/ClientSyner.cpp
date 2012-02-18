@@ -7,6 +7,7 @@
 #include "IObjectFinder.h"
 #include "Tunnel.h"
 #include "GameClient.h"
+#include "Log.h"
 
 ClientSyner::ClientSyner() {
     client = new GameClient();
@@ -34,7 +35,12 @@ void ClientSyner::invoke_method_recv(TunnelInputStream* stream) {
     stream->read_bytes(name, sh); name[sh] = '\0';
     ParamList params;
     params.unserialize(stream);
-    object->invoke_method_from(this, name, &params);
+
+    if (NULL == object) {
+        error("no object found");
+    } else {
+        object->invoke_method_from(this, name, &params);
+    }
 
     delete [] name;
 }

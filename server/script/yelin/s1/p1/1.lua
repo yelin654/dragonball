@@ -17,7 +17,7 @@ function talk2.on_end()
    stop_sound(1)
 end
 
-local talk3 = Talk()
+local talk3 = Talk(chapter, 3)
 function talk3.on_start()
    play_sound(1)
 end
@@ -25,7 +25,7 @@ function talk3.on_end()
    stop_sound(1)
 end
 
-local choice1 = Choice()
+local choice1 = Choice(chapter, 4)
 choice1.text = {"A", "B", "C"}
 function choice1.on1()
 end
@@ -38,7 +38,7 @@ end
 
 talk1.next = choice1
 
-local choice1 = Choice()
+local choice1 = Choice(chapter, 5)
 talk2.next = choice2
 
 chapter.pre = 1

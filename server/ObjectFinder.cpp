@@ -24,8 +24,8 @@ Object* ObjectFinder::find(ParamList* key) {
         return ::server;
     if (0 == strcmp(name, "GameClient"))
         return (GameClient*)fcontext;
-    if (0 == strcmp(name, "LoginServer"))
-        return ::server;
+    if (0 == strcmp(name, "LoginService"))
+        return ::login_service;
     if (0 == strcmp(name, "EditorService"))
         return ::editor_service;
     if (0 == strcmp(name, "Service"))

@@ -1,7 +1,7 @@
 ########################################################
 #编译器
 CC:=g++
-FLAG:=-g -Wall -std=c++0x
+FLAG:=-g -Wall -std=c++0x  
 #需要的链接库名称如 -lm -lcdk -lncurses等
 INCLUDE =
 #当前目录
@@ -17,8 +17,8 @@ HDF:=$(wildcard *.h)
 OBJS:=$(patsubst %.cpp,%.o,$(SRC))
 FILENAMES:=$(patsubst %.cpp,%,$(SRC))
 
-main:$(OBJS)
-	$(CC) $(FLAG) $(OBJS) -llua -ldl -o main
+main:$(OBJS) liblua.a
+	$(CC) $(FLAG) $(OBJS) liblua.a -ldl -rdynamic -o main
 
 define addepend
 $(1).o:$(shell g++ -MM $(1).cpp | sed "s/.*\.o: //" | tr -d '\\\n')

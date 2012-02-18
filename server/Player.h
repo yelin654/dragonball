@@ -23,6 +23,9 @@ public:
     void start_story(int idx);
 public:
     ClientSyner* syner;
+    string name;
 };
+
+extern map<string, Player*> G_players;
 
 #endif
