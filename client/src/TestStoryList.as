@@ -29,8 +29,11 @@ package
 			addChild(list);
 			$root = this;
 			$athena.start(stage);
-			$athena.addTimeSlice(new SelectStory(list));
-
+			
+			var select:SelectStory = new SelectStory(list);
+			select.input["list"] = data;
+			$athena.addTimeSlice(select);
+			
 		}
 		
 		

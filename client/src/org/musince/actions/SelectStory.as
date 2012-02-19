@@ -4,6 +4,7 @@ package org.musince.actions
 	
 	import org.musince.core.TimeSlice;
 	import org.musince.display.StoryList;
+	import org.musince.global.$athena;
 	
 	public class SelectStory extends TimeSlice
 	{
@@ -19,6 +20,7 @@ package org.musince.actions
 		{
 			globalMouseWheel = onMouseWheel;
 			globalMouseDown = onMouseDown;
+			
 		}
 		
 		public function onMouseWheel(e:MouseEvent):void
@@ -37,7 +39,9 @@ package org.musince.actions
 		{
 			list.enter();
 			isEnd = true;
-			appendNext(new SelectProgress(list.selectingItem, list)); 
+			var sp:SelectProgress = new SelectProgress(list.selectingItem, list);
+			sp.appendNext(this);
+			$athena.addTimeSlice(sp);
 		}
 	}
 }

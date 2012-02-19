@@ -64,8 +64,6 @@ package org.musince.actions
 		public function onSelectCancel():void
 		{
 			item.cancel();
-			var selectStroy:SelectStory = new SelectStory(list);
-			appendNext(selectStroy);
 			isEnd = true;
 		}
 		

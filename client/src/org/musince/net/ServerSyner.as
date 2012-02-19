@@ -11,11 +11,12 @@ package org.musince.net
 	{
 		private var _tunnel:Tunnel;
 		
-		public static const COMMAND_ROC:int = 1;
+		public static const COMMAND_RPC:int = 1;
+		public static const COMMAND_ROC:int = 7;
 		public static const COMMAND_GROUP_START:int = 2;
 		public static const COMMAND_GROUP_END:int = 3;
 		public static const COMMAND_GROUP_ROC:int = 4;
-		public static const COMMAND_RPC:int = 5;
+		
 		
 		private var _group_cache:Array;
 		
