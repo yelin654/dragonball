@@ -4,6 +4,7 @@ package
     
     import org.musince.Config;
     import org.musince.actions.ConnectToServer;
+    import org.musince.actions.EnterStory;
     import org.musince.actions.Login;
     import org.musince.global.$athena;
     import org.musince.global.$client;
@@ -40,8 +41,10 @@ package
             $cookie = new Cookie();
 			
 			var connect:ConnectToServer = new ConnectToServer("192.168.1.122", 12222);
-			var login:Login;
+			var login:Login = new Login();
 			connect.appendNext(login);
+			var enter:EnterStory = new EnterStory();
+			login.appendNext(enter);
 			
 			$athena.start(stage);
 			$athena.addTimeSlice(connect);

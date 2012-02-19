@@ -2,33 +2,28 @@ package org.musince.actions
 {
 	import org.musince.core.Query;
 	import org.musince.global.$client;
-	import org.musince.global.$syner;
 	
-	public class LoginQuery extends Query
+	public class GetStoryList extends Query
 	{
-		public function LoginQuery()
+		public function GetStoryList()
 		{
 			super($client);
 		}
 		
 		override public function onStart():void
 		{
-			var name:String = input["u"];
-			send("LoginService", "login", [name]);
+			send("LuaService", "getStoryList", input["u"]);			
 		}
 		
 		override public function onSuccess(result:Array):void
 		{
 			isEnd = true;
-			output["r"] = true;
-			output["u"] = input["u"];
+			output["list"] = result[0];
 		}
 		
 		override public function onFailed(reason:Array):void
 		{
-			isEnd = true;
-			output["r"] = false;
-			output["u"] = input["u"];
+			
 		}
 	}
 }

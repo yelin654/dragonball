@@ -1,20 +1,14 @@
 package org.musince.actions
 {
 	import flash.display.Graphics;
-	import flash.display.MovieClip;
-	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
-	import flash.ui.Keyboard;
 	
 	import org.musince.core.TimeSlice;
 	import org.musince.display.LoginPanel;
 	import org.musince.global.$athena;
-	import org.musince.global.$config;
 	import org.musince.global.$cookie;
-	import org.musince.global.$log;
+	import org.musince.global.$loginName;
 	import org.musince.global.$root;
-	import org.musince.global.$syner;
-	import org.musince.load.SimpleLoader;
 	
 	public class Login extends TimeSlice 
 	{
@@ -30,10 +24,12 @@ package org.musince.actions
 			var name:String = $cookie.get("u") as String;
 			if (name != null) {
 				var query:LoginQuery = new LoginQuery();
+				query.input["u"] = name;
 				query.endHook = onQueryEnd;
 				$athena.addTimeSlice(query);
 			} else {
 				panel = new LoginPanel();
+				$root.addChild(panel);
 				fadeIn();
 			}
 		}
@@ -59,8 +55,11 @@ package org.musince.actions
 		
 		public function onQueryEnd(ts:TimeSlice):void
 		{
-			isEnd = true;
-			appendNext(new GetGameProgress());
+			if (ts.output["r"])
+			{
+				$loginName = ts.output["u"];					;
+				isEnd = true;
+			}
 		}
 	}
 }
