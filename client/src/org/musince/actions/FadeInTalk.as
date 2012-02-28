@@ -1,11 +1,13 @@
 package org.musince.actions
 {
+	import flash.display.DisplayObject;
+	
 	import org.musince.core.TimeSlice;
 	import org.musince.display.TalkPanel;
 	
 	public class FadeInTalk extends TimeSlice
 	{	
-		public var panel:TalkPanel;
+		public var panel:DisplayObject;
 		
 		public var yEnd:int = 520;
 		public var yStart:int = 600;
@@ -13,10 +15,10 @@ package org.musince.actions
 		public var va:Number = 0.05;
 		public var vy:Number = 0.4;
 				
-		public function FadeInTalk(panel:TalkPanel)
+		public function FadeInTalk(target:TalkPanel)
 		{
 			super();
-			this.panel = panel; 
+			this.panel = target; 
 		}
 		
 		override public function onStart():void

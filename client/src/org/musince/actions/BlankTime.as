@@ -6,9 +6,9 @@ package org.musince.actions
 	{
 		public var last:int; 
 		
-		public function BlankTime()
+		public function BlankTime(last:int = 0)
 		{
-			
+			this.last = last;
 		}
 		
 		override public function onStart():void

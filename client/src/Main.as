@@ -6,6 +6,7 @@ package
     import org.musince.actions.ConnectToServer;
     import org.musince.actions.EnterStory;
     import org.musince.actions.Login;
+    import org.musince.display.UI;
     import org.musince.global.$athena;
     import org.musince.global.$client;
     import org.musince.global.$config;
@@ -15,6 +16,7 @@ package
     import org.musince.global.$root;
     import org.musince.global.$syner;
     import org.musince.global.$tunnel;
+    import org.musince.global.$ui;
     import org.musince.logic.Athena;
     import org.musince.logic.GameClient;
     import org.musince.logic.ObjectFinder;
@@ -39,6 +41,7 @@ package
             $config = new Config();
             $tunnel = new Tunnel();
             $cookie = new Cookie();
+			$ui = new UI($root);
 			
 			var connect:ConnectToServer = new ConnectToServer("192.168.1.122", 12222);
 			var login:Login = new Login();
@@ -49,5 +52,10 @@ package
 			$athena.start(stage);
 			$athena.addTimeSlice(connect);
         }
+		
+		public function initUI():void
+		{
+			
+		}
     }
 }
