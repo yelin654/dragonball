@@ -41,17 +41,17 @@ package org.musince.logic
 			var action:TimeSlice;
 			_now = getTimer();
 			
-			for each (action in _add)
-			{
-				_actions[action] = action;
-			}
-			_add = new Dictionary();
-			
 			for each (action in _delete)
 			{
 				delete _actions[action];
 			}
 			_delete = new Dictionary();
+			
+			for each (action in _add)
+			{
+				_actions[action] = action;
+			}
+			_add = new Dictionary();
 			
 			for each (action in _actions)
 			{
@@ -75,17 +75,17 @@ package org.musince.logic
 				}
 			}
 			
-			for each (action in _add)
-			{
-				_actions[action] = action;
-			}
-			_add = new Dictionary();
-			
 			for each (action in _delete)
 			{
 				delete _actions[action];
 			}
 			_delete = new Dictionary();
+			
+			for each (action in _add)
+			{
+				_actions[action] = action;
+			}
+			_add = new Dictionary();
 		}
 		
 		public function addTimeSlice(action:TimeSlice):void
