@@ -4,11 +4,10 @@
 #include "Log.h"
 
 lua_State* L;
-char* luaerror = new char[1];
+char* luaerror = NULL;
 
 void log_lua_error() {
     const char* err = lua_tostring(L, -1);
-    delete [] luaerror;
     luaerror = new char[strlen(err)+1];
     strcpy(luaerror, err);
     error("[lua] %s", luaerror);
@@ -24,11 +23,11 @@ void load_lua_file(const char* name) {
 
 void init_lua()
 {
-    L = lua_open();
+    L = luaL_newstate();
     luaL_openlibs(L);
 }
 
-int lua_table_length(int index)
+int lua_table_size(int index)
 {
     int num = 0;
     lua_pushnil(L);
@@ -41,9 +40,33 @@ int lua_table_length(int index)
     return num;
 }
 
+int lua_array_length(int index)
+{
+    lua_len(L, index);
+    int result = lua_tointeger(L, -1);
+    lua_pop(L, 1);
+    return result;
+}
+
+bool lua_isarray(int index) {
+    lua_pushnil(L);
+    int i = index - 1;
+    if (lua_next(L, i) != 0)
+    {
+        if (lua_isnumber(L, -1))
+        {
+            lua_pop(L, 2);
+            return true;
+        }
+        lua_pop(L, 2);
+        return false;
+    }
+    return true;
+}
+
 void lua_newinteger_array(int index, int& len, int*& result)
 {
-    int num = lua_table_length(index);
+    int num = lua_table_size(index);
     result = new int[num];
     for (int i=0; i<num; ++i)
     {
@@ -54,6 +77,10 @@ void lua_newinteger_array(int index, int& len, int*& result)
 }
 
 void luaerrorcall(int num_in, int num_out) {
+    if (NULL != luaerror) {
+        delete [] luaerror;
+        luaerror = NULL;
+    }
     if (lua_pcall(L, num_in, num_out, 0) == 0) return;
     log_lua_error();
 };
