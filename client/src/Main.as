@@ -4,7 +4,7 @@ package
     
     import org.musince.Config;
     import org.musince.actions.ConnectToServer;
-    import org.musince.actions.EnterStory;
+    import org.musince.query.EnterStoryQuery;
     import org.musince.actions.Login;
     import org.musince.display.UI;
     import org.musince.global.$athena;
@@ -17,11 +17,11 @@ package
     import org.musince.global.$syner;
     import org.musince.global.$tunnel;
     import org.musince.global.$ui;
-    import org.musince.logic.Athena;
     import org.musince.logic.GameClient;
     import org.musince.logic.ObjectFinder;
     import org.musince.net.ServerSyner;
     import org.musince.net.Tunnel;
+    import org.musince.rpc.ImportRPC;
     import org.musince.system.Cookie;
     import org.musince.system.Log;
 
@@ -33,6 +33,7 @@ package
 
         public function Main()
         {
+			ImportRPC;
             $root = this;
             $log = new Log();
             $finder = new ObjectFinder();
@@ -46,7 +47,7 @@ package
 			var connect:ConnectToServer = new ConnectToServer("192.168.1.122", 12222);
 			var login:Login = new Login();
 			connect.appendNext(login);
-			var enter:EnterStory = new EnterStory();
+			var enter:EnterStoryQuery = new EnterStoryQuery();
 			login.appendNext(enter);
 			
 			$athena.start(stage);

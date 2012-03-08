@@ -1,4 +1,4 @@
-package org.musince.actions
+package org.musince.query
 {
 	import org.musince.core.Query;
 	import org.musince.core.TimeSlice;
@@ -8,11 +8,11 @@ package org.musince.actions
 	import org.musince.global.$log;
 	import org.musince.global.$loginName;
 	
-	public class EnterStory extends Query
+	public class EnterStoryQuery extends Query
 	{
 		public var ui:StoryList;
 	
-		public function EnterStory()
+		public function EnterStoryQuery()
 		{
 			super($client);
 		}
@@ -31,6 +31,7 @@ package org.musince.actions
 		override public function onSuccess(result:Array):void
 		{
 			$log.debug("enter story success");
+			output["chapter"] = 0;
 		}
 	}
 }
