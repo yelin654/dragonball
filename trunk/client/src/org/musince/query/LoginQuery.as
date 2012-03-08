@@ -1,4 +1,4 @@
-package org.musince.actions
+package org.musince.query
 {
 	import org.musince.core.Query;
 	import org.musince.global.$client;

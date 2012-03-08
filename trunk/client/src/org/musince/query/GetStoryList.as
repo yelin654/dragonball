@@ -1,26 +1,24 @@
-package org.musince.actions
+package org.musince.query
 {
 	import org.musince.core.Query;
-	import org.musince.data.GameProgress;
 	import org.musince.global.$client;
-	import org.musince.logic.Client;
 	
-	public class GetGameProgress extends Query
+	public class GetStoryList extends Query
 	{
-		public function GetGameProgress()
+		public function GetStoryList()
 		{
 			super($client);
 		}
 		
 		override public function onStart():void
 		{
-			send("LoginService", "getGameProgress", []);			
+			send("LuaService", "getStoryList", input["u"]);			
 		}
 		
 		override public function onSuccess(result:Array):void
 		{
 			isEnd = true;
-			var progress:GameProgress = result[0];
+			output["list"] = result[0];
 		}
 		
 		override public function onFailed(reason:Array):void

@@ -17,6 +17,7 @@ package org.musince.load
 		
 		override protected function _load(item:LoadItem):void
 		{
+			_sound = new Sound();
 			if(cc != null){_sound.addEventListener(Event.COMPLETE, onComplete);}
 			if(pc != null){_sound.addEventListener(ProgressEvent.PROGRESS, onProgress);}
 			if(ec != null){_sound.addEventListener(IOErrorEvent.IO_ERROR, onError);}

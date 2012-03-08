@@ -9,6 +9,7 @@ package org.musince.actions
 	import org.musince.global.$cookie;
 	import org.musince.global.$loginName;
 	import org.musince.global.$root;
+	import org.musince.query.LoginQuery;
 	
 	public class Login extends TimeSlice 
 	{

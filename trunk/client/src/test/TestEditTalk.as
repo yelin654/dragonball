@@ -1,23 +1,25 @@
-package
+package test
 {
 	import flash.display.Sprite;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
-	import flash.utils.Dictionary;
 	
 	import org.musince.actions.PlayTalk;
-	import org.musince.actions.PlayTalkAvg;
+	import org.musince.actions.PlayTalkVar;
+	import org.musince.editor.InputTalk;
 	import org.musince.global.$athena;
+	import org.musince.logic.Athena;
 	
 	[SWF(width='800',height='600', backgroundColor='0x000000')]
 	
-	public class TestAvgTalk extends Sprite
+	public class TestEditTalk extends Sprite
 	{
-		public function TestAvgTalk()
+		public function TestEditTalk()
 		{
 			super();
+			$athena = new Athena();
 			var tf:TextField = new TextField();
 			tf.autoSize = TextFieldAutoSize.LEFT;
 			tf.x = 20;
@@ -26,10 +28,10 @@ package
 			tft.color = 0xFFFFFF;
 			tft.size = 40;
 			tf.defaultTextFormat = tft;
-			//			tf.text = "TTT"; 
+//			tf.text = "TTT"; 
 			
 			var tfin:TextField = new TextField();
-			//			tfin.multiline = true;
+//			tfin.multiline = true;
 			tfin.type = TextFieldType.INPUT;
 			tfin.autoSize = TextFieldAutoSize.LEFT;
 			tfin.x = 20;
@@ -38,17 +40,20 @@ package
 			tfin.border = true;
 			tfin.borderColor = 0xFFFFFF;
 			tfin.text = "";
-			//			tfin.wordWrap = true;
-			//			tfin.width = 400;
+//			tfin.wordWrap = true;
+//			tfin.width = 400;
 			
-			var play:PlayTalk = new PlayTalkAvg(tf);
-			play.input["text"] = "abcdefg";
-			
+			var edit:InputTalk = new InputTalk(tfin, tf);
+			var play:PlayTalk = new PlayTalkVar(tf);
+			edit.appendNext(play);
+			play.appendNext(edit);
+
 			$athena.start(stage);
-			$athena.addTimeSlice(play);
+			$athena.addTimeSlice(edit);
 			
 			addChild(tf);
 			addChild(tfin);
+			
 		}
 	}
 }

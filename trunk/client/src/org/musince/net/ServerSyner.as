@@ -72,7 +72,7 @@ package org.musince.net
 		private function read_method(stream:IDataInput):void { 
 			key = new ParamList;
 			key.unserialize(stream);
-			object = $finder.find(key.toArray());
+			object = $finder.find(key.params);
 			method_name = stream.readUTF();
 			params = new ParamList;
 			params.unserialize(stream);
@@ -80,20 +80,20 @@ package org.musince.net
 		
 		private function invoke_object_method_recv(stream:IDataInput):void { 
 			read_method(stream);
-			object.invokeMethod(method_name, params.toArray());
+			object.invokeMethod(method_name, params.params);
 		}
 		
 		private function invoke_global_method_recv(stream:IDataInput):void { 
 			method_name = stream.readUTF();
 			params = new ParamList;
 			params.unserialize(stream);
-			var f:Function = getDefinitionByName(method_name) as Function;
-			f.apply(null, params.toArray());
+			var f:Function = getDefinitionByName("org.musince.rpc."+method_name) as Function;
+			f.apply(null, params.params);
 		}
 		
 		private function cache_invoke(stream:IDataInput):void {
 			read_method(stream);
-			_group_cache.push([object, method_name, params.toArray()]);
+			_group_cache.push([object, method_name, params.params]);
 		}
 		
 		private function finish_group(stream:IDataInput):void {

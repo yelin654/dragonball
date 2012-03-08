@@ -117,7 +117,7 @@ package org.musince.logic
 			if (buf.readBoolean()) {
 				var key:ParamList = new ParamList();
 				key.unserialize(buf);
-				content = $finder.find(key.toArray());
+				content = $finder.find(key.params);
 			} else {
 				content = GameObject.getInstance(className);
 				content.unserialize(buf);
