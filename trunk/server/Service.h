@@ -3,6 +3,8 @@
 
 #include "GameObject.h"
 
+class TunnelOutputStream;
+
 class Service: public GameObject {
     DECLARE_GAME_OBJECT(Service, GameObject)
 public:
@@ -14,6 +16,8 @@ protected:
     int qid;
     void success(ParamList* params);
     void failed(ParamList* params);
+
+    TunnelOutputStream* get_success_stream();
 };
 
 #endif

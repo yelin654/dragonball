@@ -53,7 +53,7 @@ bool lua_isarray(int index) {
     int i = index - 1;
     if (lua_next(L, i) != 0)
     {
-        if (lua_isnumber(L, -1))
+        if (lua_isnumber(L, -2))
         {
             lua_pop(L, 2);
             return true;
@@ -64,16 +64,18 @@ bool lua_isarray(int index) {
     return true;
 }
 
-void lua_newinteger_array(int index, int& len, int*& result)
+int lua_array_buf[16];
+
+const int* lua_toint_array(int index, int& len)
 {
     int num = lua_table_size(index);
-    result = new int[num];
     for (int i=0; i<num; ++i)
     {
         lua_rawgeti(L, index, i+1);
-        result[i] = lua_tointeger(L, -1);
+        lua_array_buf[i] = lua_tointeger(L, -1);
         lua_pop(L, 1);
     }
+    return lua_array_buf;
 }
 
 void luaerrorcall(int num_in, int num_out) {

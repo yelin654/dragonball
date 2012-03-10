@@ -1,6 +1,6 @@
 package.path = "script/?.lua;;"
 
-require "lfs"
+--require "lfs"
 require "log"
 require "util"
 
@@ -8,89 +8,70 @@ ACTION_GEN = 0
 ACTION_TALK = 1
 ACTION_CHOICE = 2
 ACTION_SOUND = 3
+ACTION_GUIDE = 4
 
 storys = {}
 
-function add_story(idx)
-   storys[idx] = {}
-   D("add Story", idx)
-end
-
-function add_timeline(story_idx, timeline_idx)
-   local story = storys[story_idx]
-   story[timeline_idx] = {}
-   D("add TimeLine", story_idx.."/"..timeline_idx)
-end
-
-function add_timeslice(story_idx, timeline_idx, timeslice_idx, func)
-   local story = storys[story_idx]
-   local timeline =  story[timeline_idx]
-   timeline[timeslice_idx] = func
-   D("add TimeSlice", story_idx.."/"..timeline_idx.."/", func)
-end
-
-function excute_timeslice(story_idx, timeline_idx, slice_idx)
-   local story = storys[story_idx]
-   local timeline =  story[timeline_idx]
-   local slice = timeline[slice_idx]
-end
-
-function Story(idx)
+function new_story(idx)
    local s = {}
    s.idx = idx
    s.spaces = {}
    return s
 end
 
-function Space(idx)
+function new_space(idx)
    local s = {}
    s.idx = idx
    s.chapters = {}
    return s
 end
 
-function Chapter(idx)
+function new_chapter(idx)
    local c = {}
    c.idx = idx
    c.actions = {}
+   c.acc_idx = 1
+   c.start = new_action(c, ACTION_GEN)
    return c
 end
 
-function Talk(c, idx)
-   local a = Action(c, idx)
-   a.type = ACTION_TALK
-   return a
-end
-
-function Choice(c, idx)
-   local a =  Action(c, idx)
-   a.type = ACTION_CHOICE
-   return a
-end
-
-function Sound(c, idx)
-   local a =  Action(c, idx)
-   a.type = ACTION_SOUND
-   return a
-end
 
 function on_action_start()end
 function on_action_end()end
 
-function Action(c, idx)
+function link(pre, next)
+   table.insert(pre.nexts, next)
+end
+
+function new_action(c, type)
    local a = {}
 
-   a.idx = idx
-   a.type = ACTION_GEN
-   c.actions[idx] = a
-
+   a.idx = c.acc_idx
+   a.type = type
    a.on_start = on_action_start
    a.on_end = on_action_end
+
+   c.acc_idx = c.acc_idx + 1
+   c.actions[a.idx] = a
 
    return a
 end
 
+function new_talk(c)
+   return new_action(c, ACTION_TALK)
+end
 
+function new_choice(c)
+   return new_action(c, ACTION_CHOICE)
+end
+
+function new_sound(c)
+   return new_action(c, ACTION_SOUND)
+end
+
+function new_guide(c)
+   return new_action(c, ACTION_GUIDE)
+end
 
 function load_story(name, idx)
    local root = "script/"..name.."/s"..idx.."/"
@@ -101,21 +82,21 @@ function load_story(name, idx)
    local chapter
    local spr
    local fullname
-   local story = Story(idx)
+   local story = new_story(idx)
    storys[idx] = story
    local pre
    for i, spaceid in ipairs(meta.spaces) do
-      space = Space(spaceid)
+      space = new_space(spaceid)
       story.spaces[spaceid] = space
       spr = root.."p"..spaceid.."/"
-      for file in lfs.dir(spr) do
-         if string.match(file, "%.lua$") then
-            fullname = spr..file
+      for key, file in ipairs(meta.chapters) do
+         --if string.match(file, "%.lua$") then
+            fullname = spr..file..".lua"
             D("to load chapter file("..fullname..")")
             chapter = dofile(fullname)
             D("load chapter("..chapter.idx..")")
             space.chapters[chapter.idx] = chapter
-         end
+         --end
       end
       for id, chapter in pairs(space.chapters) do
          if chapter.pre ~= nil then
@@ -191,41 +172,49 @@ function find_story(idx)
 end
 
 function start_story(idx)
-   D("start story", idx)
    progress.story_idx = idx
    progress.space_idx = 1
-   progress.chapter_idx = 1
-   progress.action_idx = 1
-   update_progress(progress)
-   do_action(find_action(progress))
+   progress.chapter_idx = 0
+   local c = find_chapter(progress)
+   progress.action_idx = c.start.idx
+   --update_progress(progress)
+   do_action(c.start)
+   D("start story", idx)
 end
 
 function do_gen(action)
 
 end
 
-function do_talk(action)
-   if type(action.text == "string") then
+function play_talk(action)
+   if type(action.text) == "string" then
       play_talk_text(action.text)
    else
       play_talk_id(action.id)
    end
 end
 
-function do_choice(action)
-   play_choice(action.text)
+function play_choice(action)
+
 end
 
-function do_sound_action(action)
+function play_sound(sound)
+   c_rpc("play_sound", {sound})
+end
+
+function play_guide(guide)
+   c_rpc("play_guide", {guide})
 end
 
 do_vt = {}
 do_vt[ACTION_GEN] = do_gen
-do_vt[ACTION_TALK] = do_talk
-do_vt[ACTION_CHOICE] = do_choice
-do_vt[ACTION_SOUND] = do_sound_action
+do_vt[ACTION_TALK] = play_talk
+do_vt[ACTION_CHOICE] = play_choice
+do_vt[ACTION_SOUND] = play_sound
+do_vt[ACTION_GUIDE] = play_guide
 
 function do_action(action)
+   D("do action, type("..action.type..")")
    do_vt[action.type](action)
    action.on_start()
 end
@@ -240,15 +229,15 @@ function get_story_list(name)
    local meta
    local metaname
    local result = {}
-   for file in lfs.dir(root) do
-      if string.match(file, "^s") then
-         metaname = root..file.."/meta.lua"
-         D("start load meta file("..metaname..")")
-         meta = dofile(metaname)
-         D("finish load meta file("..metaname..")")
-         result[meta.idx] = meta.name
-      end
-   end
+   -- for file in lfs.dir(root) do
+   --    if string.match(file, "^s") then
+   --       metaname = root..file.."/meta.lua"
+   --       D("start load meta file("..metaname..")")
+   --       meta = dofile(metaname)
+   --       D("finish load meta file("..metaname..")")
+   --       result[meta.idx] = meta.name
+   --    end
+   -- end
    return result
 end
 

@@ -34,6 +34,7 @@ public:
     static const int TYPE_STRING_ARRAY = 4;
     static const int TYPE_OBJECT_ARRAY = 5;
     static const int TYPE_BYTE_ARRAY = 6;
+    static const int TYPE_LUA_TABLE = 7;
 
     Param(){};
     Param(int v):_data((void*)v), _type(TYPE_INT), _delete(false){};

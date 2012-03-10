@@ -1,5 +1,7 @@
 #include "Service.h"
 #include "ClientSyner.h"
+#include "Tunnel.h"
+#include "ParamListSend.h"
 
 DEFINE_GAME_OBJECT(Service)
 
@@ -30,3 +32,10 @@ void Service::failed(ParamList* reason) {
     _invoke_from->_roc(&key, "queryFailed", reason);
 }
 
+TunnelOutputStream* Service::get_success_stream() {
+    TunnelOutputStream* stream = _invoke_from->get_command_stream(ClientSyner::COMMAND_ROC, 64);
+    g_pls->attach(stream, 1);
+    g_pls->push("Client");
+    stream->write_string("querySuccess");
+    return stream;
+}

@@ -33,7 +33,14 @@ void Stream::write_string(const char* str) {
     write_bytes(str, len);
 }
 
+void Stream::write_string_array(char** buf, int len) {
+    write_bytes(&len, 2);
+    for (int i = 0; i < len; ++i)
+        write_string(buf[i]);
+}
+
 void Stream::write_int_array(int* buf, int len) {
+    write_bytes(&len, 1);
     write_bytes(buf, sizeof(int) * len);
 }
 
@@ -75,7 +82,9 @@ int Stream::read_int() {
     return t;
 }
 
-void Stream::read_int_array(int* buf, int len) {
+void Stream::read_int_array(int* buf, int& len) {
+    len = 0;
+    read_bytes(&len, 1);
     read_bytes(buf, 4 * len);
 }
 
@@ -104,14 +113,18 @@ inline void Stream::_read_bytes(void* buf, int len) {
     _ri += len;
 }
 
-string Stream::read_string() {
-    short len = read_short();
-    char* buf = new char[len+1];
+int Stream::read_string(char* buf) {
+    int len = read_short();
     read_bytes(buf, len);
-    buf[len] = '\0';
-    string s(buf);
-    delete [] buf;
-    return s;
+    buf[len+1] = '\0';
+    // short len = read_short();
+    // char* buf = new char[len+1];
+    // read_bytes(buf, len);
+    // buf[len] = '\0';
+    // string s(buf);
+    // delete [] buf;
+    // return s;
+    return len;
 }
 
 inline void Stream::wnext() {
