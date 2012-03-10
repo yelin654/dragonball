@@ -15,6 +15,8 @@ public:
     Block* next;
 };
 
+typedef const char* const_char;
+
 class Stream {
 public:
     Stream(int cap=0);
@@ -26,14 +28,15 @@ public:
     void write_int_array(int* buf, int len);
     virtual void write_bytes(const void* buf, int len);
     void write_string(const char*);
+    void write_string_array(char** buf, int len);
     void write_stream(const Stream& stream);
 
     char read_byte();
     short read_short();
     int read_int();
-    void read_int_array(int* buf, int len);
+    void read_int_array(int* buf, int& len);
     int read_bytes(void* buf, int len);
-    string read_string();
+    int read_string(char* buf);
 
     void append(char* data, int len);
     void copy(const Stream* stream);

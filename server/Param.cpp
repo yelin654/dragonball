@@ -48,8 +48,8 @@ void Param::serialize_object(Stream* stream) const {
     if (o->pass_as_reference) {
         stream->copy(o->key());
     } else {
-        o->serialize(stream);
         stream->write_string(o->class_name());
+        o->serialize(stream);
     }
 };
 

@@ -8,6 +8,7 @@
 #include "Tunnel.h"
 #include "GameClient.h"
 #include "Log.h"
+#include "dispatch_rpc.h"
 
 ClientSyner::ClientSyner() {
     client = new GameClient();
@@ -48,7 +49,7 @@ void ClientSyner::invoke_method_recv(TunnelInputStream* stream) {
 void ClientSyner::_roc(GameObject* object, const char* method_name, ParamList* params) {
     const Stream* key = object->key();
     int size = key->length() + strlen(method_name);
-    TunnelOutputStream* stream = get_command_stream(COMMAND_ROC, size+2);
+    TunnelOutputStream* stream = get_command_stream(COMMAND_ROC, size);
     stream->copy(key);
     stream->write_string(method_name);
     params->serialize(stream);
@@ -90,6 +91,9 @@ void ClientSyner::on_data(TunnelInputStream* stream) {
     switch (command) {
     case COMMAND_ROC:
         invoke_method_recv(stream);
+        break;
+    case COMMAND_LUA_RPC:
+        dispatch_lua_rpc(stream);
         break;
     default:
         printf("unknown command %d\n", command);

@@ -6,6 +6,9 @@
 #include "Array.h"
 #include "StoryProgress.h"
 #include "stlite.h"
+#include "Stream.h"
+#include "Tunnel.h"
+#include "ParamListSend.h"
 
 LuaContext lua_context;
 
@@ -15,28 +18,44 @@ void update_lua_progress(StoryProgress* p)
        p->chapter_idx, p->action_idx);
 }
 
-void lua_to_param(ParamList* pl) {
-    int type = lua_type(L, -1);
-    Param* p;
+void lua_read_table(int index, ParamListSend* params) {
+    int size = lua_table_size(index);
+    params->stream->write_bytes(&size, 1);
+    lua_pushnil(L);
+    int i = index - 1;
+    while (lua_next(L, i) != 0)
+    {
+        lua_read_param(-2, params);
+        lua_read_param(-1, params);
+        lua_pop(L, 1);
+    }
+}
+
+void lua_read_param(int index, ParamListSend* params) {
+    int type = lua_type(L, index);
+    //int len;
+    //const int* arr_int;
     switch (type) {
     case LUA_TSTRING: {
-        p = new Param(lua_tostring(L, -1), true);
-        pl->push(p);
+        params->push(lua_tostring(L, index));
         break;
     }
     case LUA_TNUMBER: {
-        p = new Param(lua_tointeger(L, -1));
-        pl->push(p);
+        params->push(lua_tointeger(L, index));
         break;
     }
     case LUA_TTABLE: {
-        int len; int* arr_int;
-        lua_newinteger_array(-1, len, arr_int);
-        Array<int>* Arr_int = new Array<int>(arr_int, len);
-        p = new Param(Arr_int, true);
-        pl->push(p);
-        delete [] arr_int;
+        //        if (lua_isarray(-1)) {
+        //            arr_int = lua_toint_array(-1, len);
+        //            params->push(arr_int, len);
+        //        } else {
+        params->stream->write_byte(Param::TYPE_LUA_TABLE);
+        lua_read_table(index, params);
+        //        }
         break;
+    }
+    default: {
+        params->push(0);
     }
     }
 }
@@ -68,16 +87,19 @@ int lua_push_params(ParamList* pl) {
 }
 
 int c_rpc(lua_State* L) {
-    const char* func_name = lua_tostring(L, -1);
-    ParamList pl;
+    const char* func_name = lua_tostring(L, -2);
+    ClientSyner* syner = lua_context.player->syner;
+    TunnelOutputStream* stream = syner->get_command_stream(ClientSyner::COMMAND_RPC, sizeof(func_name));
+    stream->write_string(func_name);
+    int len = lua_array_length(-1);
+    g_pls->attach(stream, len);
     lua_pushnil(L);
-    while (lua_next(L, -3) != 0)
+    while (lua_next(L, -2) != 0)
     {
-        lua_to_param(&pl);
+        lua_read_param(-1, g_pls);
         lua_pop(L, 1);
     }
-    ClientSyner* syner = lua_context.player->syner;
-    syner->_rpc(func_name, &pl);
+    stream->flush();
     return 0;
 }
 

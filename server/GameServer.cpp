@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "StoryProgress.h"
 #include "script.h"
+#include "luaapi.h"
 
 DEFINE_GAME_OBJECT(GameServer)
 
@@ -25,5 +26,6 @@ void GameServer::enter_story(char* owner, int idx) {
     success(&result);
     Player* player = _invoke_from->player;
     player->current = new StoryProgress();
+    lua_context.player = player;
     lc("start_story", 0, idx);
 }

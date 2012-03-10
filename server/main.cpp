@@ -22,6 +22,7 @@
 #include "LoginService.h"
 #include "luaapi.h"
 #include "LuaService.h"
+#include "ParamListSend.h"
 
 Net* net;
 
@@ -143,10 +144,10 @@ void signal_set() {
     sigaction(SIGINT,&act,NULL);
 }
 
-LuaService* lua_service;
+LuaQuery* lua_query;
 
 void init_services() {
-    lua_service = new LuaService;
+    lua_query = new LuaQuery;
 
 }
 
@@ -192,8 +193,15 @@ void load_lua_files() {
     load_lua_file("script/story.lua");
 }
 
+ParamListSend* g_pls;
+
+void init_global() {
+    g_pls = new ParamListSend;
+}
 
 int main() {
+    init_global();
+
     init_lua();
 
     register_lua();

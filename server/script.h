@@ -10,13 +10,12 @@ extern "C" {
 extern lua_State* L;
 
 void load_lua_file(const char* name);
-
 void log_lua_error();
-
 void init_lua();
-
-void lua_newinteger_array(int index, int& len, int*& result);
-
+bool lua_isarray(int index);
+const int* lua_toint_array(int index, int& len);
+int lua_array_length(int index);
+int lua_table_size(int index);
 
 template<class T>
 void push_one(T t);

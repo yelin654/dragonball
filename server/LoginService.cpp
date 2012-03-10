@@ -12,6 +12,7 @@ void LoginService::login(const char* name) {
     Player* player = new Player();
     player->name = name;
     _invoke_from->player = player;
+    player->syner = _invoke_from;
     G_players[name] = player;
     ParamList result;
     success(&result);
