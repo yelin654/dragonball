@@ -15,6 +15,12 @@ public:
     Block* next;
 };
 
+class Pos {
+public:
+    Block* block;
+    char* index;
+};
+
 typedef const char* const_char;
 
 class Stream {
@@ -30,6 +36,8 @@ public:
     void write_string(const char*);
     void write_string_array(char** buf, int len);
     void write_stream(const Stream& stream);
+    void change_at(Pos* pos, void* data, int len);
+    Pos get_write_pos();
 
     char read_byte();
     short read_short();
@@ -48,7 +56,6 @@ public:
 
     int inc;
 
-protected:
     Block*_wb;
     char* _wi;
     Block*_rb;

@@ -5,7 +5,7 @@ DEFINE_GAME_OBJECT(LuaTalk);
 void LuaTalk::on_start() {
     lua_getglobal(L, "talk_on_start");
     lua_pushinteger(L, story_idx);
-    lua_pushinteger(L, space_idx);
+    //lua_pushinteger(L, space_idx);
     lua_pushinteger(L, idx);
     lua_pcall(L, 3, 0, 0);
 }

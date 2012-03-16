@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "script.h"
 #include "Param.h"
 #include "luaapi.h"
@@ -14,12 +16,13 @@ LuaContext lua_context;
 
 void update_lua_progress(StoryProgress* p)
 {
-    lc("lua_update_progress", p->story_idx, p->space_idx,
+    lc("lua_update_progress", p->story_idx,
        p->chapter_idx, p->action_idx);
 }
 
 void lua_read_table(int index, ParamListSend* params) {
-    int size = lua_table_size(index);
+    int size = 0;
+    Pos pos = params->stream->get_write_pos();
     params->stream->write_bytes(&size, 1);
     lua_pushnil(L);
     int i = index - 1;
@@ -28,11 +31,16 @@ void lua_read_table(int index, ParamListSend* params) {
         lua_read_param(-2, params);
         lua_read_param(-1, params);
         lua_pop(L, 1);
+        ++size;
     }
+    params->stream->change_at(&pos, &size, 1);
 }
+
+
 
 void lua_read_param(int index, ParamListSend* params) {
     int type = lua_type(L, index);
+    char nil = 0;
     //int len;
     //const int* arr_int;
     switch (type) {
@@ -55,7 +63,7 @@ void lua_read_param(int index, ParamListSend* params) {
         break;
     }
     default: {
-        params->push(0);
+        params->push(nil);
     }
     }
 }
@@ -103,16 +111,20 @@ int c_rpc(lua_State* L) {
     return 0;
 }
 
-int c_update_progress(lua_State* L)
+int c_write_progress(lua_State* L)
 {
-    int story_idx=0, space_idx=0, chapter_idx=0, action_idx=0;
-    lt(story_idx, space_idx, chapter_idx, action_idx);
     StoryProgress* progress = lua_context.player->current;
-    progress->story_idx = story_idx;
-    progress->space_idx = space_idx;
-    progress->chapter_idx = chapter_idx;
-    progress->action_idx = action_idx;
+    progress->story_idx = lua_tointeger(L, -3);
+    progress->chapter_idx = lua_tointeger(L, -2);
+    progress->action_idx = lua_tointeger(L, -1);
     return 0;
+}
+
+int c_read_progress(lua_State* L)
+{
+    StoryProgress* progress = lua_context.player->current;
+    lua_push_params(progress->story_idx, progress->chapter_idx, progress->action_idx);
+    return 3;
 }
 
 #define REG_LUA(name) \
@@ -121,5 +133,6 @@ int c_update_progress(lua_State* L)
 
 void register_lua() {
     REG_LUA(c_rpc);
-    REG_LUA(c_update_progress);
+    REG_LUA(c_write_progress);
+    REG_LUA(c_read_progress);
 }
