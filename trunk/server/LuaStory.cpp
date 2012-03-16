@@ -9,9 +9,6 @@
 #include "LuaChapter.h"
 #include "LuaTimeLine.h"
 #include "LuaTimeStamp.h"
-#include "LuaSpace.h"
-
-
 
 DEFINE_GAME_OBJECT(LuaStory)
 
@@ -50,44 +47,44 @@ void LuaStory::save() {
 }
 
 void LuaStory::load() {
-    debug(">>>>>> load story %s/%d", owner, idx);
+    // debug(">>>>>> load story %s/%d", owner, idx);
 
-    char name[32];
-    bzero(name, 32);
-    sprintf(name, "script/%s/%d/meta.lua",
-            owner, idx);
-    luaL_loadfile(L, name);
+    // char name[32];
+    // bzero(name, 32);
+    // sprintf(name, "script/%s/%d/meta.lua",
+    //         owner, idx);
+    // luaL_loadfile(L, name);
 
-    debug("load meta file %s", name);
+    // debug("load meta file %s", name);
 
-    lua_pcall(L, 0, 1, 0);
+    // lua_pcall(L, 0, 1, 0);
 
-    lua_getfield(L, -1, "spaces");
+    // lua_getfield(L, -1, "spaces");
 
-    int space_idx;
-    LuaSpace* sp;
-    lua_pushnil(L);
-    while (lua_next(L, -2) != 0)
-    {
-        space_idx = lua_tointeger(L, -1);
-        lua_pop(L, 1);
+    // int space_idx;
+    // LuaSpace* sp;
+    // lua_pushnil(L);
+    // while (lua_next(L, -2) != 0)
+    // {
+    //     space_idx = lua_tointeger(L, -1);
+    //     lua_pop(L, 1);
 
-        debug("create Space  %d", space_idx);
-        bzero(name, 32);
-        sp = new LuaSpace();
-        sp->idx = space_idx;
-        sp->story_idx = idx;
-        sprintf(name, "script/%s/%d/%d.lua",
-                owner, idx, space_idx);
-        sp->load(name);
-        _spaces[space_idx] = sp;
-    }
+    //     debug("create Space  %d", space_idx);
+    //     bzero(name, 32);
+    //     sp = new LuaSpace();
+    //     sp->idx = space_idx;
+    //     sp->story_idx = idx;
+    //     sprintf(name, "script/%s/%d/%d.lua",
+    //             owner, idx, space_idx);
+    //     sp->load(name);
+    //     _spaces[space_idx] = sp;
+    // }
 
-    lua_pop(L, 1); // pop spaces
+    // lua_pop(L, 1); // pop spaces
 
-    lua_pop(L, 1); //pop meta
+    // lua_pop(L, 1); //pop meta
 
-    debug("end load story %s/%d    <<<<<<", owner, idx);
+    // debug("end load story %s/%d    <<<<<<", owner, idx);
 }
 
 // void LuaStory::load() {

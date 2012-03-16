@@ -1,6 +1,10 @@
+#include <string.h>
+
 #include "Stream.h"
 #include "Param.h"
 #include "script.h"
+#include "luaapi.h"
+#include "Log.h"
 
 char string_buf[64];
 
@@ -19,8 +23,11 @@ void push_param(Stream* stream) {
     }
 }
 
-void dispatch_lua_rpc(Stream* stream) {
+void dispatch_lua_rpc(Stream* stream, Player* player) {
+    lua_context.player = player;
+    bzero(string_buf, 64);
     stream->read_string(string_buf);
+    debug("begin to call lua rpc %s", string_buf);
     lua_getglobal(L, string_buf);
     int num = stream->read_byte();
     for (int i = 0; i < num; ++i) {

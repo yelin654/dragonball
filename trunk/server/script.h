@@ -31,14 +31,14 @@ inline void push_one<const char*>(const char* t) {
 };
 
 template<class T>
-void push_params(T t) {
+void lua_push_params(T t) {
     push_one(t);
 };
 
 template<class T, class ...ARGS>
-void push_params(T t, ARGS ...args) {
+void lua_push_params(T t, ARGS ...args) {
     push_one(t);
-    push_params(args...);
+    lua_push_params(args...);
 };
 
 extern char* luaerror;
@@ -48,7 +48,7 @@ void luaerrorcall(int num_in, int num_out);
 template<class ...ARGS>
 void lc(const char* method_name, int num_out, ARGS ...args) {
     lua_getglobal(L, method_name);
-    push_params(args...);
+    lua_push_params(args...);
     luaerrorcall(sizeof...(args), num_out);
 };
 
@@ -84,7 +84,7 @@ void to_params(T& t, ARGS ...args) {
 };
 
 template<class ...ARGS>
-void lt(ARGS ...args) {
+void lr(ARGS ...args) {
     to_params(args...);
     //    lua_pop(L, sizeof...(args));
 };

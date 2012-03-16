@@ -93,9 +93,9 @@ void ClientSyner::on_data(TunnelInputStream* stream) {
         invoke_method_recv(stream);
         break;
     case COMMAND_LUA_RPC:
-        dispatch_lua_rpc(stream);
+        dispatch_lua_rpc(stream, player);
         break;
     default:
-        printf("unknown command %d\n", command);
+        error("unknown command %d\n", command);
     }
 }
