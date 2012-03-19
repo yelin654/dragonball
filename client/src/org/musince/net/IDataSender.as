@@ -4,6 +4,8 @@ package org.musince.net
 
 	public interface IDataSender
 	{
-		function get_output_stream(remote:ILocal, size:int=0):OutputStream;
+		function roc(key:Array, method_name:String, params:Array=null):void;
+		function rpc(method_name:String, params:Array=null):void ;
+		function lua_rpc(method_name:String, params:Array=null):void;
 	}
 }

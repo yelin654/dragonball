@@ -30,7 +30,6 @@ package org.musince.actions
 			$config.ServerAddress = xml.server_address;
 			$config.ServerPort = xml.server_port;
 			$config.ResourceRoot = xml.resource_root;
-			isEnd = true;
 		}
 		
 		override public function onUpdate():void

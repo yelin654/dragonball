@@ -9,6 +9,7 @@ package org.musince.logic
 	import flash.utils.getTimer;
 	
 	import org.musince.core.TimeSlice;
+	import org.musince.global.$log;
 
 	public class Athena extends GameObject
 	{
@@ -32,6 +33,7 @@ package org.musince.logic
 			stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			stage.addEventListener(MouseEvent.CLICK, onMouseClick);
 			stage.frameRate = 60;
 			_now = getTimer();
 		}
@@ -62,6 +64,8 @@ package org.musince.logic
 				if (action.isEnd)
 				{
 					action.end();
+					if (action.traceT)
+						$log.debug("[END_ACTION]", action.toString());
 					_delete[action] = action;
 					for each (var next:TimeSlice in action.getNexts())
 					{
@@ -71,6 +75,8 @@ package org.musince.logic
 							next.input[key] = action.output[key];
 						}
 						next.start(_now);
+						if (next.traceT)
+							$log.debug("[START_ACTION]", next.toString());
 					}
 				}
 			}
@@ -92,12 +98,16 @@ package org.musince.logic
 		{
 			_add[action] = action;
 			action.start(_now);
+			if (action.traceT)
+				$log.debug("[START_ACTION]", action.toString());
 		}
 		
 		public function removeTimeSlice(action:TimeSlice):void
 		{
 			_delete[action] = action;
 			action.end();
+			if (action.traceT)
+				$log.debug("[END_ACTION]", action.toString());
 		}
 		
 		
@@ -143,6 +153,17 @@ package org.musince.logic
 				if (slice.globalMouseUp != null) 
 				{
 					slice.globalMouseUp(e);
+				}
+			}
+		}
+		
+		private function onMouseClick(e:MouseEvent):void
+		{
+			for each (var slice:TimeSlice in _actions)
+			{
+				if (slice.globalMouseClick != null) 
+				{
+					slice.globalMouseClick(e);
 				}
 			}
 		}

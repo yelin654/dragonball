@@ -8,12 +8,11 @@ package org.musince.rpc
 	import org.musince.global.$ui;
 	import org.musince.util.LuaUtil;
 
-	public function play_guide(guide:Dictionary):void
+	public function play_monolog(mono:Dictionary):void
 	{
-		var texts:Array = LuaUtil.convertToArray(guide["texts"]);
-		var playGuide:PlayGuideText = new PlayGuideText(texts, guide["speed"]/1000, guide["stay"]);
+		var texts:Array = LuaUtil.convertToArray(mono["texts"]);
+		var playGuide:PlayGuideText = new PlayGuideText(texts, 100, 100);
 		$ui.contentLayer.addChild($guideText);
 		$athena.addTimeSlice(playGuide);
-//		playGuide
 	}
 }

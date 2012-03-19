@@ -1,6 +1,7 @@
 package org.musince.actions
 {
 	import org.musince.core.TimeSlice;
+	import org.musince.core.UIAction;
 	import org.musince.global.$athena;
 	import org.musince.global.$guideText;
 	
@@ -51,9 +52,11 @@ package org.musince.actions
 		
 		private function onPlayOver(t:TimeSlice):void
 		{
-			trace("guide end");
-			//show next button
+			var rpc:SendRPC = new SendRPC("next_main_action", null);
+			var click:WaitingForClick = new WaitingForClick();
+			click.appendNext(rpc);
+			appendNext(click);
+			isEnd = true;
 		}
-
 	}
 }

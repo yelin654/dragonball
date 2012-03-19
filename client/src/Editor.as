@@ -40,7 +40,7 @@ package
 			$cookie = new Cookie();
 			$athena = new Athena();
 			
-			var connect:ConnectToServer = new ConnectToServer("192.168.1.122", 12222);
+			var connect:ConnectToServer = new ConnectToServer();
 			var login:EditorLogin = new EditorLogin();
 			var gen:GenTestMetaWork = new GenTestMetaWork();
 			var save:SaveMetaWork = new SaveMetaWork();

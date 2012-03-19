@@ -1,16 +1,17 @@
 package org.musince.actions
 {
-	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	
-	import mx.messaging.AbstractConsumer;
-	
-	import org.musince.Config;
 	import org.musince.core.TimeSlice;
 	import org.musince.data.MetaChapterResource;
-	import org.musince.data.MetaResource;
+	import org.musince.global.$athena;
+	import org.musince.global.$chapterResource;
+	import org.musince.global.$clickIcon;
 	import org.musince.global.$config;
 	import org.musince.global.$loadManager;
+	import org.musince.global.$playClickIcon;
+	import org.musince.global.$progressPanel;
+	import org.musince.global.$sender;
 	import org.musince.global.$ui;
 	import org.musince.load.GroupLoader;
 	import org.musince.load.LoadItem;
@@ -29,11 +30,18 @@ package org.musince.actions
 		
 		override public function onStart():void
 		{
-			var url:String =  input["chapter"] + ".swf";
+			var url:String =  "C" + input["chapter"] + ".swf";
 			$loadManager.add(url, onMetaLoad, onMetaProgress);
 			_progress = new Progress();
-			_progress.onEndHook = onProgressEnd;
-			$ui.startProgress(_progress);
+			_progress.endHook = onProgressEnd;
+			$ui.clear();
+			$ui._backLayer.addChild($progressPanel);
+			$progressPanel.alpha = 0;
+			var fade:FadeInDisplayObject = new FadeInDisplayObject($progressPanel, 0.1);
+			var updateProgress:UpdateProgress = new UpdateProgress(_progress, $progressPanel);
+			$athena.addTimeSlice(fade);
+			$athena.addTimeSlice(_progress);
+			$athena.addTimeSlice(updateProgress);
 		}
 		
 		private function onMetaProgress(item:LoadItem):void
@@ -46,9 +54,9 @@ package org.musince.actions
 //			var data:ByteArray = item.loader.getContent() as ByteArray;
 //			_meta = new MetaResource;
 //			_meta.unserialize(data);
-			output["image"] = new Dictionary;
-			output["sound"] = new Dictionary;
-			
+			$chapterResource.image = output["image"] = new Dictionary;
+			$chapterResource.sound = output["sound"] = new Dictionary;
+				
 			_meta = item.loader.getContent()as MetaChapterResource;
 			loadImage();
 		}
@@ -72,7 +80,7 @@ package org.musince.actions
 		
 		private function onImageLoad(loader:GroupLoader):void
 		{
-			var image:Dictionary = output.image;
+			var image:Dictionary = output["image"];
 			for each (var item:LoadItem in _loader.items)
 			{
 				image[item.param] = item.loader.getContent();
@@ -93,7 +101,7 @@ package org.musince.actions
 				return;
 			}
 			_loader = new GroupLoader();
-			for each(var id in in _meta.sound)
+			for each(var id:int in _meta.sound)
 			{
 				_loader.add($config.ResourceRoot + id + ".mp3", 
 					LoadManager.TYPE_SOUND, id);
@@ -103,12 +111,14 @@ package org.musince.actions
 		
 		private function onSoundProgress(v:Number):void
 		{
-			_progress.setNow(0.5 + v * 0.5);
+			var p:Number = 0.5 + v * 0.5;
+			if (p < 1)
+				_progress.setNow(p);
 		}
 		
 		private function onSoundLoad(loader:GroupLoader):void
 		{
-			var sound:Dictionary = output.sound;
+			var sound:Dictionary = output["sound"];
 			for each (var item:LoadItem in _loader.items)
 			{
 				sound[item.param] = item.loader.getContent();
@@ -116,9 +126,20 @@ package org.musince.actions
 			_progress.setNow(1);
 		}
 		
-		private function onProgressEnd():void
+		private function onProgressEnd(ts:TimeSlice):void
 		{
+			var click:WaitingForClick = new WaitingForClick();
+			var fadeOut:FadeOutDisplayObject = new FadeOutDisplayObject($progressPanel, 0.05);
+			fadeOut.endHook = onProgressFadeOut;
+			click.appendNext(fadeOut);
+			$athena.addTimeSlice(click);
+		}
+		
+		private function onProgressFadeOut(ts:TimeSlice):void
+		{
+			$ui._backLayer.removeChild($progressPanel);
 			isEnd = true;
+			$sender.lua_rpc("on_chapter_load");
 		}
 	}
 }

@@ -3,42 +3,57 @@ package org.musince.display
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	import flash.utils.Dictionary;
 	
 	import org.musince.actions.BlankTime;
+	import org.musince.actions.Choosing;
 	import org.musince.actions.FadeInTalk;
 	import org.musince.actions.PlayChoice;
 	import org.musince.actions.PlayTalk;
 	import org.musince.actions.PlayTalkAvg;
 	import org.musince.actions.Progress;
 	import org.musince.actions.UpdateProgress;
-	import org.musince.actions.Choosing;
 	import org.musince.core.TimeSlice;
 	import org.musince.global.$athena;
+	import org.musince.global.$guideText;
 	import org.musince.logic.GameObject;
 	import org.musince.util.DisplayUtil;
+	import org.musince.util.TextFieldUtil;
 	
 	public class UI extends GameObject
 	{
 		public static var WIDTH:int = 1280;
 		public static var HEIGHT:int = 720;
 		
-		private var _root:Sprite; 
+		private var root:Sprite; 
 		
-		private var _talk:TalkPanel;
-		private var _backLayer:Sprite = new Sprite();
-		private var _updateProgress:UpdateProgress;
-		private var _progressLayer:Sprite = new Sprite();
+		public var _talk:TalkPanel;
+		public var _backLayer:Sprite = new Sprite();
+		public var contentLayer:Sprite = new Sprite();
+		public var clickIconLayer:Sprite = new Sprite();
+		
+//		private var _updateProgress:UpdateProgress;
+//		private var _progressPanel:ProgressPanel = new ProgressPanel();
 		
 		public function UI(root:Sprite)
 		{
 			super();
-			_root = root;
+			this.root = root;
 			_talk = new TalkPanel();
-			_root.addChild(_backLayer);
+			root.addChild(_backLayer);
+			root.addChild(contentLayer);
 			_talk.setSize(WIDTH, 200);
 			_talk.y = 520;
-//			_root.addChild(_talk);
+			var tf:TextField = TextFieldUtil.getTextField();
+			tf.autoSize = TextFieldAutoSize.NONE;
+			tf.width = root.stage.stageWidth;
+			tf.alpha = 0;
+			tf.y = HEIGHT/2 - tf.height/2;
+			$guideText = tf;
+			
+			root.addChild(clickIconLayer);
 		}
 		
 		public function changeBackground(v:DisplayObject):void
@@ -62,7 +77,7 @@ package org.musince.display
 		public function playSimpleTalk(text:String):void
 		{
 			var talk:PlayTalk = new PlayTalkAvg(_talk.talkText);
-			if (_root.contains(_talk))
+			if (root.contains(_talk))
 			{
 				talk.input["text"] = text;
 				$athena.addTimeSlice(talk);
@@ -81,23 +96,35 @@ package org.musince.display
 			
 		}
 		
-		public function startProgress(_progress:Progress):void
+		public function clearBackGround():void
 		{
-			while (_root.numChildren > 0)
+			while (_backLayer.numChildren > 0)
 			{
-				_root.removeChildAt(0);
+				_backLayer.removeChildAt(0);
 			}
-			_root.addChild(_progressLayer);
-			_updateProgress = new UpdateProgress(_progress, _progressLayer);
-//			$athena.addTimeSlice(_progress);
-			$athena.addTimeSlice(_updateProgress);
 		}
 		
-		public function closeProgress():void
+		public function clear():void
 		{
-			_updateProgress.isEnd = true;
-			_updateProgress = null;
+			clearBackGround();
+			contentLayer.removeChildren();
+			clickIconLayer.removeChildren();
 		}
+		
+//		public function startProgress(_progress:Progress):void
+//		{
+
+//			_root.addChild(_progressPanel);
+//			_updateProgress = new UpdateProgress(_progress, _progressPanel);
+//			$athena.addTimeSlice(_progress);
+//			$athena.addTimeSlice(_updateProgress);
+//		}
+		
+//		public function closeProgress():void
+//		{
+//			_updateProgress.isEnd = true;
+//			_updateProgress = null;
+//		}
 		
 		public function playChoice(choices:Array):void
 		{	
@@ -105,7 +132,7 @@ package org.musince.display
 			var wait:Choosing = new Choosing(_talk);
 			play.appendNext(wait);
 			
-			if (_root.contains(_talk))
+			if (root.contains(_talk))
 			{
 				play.input["choices"] = choices;
 				$athena.addTimeSlice(play);
@@ -122,7 +149,7 @@ package org.musince.display
 		public function fadeInTalk(input:Dictionary, next:TimeSlice):void
 		{
 			_talk.alpha = 0;
-			_root.addChild(_talk);
+			root.addChild(_talk);
 			var fade:FadeInTalk = new FadeInTalk(_talk);
 			var blank:BlankTime = new BlankTime();
 			blank.last = 500;
