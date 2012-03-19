@@ -8,7 +8,7 @@ package org.musince.net
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 	
-	public class Tunnel extends Socket
+	public class Tunnel extends Socket implements IDataOutputNet
 	{
 		public static const DATA_LENGTH_BYTES:int = 4;
 		private var _expectLength:int = DATA_LENGTH_BYTES;

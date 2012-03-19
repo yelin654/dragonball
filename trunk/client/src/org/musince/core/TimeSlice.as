@@ -1,6 +1,7 @@
 package org.musince.core
 {
 	import flash.display.InteractiveObject;
+	import flash.display3D.IndexBuffer3D;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.ui.Keyboard;
@@ -28,12 +29,15 @@ package org.musince.core
 		public var input:Dictionary = new Dictionary();
 		public var output:Dictionary = new Dictionary();
 		
-		public var _interval:int;
+		public var interval:int = 1;
+		private var _cd:int; 
 		private var _nextUpdateTime:int;
 		protected var _now:int;
 		protected var _then:int;
 		
-		public var endHook:Function;
+		public var traceT:Boolean = true;
+		
+		public var _endHook:Array = new Array();
 		
 		public function TimeSlice()
 		{
@@ -42,6 +46,7 @@ package org.musince.core
 		public function start(now:int):void
 		{
 			_then = _now = now;
+			_cd = interval; 
 			isEnd = false;
 			onStart();
 		}
@@ -49,10 +54,14 @@ package org.musince.core
 		public function end():void
 		{
 			onEnd();
-			if (endHook != null)
+			for each (var f:Function in _endHook)
 			{
-				endHook(this);
+				f.call(this, this);
 			}
+//			if (endHook != null)
+//			{
+//				endHook(this);
+//			}
 		}
 		
 		public function onStart():void
@@ -61,16 +70,22 @@ package org.musince.core
 		
 		public function onEnd():void
 		{
-		}
+		}		
 		
 		public function update(now:int):void
 		{
+			if (_cd < interval) 
+			{
+				_cd++;
+				return;
+			}
+			_cd = 1;
 			if (_nextUpdateTime <= now)
 			{
 				_now = now;
 				onUpdate();
 				_then = now;
-				_nextUpdateTime = now + _interval;
+				_nextUpdateTime = now + interval;
 			}
 		}
 		
@@ -126,7 +141,10 @@ package org.musince.core
 			
 		}
 		
-		
+		public function set endHook(f:Function):void
+		{
+			_endHook.push(f);
+		}
 
 	}
 }

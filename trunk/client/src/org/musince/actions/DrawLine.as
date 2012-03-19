@@ -43,12 +43,5 @@ package org.musince.actions
 				isEnd = true;
 			}
 		}
-		
-		override public function onEnd():void
-		{
-			trace("draw line end");
-		}
-		
-		
 	}
 }

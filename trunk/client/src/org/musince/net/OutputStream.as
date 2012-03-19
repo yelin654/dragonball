@@ -6,9 +6,5 @@ package org.musince.net
 		{
 			super();
 		}
-		
-		public function flush():void {
-			
-		}
 	}
 }

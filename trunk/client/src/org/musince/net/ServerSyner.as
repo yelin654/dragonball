@@ -1,13 +1,14 @@
 package org.musince.net
 {
 	import flash.utils.IDataInput;
+	import flash.utils.IDataOutput;
 	import flash.utils.getDefinitionByName;
 	
 	import org.musince.global.$finder;
 	import org.musince.logic.GameObject;
 	import org.musince.logic.ParamList;
 
-	public class ServerSyner implements IDataReceiver
+	public class ServerSyner implements IDataReceiver, IDataSender
 	{
 		private var _tunnel:Tunnel;
 		
@@ -16,6 +17,7 @@ package org.musince.net
 		public static const COMMAND_GROUP_START:int = 2;
 		public static const COMMAND_GROUP_END:int = 3;
 		public static const COMMAND_GROUP_ROC:int = 4;
+		public static const COMMAND_LUA_RPC:int = 8;
 		
 		
 		private var _group_cache:Array;
@@ -50,18 +52,34 @@ package org.musince.net
 			}
 		}
 		
-		public function roc(key:Array, method_name:String, params:Array):void {
-			var stream:OutputStream = get_command_stream(COMMAND_ROC);
+		public function roc(key:Array, method_name:String, params:Array=null):void {
+			var stream:IDataOutputNet = get_command_stream(COMMAND_ROC);
 			(new ParamList(key)).serialize(stream);
 			stream.writeUTF(method_name);
 			(new ParamList(params)).serialize(stream);
 			stream.flush();
 		}
 		
-		private function get_command_stream(id:int, size:int=0):OutputStream {
+		public function rpc(method_name:String, params:Array=null):void {
+			var stream:IDataOutputNet = get_command_stream(COMMAND_RPC);
+			stream.writeUTF(method_name);
+			(new ParamList(params)).serialize(stream);
+			stream.flush();
+		}
+		
+		public function lua_rpc(method_name:String, params:Array=null):void {
+			var stream:IDataOutputNet = get_command_stream(COMMAND_LUA_RPC);
+			stream.writeUTF(method_name);
+			(new ParamList(params)).serialize(stream);
+			stream.flush();
+		}
+		
+		private function get_command_stream(id:int, size:int=0):IDataOutputNet {
 			var stream:OutputStream = _tunnel.getOutputStream();
 			stream.writeShort(id);
 			return stream;
+//			_tunnel.writeShort(id);
+//			return _tunnel;
 		}
 		
 		private var key:ParamList;

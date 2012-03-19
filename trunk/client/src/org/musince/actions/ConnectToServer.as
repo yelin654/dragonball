@@ -3,27 +3,24 @@ package org.musince.actions
 	import flash.events.Event;
 	
 	import org.musince.core.TimeSlice;
+	import org.musince.global.$config;
 	import org.musince.global.$log;
+	import org.musince.global.$receiver;
 	import org.musince.global.$syner;
 	import org.musince.global.$tunnel;
 	
 	public class ConnectToServer extends TimeSlice
 	{
-		private var _address:String; 
-		private var _port:int; 
-		
-		public function ConnectToServer(address:String, port:int)
+		public function ConnectToServer()
 		{
 			super();
-			_address = address;
-			_port = port;
 		}
 		
 		override public function onStart():void 
-		{			
+		{		
 			$tunnel.addEventListener(Event.CONNECT, onConnect);
-			$log.debug("connect to", _address, ":", _port);
-			$tunnel.connect(_address, _port);
+			$log.debug("connect to", $config.ServerAddress, ":", $config.ServerPort);
+			$tunnel.connect($config.ServerAddress, $config.ServerPort);
 		}
 		
 		private function onConnect(e:Event):void
