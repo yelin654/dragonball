@@ -36,8 +36,6 @@ public:
     void write_string(const char*);
     void write_string_array(char** buf, int len);
     void write_stream(const Stream& stream);
-    void change_at(Pos* pos, void* data, int len);
-    Pos get_write_pos();
 
     char read_byte();
     short read_short();
