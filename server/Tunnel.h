@@ -1,27 +1,23 @@
 #ifndef TUNNEL_H
 #define TUNNEL_H
 
-#include "Stream.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+#include "Stream.h"
+#include "OutputStream.h"
+
 class Tunnel;
 
-class TunnelOutputStream: public Stream {
+class TunnelOutputStream: public OutputStream {
 public:
-    TunnelOutputStream(Tunnel* t, int cap): Stream(cap), tunnel(t), writing(false) {};
-    void new_block(int size);
+    TunnelOutputStream(int cap): OutputStream(cap), tunnel(NULL) {};
     Tunnel* tunnel;
     void flush();
     void write_sock();
 
 private:
-    Block* _start;
-    char* _from;
-    char* _sock_ite;
-    bool writing;
     void write_head();
-    bool read_end();
 };
 
 class TunnelInputStream: public Stream {
@@ -47,6 +43,7 @@ public:
     void on_data_in();
     void on_data_in2();
     void on_data_out();
+    void write_cache();
 
     bool connecting;
     bool writable;
@@ -58,7 +55,10 @@ public:
 
     IDataReceiver* receiver;
 
-    static char _WRITE_BUF[];
+    static TunnelOutputStream* _out_stream;
+    OutputStream* _out_cache;
+
+    //static char _WRITE_BUF[];
 
 private:
 
@@ -73,7 +73,7 @@ private:
     char* _in_buf;
     int _in_buf_len;
     TunnelInputStream* _in_stream;
-    TunnelOutputStream* _out_stream;
+
 };
 
 #endif

@@ -6,19 +6,19 @@
 #include "Log.h"
 
 char Tunnel::_READ_BUF[READ_MAX];
-char Tunnel::_WRITE_BUF[WRITE_MAX];
+TunnelOutputStream* Tunnel::_out_stream = new TunnelOutputStream(WRITE_MAX);
 
 Tunnel::Tunnel(int socket_fd, IDataReceiver* receiver):connecting(true), _socket_fd(socket_fd), receiver(receiver){
     receiver->on_connect(this);
     _readingHead = true;
     _expectRead = HEAD_LENGTH;
-    _out_stream = new TunnelOutputStream(this, WRITE_MAX);
     _in_stream = new TunnelInputStream(this, 0);
+    _out_cache = new OutputStream(1);
     write_pending = false;
 }
 
 Tunnel::~Tunnel() {
-    delete _out_stream;
+    delete _out_cache;
     delete _in_stream;
 }
 
@@ -168,100 +168,103 @@ void Tunnel::on_data_in() {
     return;
 }
 
-
 void Tunnel::on_data_out() {
     if (!write_pending) return;
-    _out_stream->write_sock();
+    write_cache();
+}
+
+void Tunnel::write_cache() {
+    int to_write = WRITE_MAX;
+    to_write = min(to_write, _out_cache->length());
+    int nwrite = write(_socket_fd, _out_cache->data, to_write);
+    write_pending = nwrite < _out_cache->length();
+    _out_cache->shift(nwrite);
 }
 
 TunnelOutputStream* Tunnel::get_output_stream(int size) {
-    _out_stream->new_block(size);
+    _out_stream->tunnel = this;
+    _out_stream->reset();
+    _out_stream->write_bytes(&size, Tunnel::HEAD_LENGTH);
     return _out_stream;
-}
-
-void TunnelOutputStream::new_block(int size) {
-    if (writing) {
-        write_head();
-        writing = false;
-    }
-    int tsize = size + Tunnel::HEAD_LENGTH;
-    int left = _end->data + _end->cap - _end->end;
-    if (left < tsize) {
-        extend(tsize - left);
-        //        wnext();
-    }
-    _start = _wb;
-    _from = _wi;
-    write_bytes(&tsize, Tunnel::HEAD_LENGTH);
 }
 
 void TunnelOutputStream::flush() {
     write_head();
-    writing = false;
-    if (tunnel->write_pending) return;
+    if (tunnel->write_pending)
+    {
+        tunnel->_out_cache->write_bytes(data, length());
+        return;
+    }
     write_sock();
 }
 
 void TunnelOutputStream::write_sock() {
-    Block* tb = _rb;
-    char* ti = _ri;
-    int nread = 0;
-    int nwrite;
-    while (tb != _start) {
-        nread += tb->end - ti;
-        tb = tb->next;
-        if (NULL != tb)
-            ti = tb->data;
-    }
-    if (NULL != tb)
-        nread += _from - ti;
-    if (Tunnel::WRITE_MAX < nread)
-        nread = Tunnel::WRITE_MAX;
-    //    nread = min(Tunnel::WRITE_MAX, nread);
-
-    tb = _rb;
-    ti = _ri;
-    read_bytes(Tunnel::_WRITE_BUF, nread);
-    nwrite = write(tunnel->_socket_fd, Tunnel::_WRITE_BUF, nread);
-
-    if (nwrite < nread) {
-        _rb = tb;
-        _ri = ti;
-        skip(nwrite);
+    int to_write = Tunnel::WRITE_MAX;
+    to_write = min(to_write, length());
+    int nwrite = write(tunnel->_socket_fd, data, to_write);
+    if (nwrite < length()) {
+        tunnel->_out_cache->write_bytes(data+nwrite, length()-nwrite);
         tunnel->write_pending = true;
+        debug("[WARNING] socket write pending");
     }
 
-    while (_begin != _rb) {
-        if (!_begin->copy)
-            delete [] _begin->data;
-        tb = _begin;
-        _begin = _begin->next;
-        delete tb;
-    }
+    // Block* tb = _rb;
+    // char* ti = _ri;
+    // int nread = 0;
+    // int nwrite;
+    // while (tb != _start) {
+    //     nread += tb->end - ti;
+    //     tb = tb->next;
+    //     if (NULL != tb)
+    //         ti = tb->data;
+    // }
+    // if (NULL != tb)
+    //     nread += _from - ti;
+    // if (Tunnel::WRITE_MAX < nread)
+    //     nread = Tunnel::WRITE_MAX;
+    // //    nread = min(Tunnel::WRITE_MAX, nread);
+
+    // tb = _rb;
+    // ti = _ri;
+    // read_bytes(Tunnel::_WRITE_BUF, nread);
+    // nwrite = write(tunnel->_socket_fd, Tunnel::_WRITE_BUF, nread);
+
+    // if (nwrite < nread) {
+    //     _rb = tb;
+    //     _ri = ti;
+    //     skip(nwrite);
+    //     tunnel->write_pending = true;
+    // }
+
+    // while (_begin != _rb) {
+    //     if (!_begin->copy)
+    //         delete [] _begin->data;
+    //     tb = _begin;
+    //     _begin = _begin->next;
+    //     delete tb;
+    // }
 }
 
 void TunnelOutputStream::write_head() {
-    int len = _start->end - _from - 4;
-    Block* ite = _start;
-    if (ite != _wb) {
-        while (ite != _wb->next) {
-            len = len + ite->end - ite->data;
-            ite = ite->next;
-        }
-    }
-    int left = _start->end - _from;
-    if (left < Tunnel::HEAD_LENGTH) {
-        memcpy(_from, &len, left);
-        memcpy(_start->next->data, (char*)&len+left,
-               Tunnel::HEAD_LENGTH-left);
-    } else {
-        memcpy(_from, &len, Tunnel::HEAD_LENGTH);
-    }
-    _start = _wb;
-    _from = _wi;
+    int head = length() - Tunnel::HEAD_LENGTH;
+    memcpy(data, &head, Tunnel::HEAD_LENGTH);
+    // int len = _start->end - _from - 4;
+    // Block* ite = _start;
+    // if (ite != _wb) {
+    //     while (ite != _wb->next) {
+    //         len = len + ite->end - ite->data;
+    //         ite = ite->next;
+    //     }
+    // }
+    // int left = _start->end - _from;
+    // if (left < Tunnel::HEAD_LENGTH) {
+    //     memcpy(_from, &len, left);
+    //     memcpy(_start->next->data, (char*)&len+left,
+    //            Tunnel::HEAD_LENGTH-left);
+    // } else {
+    //     memcpy(_from, &len, Tunnel::HEAD_LENGTH);
+    // }
+    // _start = _wb;
+    // _from = _wi;
 }
 
-
-bool TunnelOutputStream::read_end() {
-    return _rb == _start &&  _ri == _from;
-}

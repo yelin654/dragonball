@@ -22,7 +22,7 @@ void update_lua_progress(StoryProgress* p)
 
 void lua_read_table(int index, ParamListSend* params) {
     int size = 0;
-    Pos pos = params->stream->get_write_pos();
+    char* pos = params->stream->wi;
     params->stream->write_bytes(&size, 1);
     lua_pushnil(L);
     int i = index - 1;
@@ -33,7 +33,7 @@ void lua_read_table(int index, ParamListSend* params) {
         lua_pop(L, 1);
         ++size;
     }
-    params->stream->change_at(&pos, &size, 1);
+    params->stream->change_at(pos, &size, 1);
 }
 
 

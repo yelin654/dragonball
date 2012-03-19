@@ -2,12 +2,12 @@
 #define PARAMLISTSEND_H
 
 #include "Param.h"
-#include "Stream.h"
+#include "OutputStream.h"
 #include "Log.h"
 
 class ParamListSend {
 public:
-    void attach(Stream* stream, int len) {
+    void attach(OutputStream* stream, int len) {
         this->stream = stream;
         stream->write_byte(len);
     };
@@ -115,7 +115,7 @@ public:
         stream->write_bytes(t->data, t->length);
     };
 
-    Stream* stream;
+    OutputStream* stream;
 };
 
 // template<>

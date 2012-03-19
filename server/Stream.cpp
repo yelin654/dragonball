@@ -64,34 +64,34 @@ inline void Stream::_write_bytes(const void* buf, int len) {
     _wb->end = _wi;
 }
 
-void Stream::change_at(Pos* pos, void* data, int len) {
-    int left = len;
-    char* ri = (char*)data;
-    Block* b = pos->block;
-    char* wi = pos->index;
-    int cap = b->data + b->cap - wi;
+// void Stream::change_at(Pos* pos, void* data, int len) {
+//     int left = len;
+//     char* ri = (char*)data;
+//     Block* b = pos->block;
+//     char* wi = pos->index;
+//     int cap = b->data + b->cap - wi;
 
-    while (left >0) {
-        if (cap < left) {
-            memcpy(wi, ri, cap);
-            left -= cap;
-            ri += cap;
-            b = b->next;
-            wi = b->data;
-            cap = b->cap;
-        } else {
-            memcpy(wi, ri, left);
-            left = 0;
-        }
-    }
-}
+//     while (left >0) {
+//         if (cap < left) {
+//             memcpy(wi, ri, cap);
+//             left -= cap;
+//             ri += cap;
+//             b = b->next;
+//             wi = b->data;
+//             cap = b->cap;
+//         } else {
+//             memcpy(wi, ri, left);
+//             left = 0;
+//         }
+//     }
+// }
 
-Pos Stream::get_write_pos() {
-    Pos pos;
-    pos.block = _wb;
-    pos.index = _wi;
-    return pos;
-}
+// Pos Stream::get_write_pos() {
+//     Pos pos;
+//     pos.block = _wb;
+//     pos.index = _wi;
+//     return pos;
+// }
 
 char Stream::read_byte() {
     char t;
