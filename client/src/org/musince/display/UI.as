@@ -9,6 +9,7 @@ package org.musince.display
 	
 	import org.musince.actions.BlankTime;
 	import org.musince.actions.Choosing;
+	import org.musince.actions.FadeInDisplayObject;
 	import org.musince.actions.FadeInTalk;
 	import org.musince.actions.PlayChoice;
 	import org.musince.actions.PlayTalk;
@@ -30,9 +31,11 @@ package org.musince.display
 		private var root:Sprite; 
 		
 		public var _talk:TalkPanel;
-		public var _backLayer:Sprite = new Sprite();
-		public var contentLayer:Sprite = new Sprite();
+		public var backgroundLayer:Sprite = new Sprite();
+		public var guideLayer:Sprite = new Sprite();
+		public var monoLayer:Sprite = new Sprite();
 		public var clickIconLayer:Sprite = new Sprite();
+		public var talkLayer:Sprite = new Sprite();
 		
 //		private var _updateProgress:UpdateProgress;
 //		private var _progressPanel:ProgressPanel = new ProgressPanel();
@@ -41,32 +44,31 @@ package org.musince.display
 		{
 			super();
 			this.root = root;
-			_talk = new TalkPanel();
-			root.addChild(_backLayer);
-			root.addChild(contentLayer);
-			_talk.setSize(WIDTH, 200);
-			_talk.y = 520;
-			var tf:TextField = TextFieldUtil.getTextField();
-			tf.autoSize = TextFieldAutoSize.NONE;
-			tf.width = root.stage.stageWidth;
-			tf.alpha = 0;
-			tf.y = HEIGHT/2 - tf.height/2;
-			$guideText = tf;
-			
+//			_talk = new TalkPanel();
+//			_talk.setSize(WIDTH, 200);
+//			_talk.y = 520;
+			root.addChild(backgroundLayer);
+			root.addChild(monoLayer);
+			root.addChild(guideLayer);
+			root.addChild(talkLayer);
 			root.addChild(clickIconLayer);
 		}
 		
 		public function changeBackground(v:DisplayObject):void
 		{
-			_backLayer.addChild(v);
+			backgroundLayer.removeChildren();
+			backgroundLayer.addChild(v);
+			backgroundLayer.alpha = 0;
+			var fadeIn:FadeInDisplayObject = new FadeInDisplayObject(backgroundLayer, 0.05);
+			$athena.addTimeSlice(fadeIn);
 			ajustBndPosition();
 		}
 		
 		public function ajustBndPosition():void
 		{
-			var bound:Rectangle = _backLayer.getBounds(_backLayer);
-			_backLayer.x = (WIDTH - bound.width) / 2;
-			_backLayer.y = (HEIGHT - _backLayer.height) / 2;			
+			var bound:Rectangle = backgroundLayer.getBounds(backgroundLayer);
+			backgroundLayer.x = (WIDTH - bound.width) / 2;
+			backgroundLayer.y = (HEIGHT - backgroundLayer.height) / 2;			
 		}
 		
 		public function changeBackgroundU(url:String):void
@@ -98,17 +100,18 @@ package org.musince.display
 		
 		public function clearBackGround():void
 		{
-			while (_backLayer.numChildren > 0)
+			while (backgroundLayer.numChildren > 0)
 			{
-				_backLayer.removeChildAt(0);
+				backgroundLayer.removeChildAt(0);
 			}
 		}
 		
 		public function clear():void
 		{
 			clearBackGround();
-			contentLayer.removeChildren();
+			guideLayer.removeChildren();
 			clickIconLayer.removeChildren();
+			monoLayer.removeChildren();
 		}
 		
 //		public function startProgress(_progress:Progress):void

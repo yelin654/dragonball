@@ -32,6 +32,7 @@ package org.musince.query
 		{
 			$log.debug("get success");
 			output["chapter"] = 0;
+			isEnd = true;
 		}
 	}
 }

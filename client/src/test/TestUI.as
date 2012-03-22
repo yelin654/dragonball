@@ -31,8 +31,8 @@ package test
 			ui = new UI(this);
 //			loader.load(new URLRequest("../res/1441121_1321877662.jpg"));
 //			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoad);
-			graphics.beginFill(0xffffff);
-			graphics.drawRect(0, 0, 1280, 720);
+//			graphics.beginFill(0xffffff);
+//			graphics.drawRect(0, 0, 1280, 720);
 			graphics.endFill();
 			$athena.start(stage);LoadManager;GroupLoader;
 			var timer:Timer = new Timer(1000, 1);

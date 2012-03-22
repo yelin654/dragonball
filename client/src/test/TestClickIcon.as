@@ -1,6 +1,7 @@
 package test
 {
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	
 	import org.musince.actions.MoveTo;
 	import org.musince.display.ClickIcon;
@@ -24,6 +25,8 @@ package test
 			$playClickIcon.icon = icon;
 			$athena.addTimeSlice($playClickIcon);
 			
+			stage.addEventListener(MouseEvent.RIGHT_CLICK, onRightClick);
+			
 //			var s:Number = 1;
 //			var moveUp:MoveTo = new MoveTo(icon.top, icon.top.x, 
 //				-icon.w/4, s);
@@ -40,6 +43,11 @@ package test
 			
 //			var moveTo:MoveTo = new MoveTo(icon, 600, 400, 2);
 //			$athena.addTimeSlice(moveTo);
+		}
+		
+		private function onRightClick(e:MouseEvent):void
+		{
+//			new TLF
 		}
 	}
 }

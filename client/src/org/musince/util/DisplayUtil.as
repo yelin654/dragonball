@@ -1,12 +1,25 @@
 package org.musince.util
 {
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
+	import flash.filters.ColorMatrixFilter;
 
 	public class DisplayUtil
 	{
 		public function DisplayUtil()
 		{
+		}
+		
+		public static const GrayFilter:ColorMatrixFilter = new ColorMatrixFilter([  
+			1,0,0,0,0,  
+			1,0,0,0,0,  
+			1,0,0,0,0,  
+			0,0,0,1,0]);
+		
+		public static function toGray(source:DisplayObject):void
+		{
+			source.filters = [GrayFilter];
 		}
 		
 		public static function removeChildren(container:DisplayObjectContainer):void

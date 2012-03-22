@@ -4,10 +4,11 @@ package org.musince.actions
 	
 	import org.musince.core.TimeSlice;
 	import org.musince.data.MetaTalkText;
+	import org.musince.global.$sender;
 	
 	public class PlayTalkAvg extends PlayTalk
 	{
-		public static const DEFAULT_INTERVAL:int = 200; 
+		public static const DEFAULT_INTERVAL:int = 80; 
 		
 		private var _max:int; 
 		private var _speed:int;
@@ -34,6 +35,7 @@ package org.musince.actions
 		{
 			return _speed;
 		}
+		
 		
 	}
 }

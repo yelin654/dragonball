@@ -9,7 +9,9 @@ package org.musince.rpc
 		 load_chapter,
 		 play_sound,
 		 play_monolog,
-		 stop_all_sound
+		 stop_all_sound,
+		 change_background,
+		 play_bgm
 		];
 	}
 }
