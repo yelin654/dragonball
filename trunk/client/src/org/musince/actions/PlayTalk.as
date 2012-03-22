@@ -68,10 +68,5 @@ package org.musince.actions
 		{
 			return  0;
 		}
-		
-		override public function onEnd():void
-		{
-			trace("play text end");
-		}
 	}
 }

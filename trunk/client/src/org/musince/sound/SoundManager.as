@@ -5,6 +5,7 @@ package org.musince.sound
 	import flash.media.SoundTransform;
 	import flash.utils.Dictionary;
 	
+	import org.musince.actions.FadeStopSound;
 	import org.musince.global.$log;
 
 	public class SoundManager
@@ -24,7 +25,7 @@ package org.musince.sound
 			{
 				playingBGM.stop();
 			}
-			var st:SoundTransform = new SoundTransform(0, 0);
+			var st:SoundTransform = new SoundTransform(0.2, 0);
 			playingBGM = sound.play(startTime, 0, st);
 			playings[id] = playingBGM;
 			$log.debug("play sound", id);

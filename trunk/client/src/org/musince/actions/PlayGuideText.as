@@ -4,6 +4,8 @@ package org.musince.actions
 	import org.musince.core.UIAction;
 	import org.musince.global.$athena;
 	import org.musince.global.$guideText;
+	import org.musince.global.$sender;
+	import org.musince.global.$ui;
 	
 	public class PlayGuideText extends TimeSlice
 	{
@@ -52,11 +54,18 @@ package org.musince.actions
 		
 		private function onPlayOver(t:TimeSlice):void
 		{
-			var rpc:SendRPC = new SendRPC("next_main_action", null);
+//			var rpc:SendRPC = new SendRPC("next_main_action", null);
 			var click:WaitingForClick = new WaitingForClick();
-			click.appendNext(rpc);
+			click.endHook = onClick;
+//			click.appendNext(rpc);
 			appendNext(click);
 			isEnd = true;
+		}
+		
+		public function onClick(ts:TimeSlice):void
+		{
+			$sender.lua_rpc("next_main_action");
+			$ui.guideLayer.removeChildren();
 		}
 	}
 }

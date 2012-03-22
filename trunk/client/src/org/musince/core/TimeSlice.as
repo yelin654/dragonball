@@ -38,6 +38,7 @@ package org.musince.core
 		public var traceT:Boolean = true;
 		
 		public var _endHook:Array = new Array();
+		public var _startHook:Array = new Array();
 		
 		public function TimeSlice()
 		{
@@ -49,6 +50,10 @@ package org.musince.core
 			_cd = interval; 
 			isEnd = false;
 			onStart();
+			for each (var f:Function in _startHook)
+			{
+				f.call(this, this);
+			}
 		}
 		
 		public function end():void
@@ -144,6 +149,11 @@ package org.musince.core
 		public function set endHook(f:Function):void
 		{
 			_endHook.push(f);
+		}
+		
+		public function set startHook(f:Function):void
+		{
+			_startHook.push(f);
 		}
 
 	}

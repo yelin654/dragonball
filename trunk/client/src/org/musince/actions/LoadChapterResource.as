@@ -6,10 +6,8 @@ package org.musince.actions
 	import org.musince.data.MetaChapterResource;
 	import org.musince.global.$athena;
 	import org.musince.global.$chapterResource;
-	import org.musince.global.$clickIcon;
 	import org.musince.global.$config;
 	import org.musince.global.$loadManager;
-	import org.musince.global.$playClickIcon;
 	import org.musince.global.$progressPanel;
 	import org.musince.global.$sender;
 	import org.musince.global.$ui;
@@ -35,7 +33,7 @@ package org.musince.actions
 			_progress = new Progress();
 			_progress.endHook = onProgressEnd;
 			$ui.clear();
-			$ui._backLayer.addChild($progressPanel);
+			$ui.backgroundLayer.addChild($progressPanel);
 			$progressPanel.alpha = 0;
 			var fade:FadeInDisplayObject = new FadeInDisplayObject($progressPanel, 0.1);
 			var updateProgress:UpdateProgress = new UpdateProgress(_progress, $progressPanel);
@@ -137,7 +135,7 @@ package org.musince.actions
 		
 		private function onProgressFadeOut(ts:TimeSlice):void
 		{
-			$ui._backLayer.removeChild($progressPanel);
+			$ui.backgroundLayer.removeChild($progressPanel);
 			isEnd = true;
 			$sender.lua_rpc("on_chapter_load");
 		}

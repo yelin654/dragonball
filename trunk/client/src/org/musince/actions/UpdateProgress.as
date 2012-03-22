@@ -20,11 +20,17 @@ package org.musince.actions
 			super();
 			_progress = progress;
 			progressPanel = ui;
+			_progress.endHook = onComplete;
 		}
 		
 		override public function onUpdate():void
 		{
 			progressPanel.update(_progress.current);
+		}
+		
+		private function onComplete(ts:TimeSlice):void
+		{
+			isEnd = true;
 		}
 	}
 }

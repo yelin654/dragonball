@@ -63,9 +63,9 @@ package org.musince.logic
 				}
 				if (action.isEnd)
 				{
-					action.end();
 					if (action.traceT)
 						$log.debug("[END_ACTION]", action.toString());
+					action.end();
 					_delete[action] = action;
 					for each (var next:TimeSlice in action.getNexts())
 					{
@@ -74,9 +74,9 @@ package org.musince.logic
 						{
 							next.input[key] = action.output[key];
 						}
-						next.start(_now);
 						if (next.traceT)
 							$log.debug("[START_ACTION]", next.toString());
+						next.start(_now);
 					}
 				}
 			}
@@ -97,17 +97,17 @@ package org.musince.logic
 		public function addTimeSlice(action:TimeSlice):void
 		{
 			_add[action] = action;
-			action.start(_now);
 			if (action.traceT)
 				$log.debug("[START_ACTION]", action.toString());
+			action.start(_now);
 		}
 		
 		public function removeTimeSlice(action:TimeSlice):void
 		{
 			_delete[action] = action;
-			action.end();
 			if (action.traceT)
 				$log.debug("[END_ACTION]", action.toString());
+			action.end();
 		}
 		
 		
@@ -166,6 +166,11 @@ package org.musince.logic
 					slice.globalMouseClick(e);
 				}
 			}
+		}
+		
+		public function getActiveSlice():Dictionary
+		{
+			return _actions;
 		}
 	}
 }
