@@ -1,6 +1,7 @@
 #include "GameClient.h"
 #include "ClientSyner.h"
-#include "Stream.h"
+#include "OutputStream.h"
+#include "InputStream.h"
 
 DEFINE_GAME_OBJECT(GameClient)
 
@@ -9,7 +10,7 @@ GameClient::GameClient() {
     set_key(&pl);
 }
 
-void GameClient::unserialize(Stream* stream) {
+void GameClient::unserialize(InputStream* stream) {
     short slen = stream->read_short();
     name = new char[slen];
     stream->read_bytes(name, slen);
@@ -17,6 +18,6 @@ void GameClient::unserialize(Stream* stream) {
     pw = stream->read_int();
 }
 
-void GameClient::serialize(Stream* stream) {
+void GameClient::serialize(OutputStream* stream) {
 
 }

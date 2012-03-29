@@ -5,29 +5,16 @@
 #include <list>
 using namespace std;
 
-class Block {
-public:
-    Block(char* dt, int len):data(dt), end(dt), cap(len), next(NULL){};
-    char* data;
-    char* end;
-    bool copy;
-    int cap;
-    Block* next;
-};
-
-class Pos {
-public:
-    Block* block;
-    char* index;
-};
-
-typedef const char* const_char;
-
 class Stream {
 public:
-    Stream(int cap=0);
-    Stream(char* data, int len);
+    Stream(int cap);
+    Stream();
     virtual ~Stream();
+
+    void attach_data(char* d, int len);
+    void shift(int len);
+    void reset();
+
     void write_byte(char);
     void write_short(short);
     void write_int(int);
@@ -36,39 +23,21 @@ public:
     void write_string(const char*);
     void write_string_array(char** buf, int len);
     void write_stream(const Stream& stream);
+    void change_at(char* pos, void* data, int len);
 
     char read_byte();
     short read_short();
     int read_int();
     void read_int_array(int* buf, int& len);
-    int read_bytes(void* buf, int len);
+    virtual int read_bytes(void* buf, int len);
     int read_string(char* buf);
 
-    void append(char* data, int len);
-    void copy(const Stream* stream);
-    void clear();
-    int length() const;
+    int length() const {return wi-data;} ;
 
-    void extend(int len);
-    void skip(int len);
-
-    int inc;
-
-    Block*_wb;
-    char* _wi;
-    Block*_rb;
-    char* _ri;
-    Block* _begin;
-    Block* _end;
-    void wnext();
-    void rnext();
-    void _write_bytes(const void* buf, int len);
-    void _read_bytes(void* buf, int len);
-
-private:
-    void append_block(char* data, int len);
-
-    int _length;
+    char* ri;
+    char* wi;
+    char* data;
+    int cap;
 };
 
 #endif

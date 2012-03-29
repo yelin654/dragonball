@@ -5,12 +5,13 @@
 #include <map>
 using namespace std;
 
-class Stream;
+#include "OutputStream.h"
+#include "InputStream.h"
 
 class Serializable {
 public:
-    virtual void serialize(Stream* stream) = 0;
-    virtual void unserialize(Stream* stream) = 0;
+    virtual void serialize(OutputStream* stream) = 0;
+    virtual void unserialize(InputStream* stream) = 0;
 
     static const int DEFAULT_SIZE = 256;
     virtual int size() {return DEFAULT_SIZE;};

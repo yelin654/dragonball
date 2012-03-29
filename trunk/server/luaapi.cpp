@@ -8,7 +8,6 @@
 #include "Array.h"
 #include "StoryProgress.h"
 #include "stlite.h"
-#include "Stream.h"
 #include "Tunnel.h"
 #include "ParamListSend.h"
 
@@ -125,6 +124,12 @@ int c_read_progress(lua_State* L)
     StoryProgress* progress = lua_context.player->current;
     lua_push_params(progress->story_idx, progress->chapter_idx, progress->action_idx);
     return 3;
+}
+
+int c_save_progress(lua_State* L)
+{
+    //StoryProgress* progress = lua_context.player->current;
+    return 0;
 }
 
 #define REG_LUA(name) \

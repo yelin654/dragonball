@@ -13,7 +13,7 @@ public:
     int chapter_idx;
     int action_idx;
     int offset;
-    virtual void serialize(Stream* stream);
+    virtual void serialize(OutputStream* stream);
 };
 
 #endif

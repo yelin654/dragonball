@@ -6,14 +6,13 @@ using namespace std;
 
 #include "GameObject.h"
 
-class Stream;
 class StoryProgress;
 
 class GameProgress: public GameObject {
     DECLARE_GAME_OBJECT(GameProgress, GameObject)
 public:
     list<StoryProgress*> storys;
-    virtual void serialize(Stream* stream);
+    virtual void serialize(OutputStream* stream);
 };
 
 #endif

@@ -4,14 +4,14 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#include "Stream.h"
+#include "InputStream.h"
 #include "OutputStream.h"
 
 class Tunnel;
 
 class TunnelOutputStream: public OutputStream {
 public:
-    TunnelOutputStream(int cap): OutputStream(cap), tunnel(NULL) {};
+    TunnelOutputStream(int cap, Tunnel* t=0): OutputStream(cap), tunnel(t) {};
     Tunnel* tunnel;
     void flush();
     void write_sock();
@@ -20,9 +20,9 @@ private:
     void write_head();
 };
 
-class TunnelInputStream: public Stream {
+class TunnelInputStream: public InputStream {
 public:
-    TunnelInputStream(Tunnel* t, int cap): Stream(cap), tunnel(t) {};
+    TunnelInputStream() {};
 
     Tunnel* tunnel;
 };
@@ -41,7 +41,6 @@ public:
 
     TunnelOutputStream* get_output_stream(int length);
     void on_data_in();
-    void on_data_in2();
     void on_data_out();
     void write_cache();
 
@@ -56,24 +55,16 @@ public:
     IDataReceiver* receiver;
 
     static TunnelOutputStream* _out_stream;
-    OutputStream* _out_cache;
+    static TunnelInputStream* _in_stream;
 
-    //static char _WRITE_BUF[];
+    OutputStream* _out_cache;
+    OutputStream* _in_cache;
+
+    static char IN_BUF[];
 
 private:
-
-    char* read_buf;
-    char* write_buf;
     bool _readingHead;
     int _expectRead;
-
-private:
-    static char _READ_BUF[];
-
-    char* _in_buf;
-    int _in_buf_len;
-    TunnelInputStream* _in_stream;
-
 };
 
 #endif

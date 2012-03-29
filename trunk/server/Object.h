@@ -35,7 +35,6 @@ inline Object* NEW_INSTANCE(const string& class_name)
 }
 
 class ParamList;
-class Stream;
 
 class Object: public Serializable {
 public:
@@ -47,10 +46,10 @@ public:
     const char* class_name() const {return get_class()->name;};
 
 public:
-    const Stream* key();
+    const OutputStream* key();
     void set_key(ParamList* params);
 private:
-    Stream* _key;
+    OutputStream* _key;
 
 public:
     bool pass_as_reference;

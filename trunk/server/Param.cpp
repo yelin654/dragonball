@@ -3,9 +3,11 @@
 #include <string.h>
 #include "Param.h"
 #include "Object.h"
-#include "Stream.h"
+#include "OutputStream.h"
+#include "InputStream.h"
 #include "IObjectFinder.h"
 #include "macro.h"
+#include "Log.h"
 
 Param::Param(const char* v, bool copy):_data(v), _type(TYPE_STRING), _delete(copy)
 {
@@ -18,7 +20,7 @@ Param::Param(const char* v, bool copy):_data(v), _type(TYPE_STRING), _delete(cop
     }
 }
 
-typedef void (Param::*SERIALIZE_FUNC)(Stream* stream) const;
+typedef void (Param::*SERIALIZE_FUNC)(OutputStream* stream) const;
 const SERIALIZE_FUNC Param::_serialize_func_table[TYPE_NUM] = {
     &Param::serialize_int,
     &Param::serialize_string,
@@ -29,31 +31,32 @@ const SERIALIZE_FUNC Param::_serialize_func_table[TYPE_NUM] = {
     &Param::serialize_byte_array
 };
 
-inline void Param::serialize(Stream* stream) {
+inline void Param::serialize(OutputStream* stream) {
     stream->write_bytes((char*)(&_type), 1);
     (this->*_serialize_func_table[_type])(stream);
 }
 
-inline void Param::serialize_int(Stream* stream) const {
+inline void Param::serialize_int(OutputStream* stream) const {
     stream->write_int((int)_data);
 };
 
-inline void Param::serialize_string(Stream* stream) const {
+inline void Param::serialize_string(OutputStream* stream) const {
     stream->write_string((char*)_data);
 };
 
-void Param::serialize_object(Stream* stream) const {
+void Param::serialize_object(OutputStream* stream) const {
     Object* o = (Object*)_data;
     stream->write_bytes((char*)&o->pass_as_reference, 1);
     if (o->pass_as_reference) {
-        stream->copy(o->key());
+        error("dont use");
+        //stream->copy(o->key());
     } else {
         stream->write_string(o->class_name());
         o->serialize(stream);
     }
 };
 
-void Param::serialize_int_array(Stream* stream) const {
+void Param::serialize_int_array(OutputStream* stream) const {
     Array<int>& array = *((Array<int>*)_data);
     int* data = array.data;
     stream->write_int(array.length);
@@ -61,7 +64,7 @@ void Param::serialize_int_array(Stream* stream) const {
         stream->write_int(data[i]);
 }
 
-void Param::serialize_string_array(Stream* stream) const {
+void Param::serialize_string_array(OutputStream* stream) const {
     Array<char*>& array = *((Array<char*>*)_data);
     char** data = array.data;
     stream->write_int(array.length);
@@ -69,7 +72,7 @@ void Param::serialize_string_array(Stream* stream) const {
         stream->write_string(data[i]);
 }
 
-void Param::serialize_object_array(Stream* stream) const {
+void Param::serialize_object_array(OutputStream* stream) const {
     Array<Object*>& array = *((Array<Object*>*)_data);
     Object** data = array.data;
     stream->write_int(array.length);
@@ -78,7 +81,8 @@ void Param::serialize_object_array(Stream* stream) const {
         o = data[i];
         stream->write_bytes((char*)&o->pass_as_reference, 1);
         if (o->pass_as_reference) {
-            stream->copy(o->key());
+            error("dont use");
+            //stream->copy(o->key());
         } else {
             stream->write_string(o->class_name());
             o->serialize(stream);
@@ -86,14 +90,14 @@ void Param::serialize_object_array(Stream* stream) const {
     }
 }
 
-void Param::serialize_byte_array(Stream* stream) const {
+void Param::serialize_byte_array(OutputStream* stream) const {
     const ByteArray* bytes = to_byte_array();
     stream->write_int(bytes->length);
     stream->write_bytes(bytes->data, bytes->length);
 }
 
 
-typedef void (Param::*UNSERIALIZE_FUNC)(Stream* stream);
+typedef void (Param::*UNSERIALIZE_FUNC)(InputStream* stream);
 const UNSERIALIZE_FUNC Param::_unserialize_func_table[TYPE_NUM] = {
     &Param::_unserialize_int,
     &Param::_unserialize_string,
@@ -104,17 +108,17 @@ const UNSERIALIZE_FUNC Param::_unserialize_func_table[TYPE_NUM] = {
     &Param::_unserialize_byte_array
 };
 
-inline void Param::unserialize(Stream* stream) {
+inline void Param::unserialize(InputStream* stream) {
     _type = stream->read_byte();
     (this->*_unserialize_func_table[_type])(stream);
     _delete = true;
 };
 
-inline void Param::_unserialize_int(Stream* stream) {
+inline void Param::_unserialize_int(InputStream* stream) {
     _data = (void*)stream->read_int();
 };
 
-inline void Param::_unserialize_string(Stream* stream) {
+inline void Param::_unserialize_string(InputStream* stream) {
     int len = stream->read_short();
     char* buf = new char[len+1];
     buf[len] = '\0';
@@ -122,7 +126,7 @@ inline void Param::_unserialize_string(Stream* stream) {
     _data = (void*)buf;
 };
 
-void Param::_unserialize_object(Stream* stream) {
+void Param::_unserialize_object(InputStream* stream) {
     if (stream->read_byte()) {
         ParamList key;
         key.unserialize(stream);
@@ -141,7 +145,7 @@ void Param::_unserialize_object(Stream* stream) {
     }
 };
 
-void Param::_unserialize_int_array(Stream* stream) {
+void Param::_unserialize_int_array(InputStream* stream) {
     int len = stream->read_int();
     int* array = new int[len];
     for (int i = 0; i < len; ++i)
@@ -149,7 +153,7 @@ void Param::_unserialize_int_array(Stream* stream) {
     _data = (void*)(new Array<int>(array, len));
 };
 
-void Param::_unserialize_string_array(Stream* stream) {
+void Param::_unserialize_string_array(InputStream* stream) {
     int len = stream->read_int();
     char** array = new char*[len];
     char* str; int size;
@@ -163,7 +167,7 @@ void Param::_unserialize_string_array(Stream* stream) {
     _data = (void*)(new Array<char*>(array, len));
 };
 
-void Param::_unserialize_object_array(Stream* stream) {
+void Param::_unserialize_object_array(InputStream* stream) {
     int num = stream->read_int();
     Object** array = new Object*[num];
     Object* o;
@@ -187,7 +191,7 @@ void Param::_unserialize_object_array(Stream* stream) {
     _data = (void*)(new Array<Object*>(array, num));
 };
 
-void Param::_unserialize_byte_array(Stream* stream) {
+void Param::_unserialize_byte_array(InputStream* stream) {
     int len = stream->read_int();
     char* data = new char[len];
     stream->read_bytes(data, len);
@@ -277,7 +281,7 @@ void ParamList::add(const Param& param) {
     //    _params.push_back(&param);
 }
 
-void ParamList::serialize(Stream* stream) {
+void ParamList::serialize(OutputStream* stream) {
     char size = _list.size();
     stream->write_bytes(&size, 1);
     FOR_LIST(Param*, _list) {
@@ -288,7 +292,7 @@ void ParamList::serialize(Stream* stream) {
     // }
 }
 
-void ParamList::unserialize(Stream* stream) {
+void ParamList::unserialize(InputStream* stream) {
     int size = stream->read_byte();
     if (size <= 0) return;
     _delete = true;

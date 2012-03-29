@@ -3,7 +3,6 @@
 #include "ObjectFinder.h"
 #include "Object.h"
 #include "Param.h"
-#include "GUI.h"
 #include "GameServer.h"
 #include "GameClient.h"
 #include "EditorService.h"

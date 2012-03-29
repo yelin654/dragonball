@@ -2,17 +2,18 @@
 
 #include "Stream.h"
 
-Stream::Stream(int cap):inc(0) {
-    _begin = _end = NULL;
-    if (cap > 0)
-        extend(cap);
-    _length = cap;
+Stream::Stream(int cap) {
+    attach_data(new char[cap], cap);
 }
 
-Stream::Stream(char* data, int len):inc(0) {
-    _begin = _end = NULL;
-    append(data, len);
-    _length = len;
+Stream::~Stream() {
+    if (NULL != data)
+        delete [] data;
+}
+
+void Stream::attach_data(char* d, int len) {
+    ri = wi = data = d;
+    cap = len;
 }
 
 void Stream::write_byte(char c) {
@@ -45,53 +46,18 @@ void Stream::write_int_array(int* buf, int len) {
 }
 
 void Stream::write_bytes(const void* buf, int len) {
-    int left = _wb->data + _wb->cap - _wi;
-    char* index = (char*)buf;
-    if (left < len) {
-        if (left != 0) {
-            _write_bytes(buf, left);
-            index += left;
-        }
-        extend(len - left + inc);
-        wnext();
+    int has = length();
+    if (cap - has < len) {
+        char* new_data = new char[cap+len];
+        memcpy(new_data, data, has);
+        wi = new_data + has;
+        cap += len;
+        delete [] data;
+        data = new_data;
     }
-    _write_bytes(index, (char*)buf + len - index);
+    memcpy(wi, buf, len);
+    wi += len;
 }
-
-inline void Stream::_write_bytes(const void* buf, int len) {
-    memcpy(_wi, buf, len);
-    _wi += len;
-    _wb->end = _wi;
-}
-
-// void Stream::change_at(Pos* pos, void* data, int len) {
-//     int left = len;
-//     char* ri = (char*)data;
-//     Block* b = pos->block;
-//     char* wi = pos->index;
-//     int cap = b->data + b->cap - wi;
-
-//     while (left >0) {
-//         if (cap < left) {
-//             memcpy(wi, ri, cap);
-//             left -= cap;
-//             ri += cap;
-//             b = b->next;
-//             wi = b->data;
-//             cap = b->cap;
-//         } else {
-//             memcpy(wi, ri, left);
-//             left = 0;
-//         }
-//     }
-// }
-
-// Pos Stream::get_write_pos() {
-//     Pos pos;
-//     pos.block = _wb;
-//     pos.index = _wi;
-//     return pos;
-// }
 
 char Stream::read_byte() {
     char t;
@@ -118,28 +84,10 @@ void Stream::read_int_array(int* buf, int& len) {
 }
 
 int Stream::read_bytes(void* buf, int len) {
-    int left;
-    int nread = 0;
-    char* cbuf = (char*)buf;
-    while (nread < len && _rb != NULL) {
-        left = _rb->end - _ri;
-        if (left < len-nread) {
-            if (left != 0) {
-                _read_bytes(cbuf+nread, left);
-                nread += left;
-            }
-            rnext();
-        } else {
-            _read_bytes(cbuf+nread, len-nread);
-            return len;
-        }
-    }
+    int nread = min(data+cap-ri, len);
+    memcpy(buf, ri, nread);
+    ri += nread;
     return nread;
-}
-
-inline void Stream::_read_bytes(void* buf, int len) {
-    memcpy(buf, _ri, len);
-    _ri += len;
 }
 
 int Stream::read_string(char* buf) {
@@ -156,83 +104,27 @@ int Stream::read_string(char* buf) {
     return len;
 }
 
-inline void Stream::wnext() {
-    _wb = _wb->next;
-    if (NULL != _wb)
-        _wi = _wb->data;
+void Stream::reset() {
+    ri = wi = data;
 }
 
-inline void Stream::rnext() {
-    _rb = _rb->next;
-    if (NULL != _rb)
-        _ri = _rb->data;
+void Stream::change_at(char* pos, void* data, int len) {
+    memcpy(pos, data, len);
 }
 
-void Stream::skip(int len) {
-    int left;
-    int nread = 0;
-    while (nread < len && _rb != NULL) {
-        left = _rb->end - _ri;
-        if (left < len-nread) {
-            _ri += left;
-            nread += left;
-            rnext();
-        } else {
-            _ri = _ri + len - nread;
-            return;
-        }
-    }
-}
-
-void Stream::extend(int len) {
-    append_block(new char[len] , len);
-    _end->copy = false;
-}
-
-void Stream::append(char* data, int len) {
-    append_block(data, len);
-    _end->copy = true;
-    _end->end = _end->data+_end->cap;
-    _wb = _end;
-    _wi = _end->data;
-}
-
-void Stream::append_block(char* data, int len) {
-    Block* b = new Block(data, len);
-    if (NULL == _end) {
-        _wb = _rb = _begin = b;
-        _wi = _ri = b->data;
+void Stream::shift(int num) {
+    char* new_data;
+    int has = length();
+    if (num < has) {
+        has -= num;
+        new_data = new char[has];
+        memcpy(new_data, wi+num, has);
+        cap = has;
     } else {
-        _end->next = b;
+        new_data = new char[1];
+        cap = 1;
     }
-    _end = b;
-    _length += len;
+    delete [] data;
+    ri = wi = data = new_data;
 }
 
-void Stream::copy(const Stream* stream) {
-    Block* b = stream->_begin;
-    while (NULL != b) {
-        write_bytes(b->data, b->end - b->data);
-        b = b->next;
-    }
-}
-
-int Stream::length() const {
-    return _length;
-}
-
-void Stream::clear() {
-    Block* b;
-    while (_begin != NULL) {
-        if (!_begin->copy)
-            delete [] _begin->data;
-        b = _begin;
-        _begin = _begin->next;
-        delete b;
-    }
-    _end = NULL;
-}
-
-Stream::~Stream() {
-    clear();
-}

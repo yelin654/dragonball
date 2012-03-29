@@ -56,7 +56,8 @@ public:
         write_type(Param::TYPE_OBJECT);
         stream->write_bytes(&t->pass_as_reference, 1);
         if (t->pass_as_reference) {
-            stream->copy(t->key());
+            error("dont use");
+            //stream->copy(t->key());
         } else {
             stream->write_string(t->class_name());
             t->serialize(stream);
@@ -100,7 +101,8 @@ public:
             o = data[i];
             stream->write_bytes(&o->pass_as_reference, 1);
             if (o->pass_as_reference) {
-                stream->copy(o->key());
+                error("dont use");
+                //stream->copy(o->key());
             } else {
                 stream->write_string(o->class_name());
                 o->serialize(stream);

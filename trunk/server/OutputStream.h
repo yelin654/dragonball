@@ -1,19 +1,24 @@
 #ifndef OUTPUTSTREAM_H
 #define OUTPUTSTREAM_H
 
-#include "Stream.h"
-
-class OutputStream:public Stream {
+class OutputStream {
 public:
     OutputStream(int len);
     ~OutputStream();
-    void attach_data(char* d, int len);
-    virtual void write_bytes(const void* buf, int len);
+
+    void write_byte(char);
+    void write_short(short);
+    void write_int(int);
+    void write_int_array(int* buf, int len);
+    void write_string(const char*);
+    void write_string_array(char** buf, int len);
+
+    void write_bytes(const void* buf, int len);
+
     void change_at(char* pos, void* data, int len);
     void reset();
     void shift(int len);
-    int length() {return wi-data;};
-    //    void copy(const Stream* stream);
+    int length() const {return wi-data;};
 
     char* wi;
     char* data;

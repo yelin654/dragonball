@@ -1,18 +1,44 @@
 #include <string.h>
 
+#include "Log.h"
 #include "OutputStream.h"
 
 OutputStream::OutputStream(int len) {
-    attach_data(new char[len], len);
+    wi = data = new char[len];
+    cap = len;
 }
 
 OutputStream::~OutputStream() {
     delete [] data;
 }
 
-void OutputStream::attach_data(char* d, int len) {
-    wi = data = d;
-    cap = len;
+void OutputStream::write_byte(char c) {
+    write_bytes(&c, 1);
+}
+
+void OutputStream::write_short(short s) {
+    write_bytes(&s, 2);
+}
+
+void OutputStream::write_int(int v) {
+    write_bytes(&v, sizeof(int));
+}
+
+void OutputStream::write_string(const char* str) {
+    short len = strlen(str);
+    write_bytes(&len, 2);
+    write_bytes(str, len);
+}
+
+void OutputStream::write_string_array(char** buf, int len) {
+    write_bytes(&len, 2);
+    for (int i = 0; i < len; ++i)
+        write_string(buf[i]);
+}
+
+void OutputStream::write_int_array(int* buf, int len) {
+    write_bytes(&len, 1);
+    write_bytes(buf, sizeof(int) * len);
 }
 
 void OutputStream::write_bytes(const void* buf, int len) {

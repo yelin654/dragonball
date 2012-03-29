@@ -4,7 +4,6 @@
 #include "Param.h"
 #include "utils.h"
 #include "Tunnel.h"
-#include "Stream.h"
 #include "Log.h"
 
 DEFINE_CLASS(GameObject)

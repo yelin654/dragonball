@@ -18,8 +18,8 @@ public:
     GameObject(){};
 
 public:
-    virtual void serialize(Stream* stream) {};
-    virtual void unserialize(Stream* stream) {};
+    virtual void serialize(OutputStream* stream) {};
+    virtual void unserialize(InputStream* stream) {};
 
 protected:
     ClientSyner* _invoke_from;

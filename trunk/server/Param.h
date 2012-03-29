@@ -48,8 +48,8 @@ public:
 
     ~Param();
 
-    virtual void serialize(Stream* stream);
-    virtual void unserialize(Stream* stream);
+    virtual void serialize(OutputStream* stream);
+    virtual void unserialize(InputStream* stream);
 
     int to_int() const {
         return (int)_data;
@@ -98,24 +98,24 @@ public:
 
     static const int TYPE_NUM = 7;
 
-    void serialize_int(Stream* stream) const;
-    void serialize_string(Stream* stream) const;
-    void serialize_object(Stream* stream) const;
-    void serialize_int_array(Stream* stream) const;
-    void serialize_string_array(Stream* stream) const;
-    void serialize_object_array(Stream* stream) const;
-    void serialize_byte_array(Stream* stream) const;
-    typedef void (Param::*SERIALIZE_FUNC)(Stream* stream) const;
+    void serialize_int(OutputStream* stream) const;
+    void serialize_string(OutputStream* stream) const;
+    void serialize_object(OutputStream* stream) const;
+    void serialize_int_array(OutputStream* stream) const;
+    void serialize_string_array(OutputStream* stream) const;
+    void serialize_object_array(OutputStream* stream) const;
+    void serialize_byte_array(OutputStream* stream) const;
+    typedef void (Param::*SERIALIZE_FUNC)(OutputStream* stream) const;
     static const SERIALIZE_FUNC _serialize_func_table[TYPE_NUM];
 
-    void _unserialize_int(Stream* stream);
-    void _unserialize_string(Stream* stream);
-    void _unserialize_object(Stream* stream);
-    void _unserialize_int_array(Stream* stream);
-    void _unserialize_string_array(Stream* stream);
-    void _unserialize_object_array(Stream* stream);
-    void _unserialize_byte_array(Stream* stream);
-    typedef void (Param::*UNSERIALIZE_FUNC)(Stream* stream);
+    void _unserialize_int(InputStream* stream);
+    void _unserialize_string(InputStream* stream);
+    void _unserialize_object(InputStream* stream);
+    void _unserialize_int_array(InputStream* stream);
+    void _unserialize_string_array(InputStream* stream);
+    void _unserialize_object_array(InputStream* stream);
+    void _unserialize_byte_array(InputStream* stream);
+    typedef void (Param::*UNSERIALIZE_FUNC)(InputStream* stream);
     static const UNSERIALIZE_FUNC _unserialize_func_table[TYPE_NUM];
 
     void _delete_int() ;
@@ -165,8 +165,8 @@ public:
     // ParamList(const Param&, const Param&, const Param&);
     ~ParamList();
 
-    virtual void serialize(Stream* stream);
-    virtual void unserialize(Stream* stream);
+    virtual void serialize(OutputStream* stream);
+    virtual void unserialize(InputStream* stream);
 
     const Param* at(uint index);
 
