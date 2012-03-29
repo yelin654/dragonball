@@ -2,26 +2,21 @@
 
 #include "Object.h"
 #include "Param.h"
-#include "Stream.h"
-
+#include "Log.h"
 
 
 Object::Object():_key(NULL), pass_as_reference(false){
-    ParamList pl;
-    set_key(&pl);
 };
 
 
 void Object::set_key(ParamList* params) {
     if (NULL != _key)
         delete _key;
-    _key = new Stream(32);
+    _key = new OutputStream(32);
     params->serialize(_key);
 }
 
-const Stream* Object::key() {
-    if (NULL == _key)
-        _key = new Stream;
+const OutputStream* Object::key() {
     return _key;
 };
 

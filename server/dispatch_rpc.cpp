@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "Stream.h"
+#include "InputStream.h"
 #include "Param.h"
 #include "script.h"
 #include "luaapi.h"
@@ -8,7 +8,7 @@
 
 char string_buf[64];
 
-void push_param(Stream* stream) {
+void push_param(InputStream* stream) {
     int type = stream->read_byte();
     switch (type) {
         case Param::TYPE_INT: {
@@ -23,7 +23,7 @@ void push_param(Stream* stream) {
     }
 }
 
-void dispatch_lua_rpc(Stream* stream, Player* player) {
+void dispatch_lua_rpc(InputStream* stream, Player* player) {
     lua_context.player = player;
     bzero(string_buf, 64);
     stream->read_string(string_buf);

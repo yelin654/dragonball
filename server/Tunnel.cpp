@@ -1,63 +1,74 @@
 #include <sys/ioctl.h>
 #include <string.h>
+#include <sys/socket.h>
+#include <stdio.h>
+#include <netinet/in.h>
+#include <sys/time.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <sys/resource.h>
+#include <sys/epoll.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+
+#include <algorithm>
+using namespace std;
 
 #include "Tunnel.h"
 #include "IDataReceiver.h"
 #include "Log.h"
 
-char Tunnel::_READ_BUF[READ_MAX];
+char Tunnel::IN_BUF[READ_MAX];
+
 TunnelOutputStream* Tunnel::_out_stream = new TunnelOutputStream(WRITE_MAX);
+TunnelInputStream* Tunnel::_in_stream = new TunnelInputStream();
+
 
 Tunnel::Tunnel(int socket_fd, IDataReceiver* receiver):connecting(true), _socket_fd(socket_fd), receiver(receiver){
     receiver->on_connect(this);
     _readingHead = true;
     _expectRead = HEAD_LENGTH;
-    _in_stream = new TunnelInputStream(this, 0);
     _out_cache = new OutputStream(1);
+    _in_cache = new OutputStream(1);
     write_pending = false;
 }
 
 Tunnel::~Tunnel() {
     delete _out_cache;
-    delete _in_stream;
+    delete _in_cache;
 }
 
-void Tunnel::on_data_in2() {
-    int nread = read(_socket_fd, _READ_BUF, READ_MAX);
+void Tunnel::on_data_in() {
+    _in_stream->tunnel = this;
+    int nread = read(_socket_fd, IN_BUF, READ_MAX);
     int last = nread;
-    char* index = _READ_BUF;
-    char* old;
-    int len;
-    char* combo;
+    char* index = IN_BUF;
     while (_expectRead <=last) {
         last -= _expectRead;
         if (_readingHead) {
-            if (NULL == _in_buf) {
-                memcpy(&_expectRead, index, HEAD_LENGTH);
+            if (_in_cache->length() > 0) {
+                _in_cache->write_bytes(index, _expectRead);
+                index += _expectRead;
+                memcpy(&_expectRead, _in_cache->data, HEAD_LENGTH);
+                _in_cache->reset();
             } else {
-                len = _expectRead;
-                memcpy(&_expectRead, _in_buf, _in_buf_len);
-                memcpy(&_expectRead+_in_buf_len, index, len);
-                delete [] _in_buf;
-                _in_buf = NULL;
+                memcpy(&_expectRead, index, HEAD_LENGTH);
+                index += HEAD_LENGTH;
             }
-            index += HEAD_LENGTH;
             _readingHead = false;
         } else {
-            if (NULL == _in_buf) {
-                //_INPUT_STREAM->change_source(index, _expectRead);
-                //receiver->on_data(this, _INPUT_STREAM);
+            if (_in_cache->length() > 0) {
+                _in_cache->write_bytes(index, _expectRead);
+                _in_stream->attach_data(_in_cache->data, _in_cache->length());
+                _in_cache->reset();
             } else {
-                combo = new char[_in_buf_len + _expectRead];
-                memcpy(combo, _in_buf, _in_buf_len);
-                memcpy(combo+_in_buf_len, index, _expectRead);
-                delete [] _in_buf;
-                _in_buf = NULL;
-                //_INPUT_STREAM->change_source(combo, _in_buf_len+_expectRead);
-                //receiver->on_data(this, _INPUT_STREAM);
-                delete [] combo;
-                combo = NULL;
+                _in_stream->attach_data(index, _expectRead);
             }
+            receiver->on_data(_in_stream);
             index += _expectRead;
             _expectRead = HEAD_LENGTH;
             _readingHead = true;
@@ -65,82 +76,7 @@ void Tunnel::on_data_in2() {
     }
 
     if (last > 0) {
-        if (NULL == _in_buf) {
-            _in_buf = new char[last];
-            memcpy(_in_buf, index, last);
-        } else {
-            old = _in_buf;
-            _in_buf = new char[_in_buf_len + last];
-            memcpy(_in_buf, old, _in_buf_len);
-            delete [] old;
-            memcpy(_in_buf+_in_buf_len, index, last);
-            _in_buf_len += last;
-        }
-        _expectRead -= last;
-    }
-
-    if (0 == nread) {
-        close(_socket_fd);
-        connecting = false;
-        if (NULL != _in_buf) {
-            delete [] _in_buf;
-            _in_buf = NULL;
-        }
-        read_pending = false;
-        return;
-    }
-
-    if (nread < 0) {
-        if (errno == EAGAIN) {
-            printf("[socket] read buff end\n");
-        } else {
-            printf("[error] socket read\n");
-        }
-        read_pending = false;
-        return;
-    }
-
-    read_pending = (nread == READ_MAX);
-
-    return;
-
-    // char buf[40];
-    // int nread = read(_socket_fd, buf, 1);
-    // printf("read %d bytes", nread);
-
-    // char buf2[1024*1024];
-    // int nwrite = write(_socket_fd, buf2, 1024*1024);
-    // printf("write %d bytes\n", nwrite);
-    // nwrite  = write(_socket_fd, buf2, 1024*1024);
-    // printf("write %d bytes\n", nwrite);
-    // if (nwrite < 0)
-    //     if (errno == EAGAIN)
-    //         printf("[socket] write eagain\n");
-    // return false;
-}
-
-void Tunnel::on_data_in() {
-    int nread = read(_socket_fd, _READ_BUF, READ_MAX);
-    int last = nread;
-    char* index = _READ_BUF;
-    while (_expectRead <=last) {
-        // TODO:check 4 length
-        _in_stream->append(index, _expectRead);
-        index += _expectRead;
-        last -= _expectRead;
-        if (_readingHead) {
-            _in_stream->read_bytes(&_expectRead, HEAD_LENGTH);
-            _readingHead = false;
-        } else {
-            receiver->on_data(_in_stream);
-            _expectRead = HEAD_LENGTH;
-            _readingHead = true;
-        }
-        _in_stream->clear();
-    }
-
-    if (last > 0) {
-        _in_stream->write_bytes(index, last);
+        _in_cache->write_bytes(index, last);
         _expectRead -= last;
     }
 

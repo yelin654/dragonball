@@ -56,32 +56,45 @@ function new_action(type)
    return a
 end
 
-function new_talk(text, from)
+DEFAULT_TALK_THOUGH = ""
+function new_talk(from, text)
    local t = new_action(ACTION_TALK)
-   t.text = text
-   t.from = from
+   t.from = from or ""
+   t.text = text or ""
+   t.though = DEFAULT_TALK_THOUGH or ""
    return t
 end
 
-function new_choice()
-   return new_action(ACTION_CHOICE)
+function new_choice(alters, result)
+   local c = new_action(ACTION_CHOICE)
+   c.alters = alters or tnil
+   c.result = result or 1
+   return c
 end
 
-function new_sound()
-   return new_action(ACTION_SOUND)
+function new_sound(rid)
+   local s = new_action(ACTION_SOUND)
+   s.rid = rid or 0
+   return s
 end
 
 function new_guide()
    local g = new_action(ACTION_GUIDE)
-   g.speed = 100
-   g.stay = 100
-   g.texts = tnil
+   g.speed = 20
+   g.stay = 1000
+   g.texts = {""}
    return g
 end
 
 function new_monolog()
    local mono = new_action(ACTION_MONOLOG)
    return mono
+end
+
+function new_pic(rid)
+   local pic = {}
+   pic.rid = rid or 0
+   return pic
 end
 
 function load_story(name, idx)
@@ -147,34 +160,13 @@ progress.story_idx = 0
 progress.chapter_idx = 0
 progress.action_idx = 0
 
-function next_main_action()
-   read_progress()
-   local action = find_action(progress)
-   local chapter
-   action.on_end()
-   action = action.next
-   if action ~= nil then
-      progress.action_idx = action.idx
-      write_progress()
-      do_action(action)
-   else
-      chapter = find_chapter(progress)
-      if chapter.next ~= nil then
-         chapter = chapter.next
-         start_chapter(chapter)
-      else
-         D("story end")
-      end
-   end
-end
-
 function find_story(idx)
    return storys[idx]
 end
 
 function start_story(idx)
    progress.story_idx = idx
-   start_chapter(storys[idx].chapters[0])
+   start_chapter(storys[idx].chapters[1])
    D("start story", idx)
 end
 
@@ -205,6 +197,8 @@ meta_sound = {}
 meta_guide = {}
 meta_mono = {}
 meta_talk = {}
+meta_pic = {}
+meta_choice = {}
 
 function init_meta()
    meta_sound.rid = 0
@@ -217,6 +211,8 @@ function init_meta()
 
    meta_talk.text = 0
    meta_talk.from = 0
+
+   meta_pic.rid = 0
 end
 
 function read_meta(from, to)
@@ -228,17 +224,31 @@ function read_meta(from, to)
 end
 
 function play_talk(talk)
-   read_meta(talk, meta_talk)
+   meta_talk.text = talk.text or ""
+   meta_talk.from = talk.from or ""
+   meta_talk.though = talk.though or ""
+   D("play talk")
+   PT(talk)
+   --read_meta(talk, meta_talk)
    c_rpc("play_talk", {meta_talk})
 end
 
-function play_choice(action)
-
+function play_choice(choice)
+   meta_choice.alters = choice.alters or tnil
+   meta_choice.result = choice.result or 1
+   D("play choice")
+   PT(choice)
+   c_rpc("play_choice", {meta_choice})
 end
 
 function play_sound(sound)
    read_meta(sound, meta_sound)
    c_rpc("play_sound", {meta_sound})
+end
+
+function play_bgm(sound)
+   read_meta(sound, meta_sound)
+   c_rpc("play_bgm", {meta_sound})
 end
 
 function play_guide(guide)
@@ -269,12 +279,10 @@ function do_action(action)
    action.on_start()
 end
 
-function on_choose(id)
-   local action = find_action(progress)
-   action["on"..id]()
+function change_background(pic)
+   read_meta(pic, meta_pic)
+   c_rpc("change_background", {meta_pic})
 end
-
-
 
 function get_story_list(name)
    local root = "script/"..name.."/"
@@ -291,6 +299,41 @@ function get_story_list(name)
    --    end
    -- end
    return result
+end
+
+function next_main_action()
+   read_progress()
+   local action = find_action(progress)
+   do_next(action)
+end
+
+function do_next(action)
+   local chapter
+   action.on_end()
+   action = action.next
+   if action ~= nil then
+      progress.action_idx = action.idx
+      write_progress()
+      do_action(action)
+   else
+      chapter = find_chapter(progress)
+      if chapter.next ~= nil then
+         chapter = chapter.next
+         start_chapter(chapter)
+      else
+         D("story end")
+      end
+   end
+end
+
+function on_choose(id)
+   D("choose "..id)
+   read_progress()
+   local choice = find_action(progress)
+   if choice.result == id then
+      D("match result")
+      do_next(choice)
+   end
 end
 
 init_meta()

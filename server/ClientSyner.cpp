@@ -1,7 +1,7 @@
 #include <string.h>
 
 #include "ClientSyner.h"
-#include "Stream.h"
+#include "InputStream.h"
 #include "GameObject.h"
 #include "Object.h"
 #include "IObjectFinder.h"
@@ -47,10 +47,11 @@ void ClientSyner::invoke_method_recv(TunnelInputStream* stream) {
 }
 
 void ClientSyner::_roc(GameObject* object, const char* method_name, ParamList* params) {
-    const Stream* key = object->key();
+    error("unuse method");
+    const OutputStream* key = object->key();
     int size = key->length() + strlen(method_name);
     TunnelOutputStream* stream = get_command_stream(COMMAND_ROC, size);
-    stream->copy(key);
+    //stream->copy(key);
     stream->write_string(method_name);
     params->serialize(stream);
     stream->flush();

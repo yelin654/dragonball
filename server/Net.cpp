@@ -54,7 +54,6 @@ void Net::dispatch() {
     for (int i = 0; i < _epoll_fd_num; ++i) {
         e = &_events[i];
         if (e->data.fd == _listen_fd) {
-            debug("new connect");
             link();
             continue;
         }
@@ -114,6 +113,7 @@ void Net::link() {
         _ev.data.ptr = tunnel;
         _ev.events = EPOLLET | EPOLLIN;
         epoll_ctl(_epoll_fd, EPOLL_CTL_ADD, client_fd, &_ev);
+        debug("new connect socket %d", client_fd);
     }
 }
 
