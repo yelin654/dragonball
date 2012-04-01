@@ -3,17 +3,21 @@ package test
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	
-	import org.musince.actions.PlayChoice;
 	import org.musince.actions.Choosing;
+	import org.musince.actions.PlayChoice;
 	import org.musince.display.TalkPanel;
 	import org.musince.display.UI;
 	import org.musince.global.$athena;
 	import org.musince.global.$root;
+	import org.musince.global.$sender;
+	import org.musince.global.$talkPanel;
 	import org.musince.global.$ui;
+	import org.musince.util.LuaUtil;
 	
-	[SWF(width='1280',height='720')]
+	[SWF(width="1280", height="720", backgroundColor="0xFFFFFF")]
 	
 	public class TestChoice extends Sprite
 	{
@@ -22,15 +26,21 @@ package test
 			super();
 			$root = this;
 			$athena.start(stage);
-			$ui = new UI(this);
-			var timer:Timer = new Timer(1000, 1);
-			timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimer);
-			timer.start();
+			
+//			var timer:Timer = new Timer(1000, 1);
+//			timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimer);
+//			timer.start();
 //			var talk:TalkPanel = new TalkPanel();
 //			talk.setSize(1280, 300);
 //			addChild(talk);
-//			var play:PlayChoice = new PlayChoice(talk);
-//			play.input = ["AAAAAA", "BBBBBB", "CCCCCC", "DDDDDD"];
+			$sender = new LocalSender;
+			var meta:Dictionary = new Dictionary();
+			meta.alters = LuaUtil.convertToDict(["AAAAAA", "BBBBBB", "CCCCCC", "DDDDDD"]);
+			var play:PlayChoice = new PlayChoice($talkPanel);
+			play.input = meta;
+			$talkPanel.switchToChoice();
+			addChild($talkPanel);
+			$athena.addTimeSlice(play);
 //			var wait:WaitingForChoose = new WaitingForChoose(talk);
 //			play.appendNext(wait);
 			

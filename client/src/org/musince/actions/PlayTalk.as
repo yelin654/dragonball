@@ -10,8 +10,8 @@ package org.musince.actions
 	
 	public class PlayTalk extends TimeSlice
 	{
-		private var _index:int = 0;
-		private var _tf:TextField;
+		public var _index:int = 0;
+		public var _tf:TextField;
 		private var _nextTime:int;
 		protected var _text:String;
 		

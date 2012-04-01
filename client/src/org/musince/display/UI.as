@@ -9,8 +9,10 @@ package org.musince.display
 	
 	import org.musince.actions.BlankTime;
 	import org.musince.actions.Choosing;
+	import org.musince.actions.FadeDisplayObject;
 	import org.musince.actions.FadeInDisplayObject;
 	import org.musince.actions.FadeInTalk;
+	import org.musince.actions.FadeOutDisplayObject;
 	import org.musince.actions.PlayChoice;
 	import org.musince.actions.PlayTalk;
 	import org.musince.actions.PlayTalkAvg;
@@ -18,6 +20,7 @@ package org.musince.display
 	import org.musince.actions.UpdateProgress;
 	import org.musince.core.TimeSlice;
 	import org.musince.global.$athena;
+	import org.musince.global.$background;
 	import org.musince.global.$guideText;
 	import org.musince.logic.GameObject;
 	import org.musince.util.DisplayUtil;
@@ -36,6 +39,7 @@ package org.musince.display
 		public var monoLayer:Sprite = new Sprite();
 		public var clickIconLayer:Sprite = new Sprite();
 		public var talkLayer:Sprite = new Sprite();
+		public var loadingLayer:Sprite = new Sprite();
 		
 //		private var _updateProgress:UpdateProgress;
 //		private var _progressPanel:ProgressPanel = new ProgressPanel();
@@ -52,16 +56,33 @@ package org.musince.display
 			root.addChild(guideLayer);
 			root.addChild(talkLayer);
 			root.addChild(clickIconLayer);
+			root.addChild(loadingLayer);
 		}
 		
 		public function changeBackground(v:DisplayObject):void
 		{
-			backgroundLayer.removeChildren();
+			if (backgroundLayer.numChildren != 0)
+			{
+				var old:DisplayObject = backgroundLayer.removeChildAt(0);
+				var fadeOut:FadeOutDisplayObject = new FadeOutDisplayObject(old, 0.05);
+				fadeOut.endHook = onFadeOutOldBg;
+				$athena.addTimeSlice(fadeOut);
+			}
+			$background = v;
 			backgroundLayer.addChild(v);
-			backgroundLayer.alpha = 0;
-			var fadeIn:FadeInDisplayObject = new FadeInDisplayObject(backgroundLayer, 0.05);
+			v.alpha = 0;
+			var fadeIn:FadeInDisplayObject = new FadeInDisplayObject(v, 0.05);
 			$athena.addTimeSlice(fadeIn);
 			ajustBndPosition();
+		}
+		
+		public function onFadeOutOldBg(ts:TimeSlice):void
+		{
+			var fade:FadeOutDisplayObject = ts as FadeOutDisplayObject;
+			if (backgroundLayer.contains(fade.target))
+			{
+				backgroundLayer.removeChild(fade.target);
+			}
 		}
 		
 		public function ajustBndPosition():void

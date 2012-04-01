@@ -46,9 +46,8 @@ package org.musince.load
 		public function onOneProgress(item:LoadItem):void{
 			var t:Number = 0;
 			for each(var item:LoadItem in items){
-				if (item.loader.getBytesTotal() == 0){
-					continue;
-				}
+				if (item.loader == null) continue;
+				if (item.loader.getBytesTotal() == 0) continue;
 				t += Number(item.loader.getBytesLoaded())/item.loader.getBytesTotal();
 			}
 			if (onProgress != null) {
@@ -73,6 +72,7 @@ package org.musince.load
 				$log.error("[GROUP_LOAD] no item");
 				return;
 			}
+			$log.debug("[GROUP_Load_START]");
 			this.onComplete = onComplete;
 			this.onProgress = onProgress;
 			this.onError = onError;

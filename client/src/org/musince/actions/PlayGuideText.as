@@ -1,5 +1,9 @@
 package org.musince.actions
 {
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
+	
 	import org.musince.core.TimeSlice;
 	import org.musince.core.UIAction;
 	import org.musince.global.$athena;
@@ -15,7 +19,7 @@ package org.musince.actions
 		public var speed:Number;
 		public var stay:int;
 		
-		public function PlayGuideText(texts:Array, speed:Number=0.01, stay:int=1000)
+		public function PlayGuideText(texts:Array, speed:Number=0.05, stay:int=1000)
 		{
 			super();
 			this.texts = texts;
@@ -25,6 +29,7 @@ package org.musince.actions
 		
 		override public function onStart():void
 		{
+			$ui.guideLayer.addChild($guideText);
 			fadeInOut = new FadeInOutDisplayObject($guideText, speed, stay);
 			fadeInOut.endHook = onInOutEnd;
 			fadeIn = new FadeInDisplayObject($guideText, speed);
@@ -54,18 +59,15 @@ package org.musince.actions
 		
 		private function onPlayOver(t:TimeSlice):void
 		{
-//			var rpc:SendRPC = new SendRPC("next_main_action", null);
 			var click:WaitingForClick = new WaitingForClick();
 			click.endHook = onClick;
-//			click.appendNext(rpc);
-			appendNext(click);
-			isEnd = true;
+			$athena.addTimeSlice(click);
 		}
 		
 		public function onClick(ts:TimeSlice):void
 		{
-			$sender.lua_rpc("next_main_action");
 			$ui.guideLayer.removeChildren();
+			isEnd = true;
 		}
 	}
 }

@@ -13,6 +13,7 @@ package org.musince.display
 	import flash.text.TextFormat;
 	
 	import org.musince.global.$stage;
+	import org.musince.global.$width;
 	import org.musince.util.DisplayUtil;
 	import org.musince.util.TextFieldUtil;
 	
@@ -20,16 +21,18 @@ package org.musince.display
 	{
 		private var _t:int = 255/3;
 		private var _bg:Bitmap = new Bitmap();
-		private var _contentLayer:Sprite = new Sprite();
+		private var contentLayer:Sprite = new Sprite();
+		private var talkLayer:Sprite = new Sprite();
+		private var choiceLayer:Sprite = new Sprite();
 		private var _fromName:TextField;
 		private var _fromBottom:Shape = new Shape();
 		private var _fromWidth:int = 150;
 		private var _thoughName:TextField;
 		private var _thoughBottom:Shape = new Shape();
-		private var _thoughWidth:int = 100;
+		private var _thoughWidth:int = 160;
 		public var talkText:TextField;
-		private var _select:Shape;
-		private var H:int = 20;
+		private var _select:Bitmap = new Bitmap();
+		private var H:int = 40;
 		private var _tsize:int = 34;
 		
 		private var _selectIndex:int = 0;
@@ -37,15 +40,13 @@ package org.musince.display
 		public function TalkPanel()
 		{
 			super();
-			setSize($stage.stageWidth, 200);
-			_select = new Shape();
-			_select.graphics.beginFill(0xFF0000, 0.5);
-			_select.graphics.drawRect(0, 0, 1280, 20);
-			_select.graphics.endFill();
-			addChild(_bg);
-			addChild(_contentLayer);
+			setSize($width, 200);
+			drawSelect();
+
+			addChild(contentLayer);
+			
 			talkText = createText();
-			addChild(talkText);
+			talkLayer.addChild(talkText);
 			format(talkText);
 			
 			var g:Graphics = _fromBottom.graphics;
@@ -58,7 +59,7 @@ package org.musince.display
 			_fromName.width = _fromWidth;
 			_fromName.x = 20;
 			_fromName.y = 2;
-			addChild(_fromName);
+			talkLayer.addChild(_fromName);
 			
 			g = _thoughBottom.graphics;
 			g.lineStyle(2, 0xFFFFFF);
@@ -70,7 +71,44 @@ package org.musince.display
 			_thoughName.width = _thoughWidth;
 			_thoughName.x = 1100;
 			_thoughName.y = 2;
-			addChild(_thoughName);
+			talkLayer.addChild(_thoughName);
+			
+			choiceLayer.y = 20;
+		}
+		
+		public function drawSelect():void
+		{
+			var shape:Shape = new Shape();
+			var graphics:Graphics = shape.graphics;
+			var matrix:Matrix = new Matrix();
+			var w:int = 800;
+			matrix.createGradientBox(w, H);
+			graphics.clear();
+//			var color:uint = 0xFF6600;
+			var color:uint = 0xDF2B61;
+//			var color:uint = 0xE75C86
+			graphics.beginGradientFill(GradientType.LINEAR, 
+				[color, color, color, color],
+				[0, 0.5, 0.5, 0], 
+				[0, _t, 255 - _t, 255], matrix);
+			graphics.drawRect(0, 0, w, H);
+			graphics.endFill();
+			var data:BitmapData = new BitmapData(w, H, true, 0x00000000);
+			data.draw(shape);
+			_select.bitmapData = data;
+			_select.x = $width/2 - w/2;
+		}
+		
+		public function switchToTalk():void
+		{
+			contentLayer.removeChildren();
+			contentLayer.addChild(talkLayer);
+		}
+		
+		public function switchToChoice():void
+		{
+			contentLayer.removeChildren();
+			contentLayer.addChild(choiceLayer);
 		}
 		
 		private function format(text:TextField):void
@@ -80,10 +118,9 @@ package org.musince.display
 			tf.color = 0xFFFFFF;
 			tf.font = "KaiTi_GB2312";
 			tf.size = 34;
-			tf.leading = 6;
+			tf.leading = 5;
 			text.defaultTextFormat = tf;
 			text.wordWrap = true;
-//			text.filters = [new GlowFilter(0x33FF00, 1, 2, 2, 3)];
 		}
 		
 		private function createText():TextField
@@ -91,7 +128,7 @@ package org.musince.display
 			var text:TextField = new TextField();
 			format(text);
 			text.x = 20;
-			text.y = 40;
+			text.y = 43;
 			text.width = 1240;
 			text.height = 160;
 			return text;
@@ -100,7 +137,7 @@ package org.musince.display
 		private function drawBackground(w:int, h:int):void
 		{
 			var shape:Shape = new Shape();
-			var grapchics:Graphics = shape.graphics;
+			var graphics:Graphics = shape.graphics;
 			var matrix:Matrix = new Matrix();
 			matrix.createGradientBox(w, h);
 			graphics.clear();
@@ -113,7 +150,7 @@ package org.musince.display
 			var data:BitmapData = new BitmapData(w, h, true, 0x00000000);
 			data.draw(shape);
 			_bg.bitmapData = data;
-			addChild(_bg);
+			addChildAt(_bg, 0);
 		}
 		
 		private function drawNameBackground():void
@@ -132,15 +169,16 @@ package org.musince.display
 		{
 			choices = new Vector.<TextField>(text.length);
 			var tf:TextField;
-			DisplayUtil.removeChildren(_contentLayer);
+			choiceLayer.removeChildren();
 			for (var i:int = 0; i < text.length; i++)
 			{
-				tf = new TextField();
-				format(tf);
+				tf = TextFieldUtil.getTextField(_tsize);
+				tf.autoSize = TextFieldAutoSize.NONE;
+				tf.width = $width;
 				tf.text = text[i];
 				tf.cacheAsBitmap = true;
 				tf.y = i * H;
-				_contentLayer.addChild(tf);
+				choiceLayer.addChild(tf);
 				choices[i] = tf;
 			}
 			return choices;
@@ -148,7 +186,7 @@ package org.musince.display
 		
 		public function select(index:int):void
 		{
-			addChildAt(_select, 0);
+			choiceLayer.addChildAt(_select, 0);
 			_select.y = index * H;
 			_selectIndex = index;
 		}
@@ -172,15 +210,18 @@ package org.musince.display
 		{
 			if (v == "" || v == null)
 			{
-				if (contains(_fromBottom)) {
-					removeChild(_fromBottom);
-					removeChild(_fromName);
+				if (talkLayer.contains(_fromBottom)) {
+					talkLayer.removeChild(_fromBottom);
+					talkLayer.removeChild(_fromName);
 				}
 				return;
 			}
 			_fromName.text = v;
-			addChild(_fromBottom);
-			addChild(_thoughName);
+			if (!talkLayer.contains(_fromBottom))
+			{
+				talkLayer.addChild(_fromBottom);
+				talkLayer.addChild(_thoughName);
+			}
 		}
 		
 		public function setThoughName(v:String):void
@@ -188,14 +229,28 @@ package org.musince.display
 			if (v == "" || v == null)
 			{
 				if (contains(_thoughBottom)) {
-					removeChild(_thoughBottom);
-					removeChild(_thoughName);
+					talkLayer.removeChild(_thoughBottom);
+					talkLayer.removeChild(_thoughName);
 				}
 				return;
 			}
 			_thoughName.text = v;
-			addChild(_thoughBottom);
-			addChild(_thoughName);
+			if (!talkLayer.contains(_thoughBottom))
+			{
+				talkLayer.addChild(_thoughBottom);
+				talkLayer.addChild(_thoughName);
+			}
+		}
+		
+		public function clearTalk():void
+		{
+			talkText.text = "";
+			_thoughName.text = "";
+		}
+		
+		public function clearChoice():void
+		{
+			choiceLayer.removeChildren();
 		}
 	}
 }

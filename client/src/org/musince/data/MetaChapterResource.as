@@ -4,7 +4,7 @@ package org.musince.data
 	
 	public class MetaChapterResource extends Sprite
 	{
-		public var sound:Array;;
-		public var image:Array;
+		public var sound:Array = [];
+		public var image:Array = [];
 	}
 }

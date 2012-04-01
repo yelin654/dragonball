@@ -40,8 +40,14 @@ package org.musince.core
 		public var _endHook:Array = new Array();
 		public var _startHook:Array = new Array();
 		
+		public var rtid:int;
+		
+		public static var _rtid_acc:int = 0;
+		
 		public function TimeSlice()
 		{
+			rtid = _rtid_acc;
+			_rtid_acc++;
 		}
 		
 		public function start(now:int):void

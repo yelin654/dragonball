@@ -12,6 +12,14 @@ package org.musince.util
 		{
 		}
 		
+		public static function layCenter(w:int, tf:TextField, text:String):void
+		{
+			tf.text = text;
+			tf.autoSize = TextFieldAutoSize.LEFT;
+			tf.x = w/2 - tf.textWidth/2;
+			tf.text = "";
+		}
+		
 		/**
 		 * 调整字符个数以适应最大宽，超过的用"..."表示 
 		 * @param tf

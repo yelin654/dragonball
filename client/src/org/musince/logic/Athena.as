@@ -64,7 +64,7 @@ package org.musince.logic
 				if (action.isEnd)
 				{
 					if (action.traceT)
-						$log.debug("[END_ACTION]", action.toString());
+						$log.debug("[END_ACTION]", action.toString()+action.rtid);
 					action.end();
 					_delete[action] = action;
 					for each (var next:TimeSlice in action.getNexts())
@@ -75,7 +75,7 @@ package org.musince.logic
 							next.input[key] = action.output[key];
 						}
 						if (next.traceT)
-							$log.debug("[START_ACTION]", next.toString());
+							$log.debug("[START_ACTION]", next.toString()+action.rtid);
 						next.start(_now);
 					}
 				}
@@ -98,18 +98,22 @@ package org.musince.logic
 		{
 			_add[action] = action;
 			if (action.traceT)
-				$log.debug("[START_ACTION]", action.toString());
+				$log.debug("[START_ACTION]", action.toString()+action.rtid);
 			action.start(_now);
 		}
 		
 		public function removeTimeSlice(action:TimeSlice):void
 		{
-			_delete[action] = action;
+			delete _actions[action];
+			delete _add[action];
 			if (action.traceT)
-				$log.debug("[END_ACTION]", action.toString());
-			action.end();
+				$log.debug("[DELETE_ACTION]", action.toString()+action.rtid);
 		}
 		
+//		public function removeD(action:TimeSlice):void
+//		{
+			
+//		}
 		
 		private function onKeyDown(e:KeyboardEvent):void
 		{

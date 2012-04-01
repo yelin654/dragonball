@@ -8,7 +8,7 @@ package rindex.yelin.s1
 		{
 			super();
 			sound = [2];
-			image = [15];
+			image = [15, 3, 6];
 		}
 	}
 }

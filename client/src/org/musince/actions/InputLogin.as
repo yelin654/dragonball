@@ -11,6 +11,8 @@ package org.musince.actions
 	import org.musince.core.TimeSlice;
 	import org.musince.display.LoginPanel;
 	import org.musince.global.$athena;
+	import org.musince.global.$width;
+	import org.musince.util.TextFieldUtil;
 	
 	public class InputLogin extends TimeSlice
 	{
@@ -40,6 +42,7 @@ package org.musince.actions
 			}
 			if (showEnter == null)
 			{
+				TextFieldUtil.layCenter($width, tip, "press enter to submit");
 				showEnter = new PlayTalkAvg(tip, 100);
 				showEnter.input = new Dictionary();
 				showEnter.input["text"] = "press enter to submit";

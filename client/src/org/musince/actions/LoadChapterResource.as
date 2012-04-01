@@ -33,7 +33,7 @@ package org.musince.actions
 			_progress = new Progress();
 			_progress.endHook = onProgressEnd;
 			$ui.clear();
-			$ui.backgroundLayer.addChild($progressPanel);
+			$ui.loadingLayer.addChild($progressPanel);
 			$progressPanel.alpha = 0;
 			var fade:FadeInDisplayObject = new FadeInDisplayObject($progressPanel, 0.1);
 			var updateProgress:UpdateProgress = new UpdateProgress(_progress, $progressPanel);
@@ -72,8 +72,8 @@ package org.musince.actions
 			{
 				_loader.add($config.ResourceRoot + id +".jpg", 
 					LoadManager.TYPE_DISPLAY_OBJECT, id);
-				_loader.start(onImageLoad, onImageProgress);
 			}
+			_loader.start(onImageLoad, onImageProgress);
 		}
 		
 		private function onImageLoad(loader:GroupLoader):void
@@ -135,7 +135,7 @@ package org.musince.actions
 		
 		private function onProgressFadeOut(ts:TimeSlice):void
 		{
-			$ui.backgroundLayer.removeChild($progressPanel);
+			$ui.loadingLayer.removeChild($progressPanel);
 			isEnd = true;
 			$sender.lua_rpc("on_chapter_load");
 		}

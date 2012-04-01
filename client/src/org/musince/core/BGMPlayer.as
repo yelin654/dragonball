@@ -36,7 +36,7 @@ package org.musince.core
 		
 		public function _play(sound:Sound):void
 		{
-			var st:SoundTransform = new SoundTransform(0);
+			var st:SoundTransform = new SoundTransform();
 			playing = sound.play(0, 0, st);
 		}
 		
