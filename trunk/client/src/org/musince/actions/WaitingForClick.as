@@ -4,6 +4,7 @@ package org.musince.actions
 	
 	import org.musince.core.TimeSlice;
 	import org.musince.core.UIAction;
+	import org.musince.display.UI;
 	import org.musince.global.$athena;
 	import org.musince.global.$clickIcon;
 	import org.musince.global.$playClickIcon;
@@ -27,6 +28,7 @@ package org.musince.actions
 		
 		public function onClick(e:MouseEvent):void
 		{
+			var ui:UI = $ui;
 			$playClickIcon.isEnd = true;
 			$ui.clickIconLayer.removeChild($clickIcon);			
 			isEnd = true;

@@ -5,9 +5,9 @@ package org.musince.core
 	
 	public class Query extends TimeSlice
 	{
-		private static var _acc:int = 0; 
+//		private static var _acc:int = 0; 
 		
-		public var rtid:int = _acc++;
+//		public var rtid:int = _acc++;
 		
 		public var client:Client;
 		

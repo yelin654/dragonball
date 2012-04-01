@@ -11,7 +11,9 @@ package org.musince.rpc
 		 play_monolog,
 		 stop_all_sound,
 		 change_background,
-		 play_bgm
+		 play_bgm,
+		 clear_background,
+		 tip_end
 		];
 	}
 }

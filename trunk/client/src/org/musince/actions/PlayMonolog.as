@@ -1,14 +1,17 @@
 package org.musince.actions
 {
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
 	import org.musince.core.TimeSlice;
 	import org.musince.global.$athena;
+	import org.musince.global.$height;
 	import org.musince.global.$sender;
 	import org.musince.global.$stage;
 	import org.musince.global.$ui;
+	import org.musince.global.$width;
 	import org.musince.util.TextFieldUtil;
 	
 	public class PlayMonolog extends TimeSlice
@@ -26,6 +29,9 @@ package org.musince.actions
 			this.border = border;
 		}
 		
+		private var _plays:Array = new Array();
+		private var _blanks:Array = new Array();
+		
 		override public function onStart():void
 		{
 			tfs = new Array(texts.length);
@@ -33,15 +39,14 @@ package org.musince.actions
 			var play:PlayTalkAvg;
 			var blank:BlankTime = new BlankTime(0);
 			var first:BlankTime = blank;
-			var tft:TextFormat;
-			container.y = $stage.stageHeight/2 - texts.length*50/2;
+			container.y = $height/2 - texts.length*50/2;
 			for (var i:int = 0; i < texts.length; i++)
 			{
-//				tf = TextFieldUtil.getBorderTextField(40, border);
 				tf = TextFieldUtil.getTextField(40);
 				tf.text = texts[i];
-				tf.x = $stage.stageWidth/2 - tf.textWidth/2;
+				tf.x = $width/2 - tf.textWidth/2;
 				tf.text = "";
+				tfs[i] = tf;
 				play = new PlayTalkAvg(tf);
 				blank.appendNext(play);
 				blank = new BlankTime(1000);
@@ -49,9 +54,33 @@ package org.musince.actions
 				play.input["text"] = texts[i];
 				tf.y = i * 50;
 				container.addChild(tf);
+				
+				_plays.push(play);
+				_blanks.push(blank);
 			}
 			blank.endHook = onOver;
 			$athena.addTimeSlice(first);
+			
+			globalMouseClick = onMouseClick;
+		}
+		
+		public function onMouseClick(e:MouseEvent):void
+		{
+			for each (var play:PlayTalkAvg in _plays)
+			{
+				$athena.removeTimeSlice(play);
+			}
+			for each (var blank:BlankTime in _blanks)
+			{
+				$athena.removeTimeSlice(blank);
+			}
+			var tf:TextField;
+			container.y = $height/2 - texts.length*50/2;
+			for (var i:int = 0; i < texts.length; i++)
+			{
+				tfs[i].text = texts[i];
+			}
+			onOver(null);
 		}
 		
 		public function onOver(ts:TimeSlice):void

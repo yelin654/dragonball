@@ -6,9 +6,9 @@ package org.musince.rpc
 	import org.musince.global.$bgmPlayer;
 	import org.musince.global.$chapterResource;
 
-	public function play_bgm(meta:Dictionary):void
+	public function play_bgm(rid:int):void
 	{
-		var sound:Sound = $chapterResource.sound[meta.rid] as Sound;
+		var sound:Sound = $chapterResource.sound[rid] as Sound;
 		$bgmPlayer.play(sound);
 	}
 }

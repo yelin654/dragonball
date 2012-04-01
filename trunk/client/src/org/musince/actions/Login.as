@@ -2,6 +2,7 @@ package org.musince.actions
 {
 	import flash.display.Graphics;
 	import flash.geom.Point;
+	import flash.text.TextFieldAutoSize;
 	
 	import org.musince.core.TimeSlice;
 	import org.musince.display.LoginPanel;
@@ -9,7 +10,9 @@ package org.musince.actions
 	import org.musince.global.$cookie;
 	import org.musince.global.$loginName;
 	import org.musince.global.$root;
+	import org.musince.global.$width;
 	import org.musince.query.LoginQuery;
+	import org.musince.util.TextFieldUtil;
 	
 	public class Login extends TimeSlice 
 	{
@@ -23,6 +26,7 @@ package org.musince.actions
 		override public function onStart():void
 		{
 			var name:String = $cookie.get("u") as String;
+			name = null;
 			if (name != null) {
 				var query:LoginQuery = new LoginQuery();
 				query.input["u"] = name;
@@ -44,6 +48,7 @@ package org.musince.actions
 			drawline.input["from"] = new Point(int(panel.w/3), int(panel.h/2));
 			drawline.input["to"] = new Point(int(panel.w-panel.w/3), int(panel.h/2));
 			var playText:PlayTalkAvg = new PlayTalkAvg(panel.tip, 100);
+			TextFieldUtil.layCenter($width, panel.tip, "input login name");
 			playText.input["text"] = "input login name";
 			var query:LoginQuery = new LoginQuery();
 			query.endHook = onQueryEnd;
@@ -56,11 +61,24 @@ package org.musince.actions
 		
 		public function onQueryEnd(ts:TimeSlice):void
 		{
+			if (panel != null && $root.contains(panel)) 
+			{
+				var fade:FadeOutDisplayObject = new FadeOutDisplayObject(panel, 0.05);
+				fade.endHook = onLoginFade;
+				$athena.addTimeSlice(fade);				
+			}
 			if (ts.output["r"])
 			{
-				$loginName = ts.output["u"];					;
+				$loginName = ts.output["u"];
+				$cookie.set("u", $loginName);
 				isEnd = true;
 			}
+		}
+		
+		private function onLoginFade(ts:TimeSlice):void
+		{
+			if ($root.contains(panel))
+				$root.removeChild(panel);
 		}
 	}
 }

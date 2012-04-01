@@ -15,5 +15,15 @@ package org.musince.util
 			}
 			return result;
 		}
+		
+		public static function convertToDict(array:Array):Dictionary
+		{
+			var result:Dictionary = new Dictionary();
+			for (var i:int = 0; i < array.length; i++)
+			{
+				result[i+1] = array[i];
+			}
+			return result;
+		}
 	}
 }

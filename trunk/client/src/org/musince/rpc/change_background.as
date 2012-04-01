@@ -8,9 +8,9 @@ package org.musince.rpc
 	import org.musince.global.$ui;
 	import org.musince.util.DisplayUtil;
 
-	public function change_background(pic:Dictionary):void
+	public function change_background(rid:int):void
 	{
-		var bmp:Bitmap = $chapterResource.image[pic.rid];
+		var bmp:Bitmap = $chapterResource.image[rid];
 		DisplayUtil.toGray(bmp);
 		$ui.changeBackground(bmp);
 	}

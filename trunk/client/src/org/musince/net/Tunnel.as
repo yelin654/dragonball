@@ -8,6 +8,8 @@ package org.musince.net
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 	
+	import org.musince.global.$log;
+	
 	public class Tunnel extends Socket implements IDataOutputNet
 	{
 		public static const DATA_LENGTH_BYTES:int = 4;
@@ -123,17 +125,17 @@ package org.musince.net
 
 		
 		private function onServerClose(e:Event):void {
-			trace(e);
+			$log.error(e);
 			this.close();
 		}
 		
 		private function onIOError(e:Event):void {
-			trace(e);
+			$log.error(e);
 			this.close();
 		}
 		
 		private function onSecurityError(e:Event):void {
-			trace(e);
+			$log.error(e);
 			this.close();
 		}
 		
