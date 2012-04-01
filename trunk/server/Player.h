@@ -1,6 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <stdio.h>
+
 #include <list>
 #include <map>
 using namespace std;
@@ -13,6 +15,9 @@ class ClientSyner;
 class Player: public GameObject {
     DECLARE_GAME_OBJECT(Player, GameObject)
 
+public:
+    Player():log(NULL){};
+
 private:
     map<int, StoryProgress*> _progress;
 public:
@@ -24,6 +29,7 @@ public:
 public:
     ClientSyner* syner;
     string name;
+    FILE* log;
 };
 
 extern map<string, Player*> G_players;

@@ -10,6 +10,7 @@ ACTION_CHOICE = 2
 ACTION_SOUND = 3
 ACTION_GUIDE = 4
 ACTION_MONOLOG = 5
+ACTION_COMMAND = 6
 
 tnil = {}
 
@@ -44,15 +45,15 @@ end
 
 function new_action(type)
    local a = {}
-   local c = chapter
-   a.idx = c.acc_idx
    a.type = type
-   a.on_start = on_action_start_default
-   a.on_end = on_action_end_default
-
-   c.acc_idx = c.acc_idx + 1
-   c.actions[a.idx] = a
-
+   --a.on_start = on_action_start_default
+   --a.on_end = on_action_end_default
+   local c = chapter
+   if nil ~= c then
+      a.idx = c.acc_idx
+      c.acc_idx = c.acc_idx + 1
+      c.actions[a.idx] = a
+   end
    return a
 end
 
@@ -91,10 +92,59 @@ function new_monolog()
    return mono
 end
 
+function new_command()
+   local command = new_action(ACTION_COMMAND)
+   return command
+end
+
 function new_pic(rid)
    local pic = {}
    pic.rid = rid or 0
    return pic
+end
+
+function append_action(action)
+   chapter.last.next = action
+   chapter.last = action
+end
+
+function am(texts)
+   local mono = new_monolog()
+   mono.texts = texts
+   append_action(mono)
+   return mono
+end
+
+function ag(texts)
+   local guide = new_guide()
+   guide.texts = texts
+   append_action(guide)
+   return guide
+end
+
+function at(from, text)
+   local talk = new_talk(from, text)
+   append_action(talk)
+   return talk
+end
+
+function ac(alters, result)
+   local choice = new_choice(alters, result)
+   append_action(choice)
+   return choice
+end
+
+function acom(name, ...)
+   local com = new_command()
+   com.name = name
+   com.args = {...}
+   -- if type(args) ~= "table" then
+   --    com.args = tnil
+   -- else
+   --    com.args = args
+   -- end
+   append_action(com)
+   return com
 end
 
 function load_story(name, idx)
@@ -109,10 +159,14 @@ function load_story(name, idx)
    for key, id in ipairs(meta.chapters) do
       --if string.match(file, "%.lua$") then
       fullname = root..id..".lua"
-      D("to load chapter file("..fullname..")")
+      D("start load chapter file("..fullname..")")
       chapter = new_chapter(id)
+      chapter.last = tnil
+      chapter.start = chapter.last
       dofile(fullname)
-      D("load chapter("..chapter.idx..")")
+      chapter.start = chapter.start.next
+      tnil.next = nil
+      D("finish chapter("..chapter.idx..")")
       story.chapters[chapter.idx] = chapter
       --end
    end
@@ -166,8 +220,9 @@ end
 
 function start_story(idx)
    progress.story_idx = idx
-   start_chapter(storys[idx].chapters[1])
+   start_chapter(storys[idx].chapters[0])
    D("start story", idx)
+   c_log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
 end
 
 function start_chapter(chapter)
@@ -199,6 +254,7 @@ meta_mono = {}
 meta_talk = {}
 meta_pic = {}
 meta_choice = {}
+meta_command = {}
 
 function init_meta()
    meta_sound.rid = 0
@@ -241,28 +297,25 @@ function play_choice(choice)
    c_rpc("play_choice", {meta_choice})
 end
 
-function play_sound(sound)
-   read_meta(sound, meta_sound)
-   c_rpc("play_sound", {meta_sound})
-end
-
-function play_bgm(sound)
-   read_meta(sound, meta_sound)
-   c_rpc("play_bgm", {meta_sound})
-end
-
 function play_guide(guide)
    read_meta(guide, meta_guide)
    c_rpc("play_guide", {meta_guide})
 end
 
-function stop_all_sound()
-   c_rpc("stop_all_sound", {})
-end
-
 function play_monolog(mono)
    read_meta(mono, meta_mono)
    c_rpc("play_monolog", {meta_mono})
+end
+
+function play_sound(sound)
+   read_meta(mono, meta_sound)
+   c_rpc("play_sound", {meta_sound})
+end
+
+function send_command(com)
+   D("send command name:"..com.name)
+   PT(com.args)
+   c_rpc(com.name, com.args)
 end
 
 do_vt = {}
@@ -272,16 +325,31 @@ do_vt[ACTION_CHOICE] = play_choice
 do_vt[ACTION_SOUND] = play_sound
 do_vt[ACTION_GUIDE] = play_guide
 do_vt[ACTION_MONOLOG] = play_monolog
+do_vt[ACTION_COMMAND] = send_command
 
 function do_action(action)
    D("do action, type("..action.type..")", "idx("..action.idx..")")
    do_vt[action.type](action)
-   action.on_start()
+   if action.on_start ~= nil then
+      action.on_start()
+   end
 end
 
-function change_background(pic)
-   read_meta(pic, meta_pic)
-   c_rpc("change_background", {meta_pic})
+function play_bgm(id)
+   c_rpc("play_bgm", {id})
+end
+
+function change_background(id)
+   D("change_background", id)
+   c_rpc("change_background", {id})
+end
+
+function clear_background()
+   c_rpc("clear_background", tnil)
+end
+
+function tip_end(tip)
+   c_rpc("tip_end", {tip})
 end
 
 function get_story_list(name)
@@ -309,7 +377,9 @@ end
 
 function do_next(action)
    local chapter
-   action.on_end()
+   if action.on_end ~= nil then
+      action.on_end()
+   end
    action = action.next
    if action ~= nil then
       progress.action_idx = action.idx
@@ -330,7 +400,16 @@ function on_choose(id)
    D("choose "..id)
    read_progress()
    local choice = find_action(progress)
-   if choice.result == id then
+   local str = ""
+   for k,v in ipairs(choice.alters) do
+      str = str.."["..k.."]"..v.." "
+   end
+   str = str.."------>".."["..id.."]"
+   if id ~= 0 then
+      str = str..choice.alters[id]
+   end
+   c_log(str.."\n")
+   if choice.result == id or choice.result == 0 then
       D("match result")
       do_next(choice)
    end

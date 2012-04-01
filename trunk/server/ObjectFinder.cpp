@@ -10,7 +10,7 @@
 
 IObjectFinder* finder = new ObjectFinder();
 
-void* fcontext;
+//void* fcontext;
 
 ObjectFinder::ObjectFinder() {
     //    _finders["Character"] = &ObjectFinder::find_character;
@@ -21,8 +21,8 @@ Object* ObjectFinder::find(ParamList* key) {
     const char* name = key->at(0)->to_string();
     if (0 == strcmp(name, "GameServer"))
         return ::server;
-    if (0 == strcmp(name, "GameClient"))
-        return (GameClient*)fcontext;
+    //    if (0 == strcmp(name, "GameClient"))
+    //        return (GameClient*)fcontext;
     if (0 == strcmp(name, "LoginService"))
         return ::login_service;
     if (0 == strcmp(name, "EditorService"))
