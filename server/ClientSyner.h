@@ -19,7 +19,7 @@ class ClientSyner: public IDataReceiver {
 public:
     ClientSyner();
     ~ClientSyner();
-    GameClient* client;
+    //    GameClient* client;
 private:
     Tunnel* _tunnel;
 

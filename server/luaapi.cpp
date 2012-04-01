@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 
 #include "script.h"
@@ -126,6 +127,15 @@ int c_read_progress(lua_State* L)
     return 3;
 }
 
+int c_log(lua_State* L)
+{
+    const char* content = lua_tostring(L, -1);
+    int len = strlen(content);
+    fwrite(content, len, 1, lua_context.player->log);
+    fflush(lua_context.player->log);
+    return 0;
+}
+
 int c_save_progress(lua_State* L)
 {
     //StoryProgress* progress = lua_context.player->current;
@@ -140,4 +150,5 @@ void register_lua() {
     REG_LUA(c_rpc);
     REG_LUA(c_write_progress);
     REG_LUA(c_read_progress);
+    REG_LUA(c_log);
 }

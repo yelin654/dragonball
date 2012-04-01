@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 
 #include "ClientSyner.h"
 #include "InputStream.h"
@@ -9,14 +10,22 @@
 #include "GameClient.h"
 #include "Log.h"
 #include "dispatch_rpc.h"
+#include "Player.h"
 
 ClientSyner::ClientSyner() {
-    client = new GameClient();
-    client->syner = this;
+    //    client = new GameClient();
+    //client->syner = this;
+    player = NULL;
 }
 
 ClientSyner::~ClientSyner() {
-    delete client;
+    //    delete client;
+    if (NULL != player) {
+        if (NULL != player->log) {
+            fclose(player->log);
+        }
+        delete player;
+    }
 }
 
 TunnelOutputStream* ClientSyner::get_command_stream(short id, int size) {
@@ -87,7 +96,7 @@ void ClientSyner::on_disconnect(Tunnel* tunnel) {
 }
 
 void ClientSyner::on_data(TunnelInputStream* stream) {
-    fcontext = client;
+    //fcontext = client;
     short command = stream->read_short();
     switch (command) {
     case COMMAND_ROC:
