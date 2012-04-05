@@ -105,6 +105,9 @@ void ClientSyner::on_data(TunnelInputStream* stream) {
     case COMMAND_LUA_RPC:
         dispatch_lua_rpc(stream, player);
         break;
+    case COMMAND_TEST:
+        handle_test(stream);
+        break;
     default:
         error("unknown command %d\n", command);
     }

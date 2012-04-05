@@ -16,7 +16,8 @@ class Player: public GameObject {
     DECLARE_GAME_OBJECT(Player, GameObject)
 
 public:
-    Player():log(NULL){};
+    Player():current(NULL), log(NULL){};
+    virtual ~Player();
 
 private:
     map<int, StoryProgress*> _progress;

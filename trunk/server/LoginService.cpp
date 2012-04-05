@@ -18,6 +18,7 @@ void LoginService::login(const char* name) {
     sprintf(filename, "log/%s", name);
     filename[len-1] = '\0';
     player->log = fopen(filename, "a");
+    delete [] filename;
     _invoke_from->player = player;
     player->syner = _invoke_from;
     G_players[name] = player;
