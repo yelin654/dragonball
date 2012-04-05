@@ -39,6 +39,7 @@ private:
     void mod_out(Tunnel* tunnel);
     void mod_in(Tunnel* tunnel);
     void mod(Tunnel* tunnel);
+    int set_keep_alive(int socket_fd);
 
     void link();
     void handle_in(struct epoll_event* e);

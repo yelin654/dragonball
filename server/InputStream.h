@@ -13,6 +13,8 @@ public:
 
     int read_bytes(void* buf, int len);
 
+    int available() {return data+cap-ri;}
+
     char* ri;
     char* data;
     int cap;

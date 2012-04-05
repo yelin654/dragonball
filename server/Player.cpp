@@ -11,3 +11,6 @@ void Player::continue_story(int idx) {
 
 void Player::start_story(int idx) {
 }
+
+Player::~Player() {
+}

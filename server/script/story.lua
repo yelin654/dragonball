@@ -218,10 +218,10 @@ function find_story(idx)
    return storys[idx]
 end
 
-function start_story(idx)
-   progress.story_idx = idx
-   start_chapter(storys[idx].chapters[0])
-   D("start story", idx)
+function start_story(chapter_idx)
+   progress.story_idx = 1
+   start_chapter(storys[1].chapters[chapter_idx])
+   D("start story, chapter:"..chapter_idx)
    c_log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
 end
 
@@ -230,6 +230,7 @@ function start_chapter(chapter)
    progress.chapter_idx = chapter.idx
    progress.action_idx = 0
    write_progress()
+   c_save_progress()
    D("start load chapter", chapter.idx)
 end
 
@@ -404,15 +405,14 @@ function on_choose(id)
    for k,v in ipairs(choice.alters) do
       str = str.."["..k.."]"..v.." "
    end
-   str = str.."------>".."["..id.."]"
-   if id ~= 0 then
-      str = str..choice.alters[id]
-   end
+   str = str.."------>".."["..id.."]"..choice.alters[id]
+   --if id ~= 0 then
+   --end
    c_log(str.."\n")
-   if choice.result == id or choice.result == 0 then
-      D("match result")
-      do_next(choice)
-   end
+   --if choice.result == id or choice.result == 0 then
+   --D("match result")
+   do_next(choice)
+   --end
 end
 
 init_meta()

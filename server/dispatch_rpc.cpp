@@ -5,6 +5,7 @@
 #include "script.h"
 #include "luaapi.h"
 #include "Log.h"
+#include "Tunnel.h"
 
 char string_buf[64];
 
@@ -34,4 +35,12 @@ void dispatch_lua_rpc(InputStream* stream, Player* player) {
         push_param(stream);
     }
     luaerrorcall(num, 0);
+}
+
+void handle_test(TunnelInputStream* in) {
+    Tunnel* tunnel = in->tunnel;
+    TunnelOutputStream* out = tunnel->get_output_stream(4);
+    out->write_short(9);
+    out->write_bytes(in->ri, in->available());
+    out->flush();
 }

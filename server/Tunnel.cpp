@@ -81,21 +81,20 @@ void Tunnel::on_data_in() {
     }
 
     if (0 == nread) {
-        close(_socket_fd);
-        debug("close socket %d", _socket_fd);
         connecting = false;
         read_pending = false;
+        debug("nread 0, socket(%d)", _socket_fd);
         return;
     }
 
     if (nread < 0) {
+        debug("nread -1, socket(%d), errno(%d), errstr(%s)", _socket_fd, errno, strerror(errno));
         if (errno == EAGAIN) {
             debug("read socket(%d) buff end", _socket_fd);
         } else {
-            debug("close socket %d", _socket_fd);
-            connecting = false;
+            //connecting = false;
         }
-        read_pending = false;
+        read_pending = true;
         return;
     }
 

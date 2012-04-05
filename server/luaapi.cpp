@@ -138,7 +138,15 @@ int c_log(lua_State* L)
 
 int c_save_progress(lua_State* L)
 {
-    //StoryProgress* progress = lua_context.player->current;
+    StoryProgress* current = lua_context.player->current;
+    if (NULL != current) {
+        string filename = "progress/" + lua_context.player->name;
+        FILE* progress = fopen(filename.c_str(), "w");
+        if (NULL != progress) {
+            fwrite(&(current->chapter_idx), 4, 1, progress);
+            fclose(progress);
+        }
+    }
     return 0;
 }
 
@@ -150,5 +158,6 @@ void register_lua() {
     REG_LUA(c_rpc);
     REG_LUA(c_write_progress);
     REG_LUA(c_read_progress);
+    REG_LUA(c_save_progress);
     REG_LUA(c_log);
 }

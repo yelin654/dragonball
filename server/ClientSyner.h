@@ -30,6 +30,7 @@ public:
     static const short COMMAND_GROUP_END = 4;
     static const short COMMAND_ROC = 7;
     static const short COMMAND_LUA_RPC = 8;
+    static const short COMMAND_TEST = 9;
 
 public:
     TunnelOutputStream* get_command_stream(short id, int size);
