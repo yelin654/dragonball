@@ -39,7 +39,7 @@ public:
     Tunnel(int socket_fd, IDataReceiver* receiver);
     ~Tunnel();
 
-    TunnelOutputStream* get_output_stream(int length);
+    TunnelOutputStream* get_output_stream();
     void on_data_in();
     void on_data_out();
     void write_cache();

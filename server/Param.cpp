@@ -6,7 +6,7 @@
 #include "OutputStream.h"
 #include "InputStream.h"
 #include "IObjectFinder.h"
-#include "macro.h"
+#include "stlite.h"
 #include "Log.h"
 
 Param::Param(const char* v, bool copy):_data(v), _type(TYPE_STRING), _delete(copy)

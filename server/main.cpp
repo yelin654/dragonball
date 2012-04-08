@@ -7,7 +7,7 @@
 #include <typeinfo>
 
 #include "Param.h"
-#include "utils.h"
+#include "stlite.h"
 #include "Net.h"
 #include "ClientTunnelFactory.h"
 #include "ClientSyner.h"
@@ -19,6 +19,8 @@
 #include "luaapi.h"
 #include "LuaService.h"
 #include "ParamListSend.h"
+#include "ParamListRecv.h"
+#include "rpc.h"
 
 Net* net;
 
@@ -151,13 +153,21 @@ void roll() {
     }
 }
 
+void gen_test(int x, int y) {
+    debug("x:%d, y:%d", x, y);
+}
+
+
+
 void register_funcs() {
-    REG_SYN(GameServer, login, char*);
-    REG_SYN(EditorService, login, const char*);
-    REG_SYN(EditorService, saveMetaWork, const char*, const ByteArray*);
-    REG_SYN(EditorService, loadMetaWork, const char*);
-    REG_SYN(LoginService, login, const char*);
-    REG_SYN(GameServer, enter_story, char*, int);
+    REG_RPC(gen_test, int, int);
+    REG_RPC(login, int, const char*);
+    REG_RPC(enter_story, int, const char*, int);
+    //REG_SYN(EditorService, login, const char*);
+    //REG_SYN(EditorService, saveMetaWork, const char*, const ByteArray*);
+    //REG_SYN(EditorService, loadMetaWork, const char*);
+    //REG_SYN(LoginService, login, const char*);
+    //REG_SYN(GameServer, enter_story, char*, int);
 }
 
 void print_classes() {

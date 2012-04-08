@@ -1,14 +1,12 @@
 #include "GameObject.h"
 
-#include "ObjectMirror.h"
-#include "Param.h"
-#include "utils.h"
+#include "stlite.h"
 #include "Tunnel.h"
 #include "Log.h"
 
 DEFINE_CLASS(GameObject)
 
-void GameObject::invoke_method(const string& name, const ParamList* params) {
+void GameObject::invoke_method(const string& name, const ParamListRecv* params) {
     error("%s has no method %s", class_name(), name.c_str());
 }
 

@@ -81,7 +81,7 @@ void Tunnel::on_data_in() {
     }
 
     if (0 == nread) {
-        connecting = false;
+        //connecting = false;
         read_pending = false;
         debug("nread 0, socket(%d)", _socket_fd);
         return;
@@ -116,9 +116,10 @@ void Tunnel::write_cache() {
     _out_cache->shift(nwrite);
 }
 
-TunnelOutputStream* Tunnel::get_output_stream(int size) {
+TunnelOutputStream* Tunnel::get_output_stream() {
     _out_stream->tunnel = this;
     _out_stream->reset();
+    int size = 0;
     _out_stream->write_bytes(&size, Tunnel::HEAD_LENGTH);
     return _out_stream;
 }

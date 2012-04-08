@@ -7,9 +7,9 @@
 
 class ParamListSend {
 public:
-    void attach(OutputStream* stream, int len) {
+    void attach(OutputStream* stream, int num) {
         this->stream = stream;
-        stream->write_byte(len);
+        stream->write_byte(num);
     };
 
     template<class ...ARGS>

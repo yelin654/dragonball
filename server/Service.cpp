@@ -15,7 +15,7 @@ void Service::invoke_method_from(ClientSyner* syner, const string& name, ParamLi
 
 inline void Service::invoke_service_method(const string& name, ParamList* params)
 {
-    invoke_method(name, params);
+    //invoke_method(name, params);
 }
 
 void Service::success(ParamList* result) {
@@ -33,7 +33,7 @@ void Service::failed(ParamList* reason) {
 }
 
 TunnelOutputStream* Service::get_success_stream() {
-    TunnelOutputStream* stream = _invoke_from->get_command_stream(ClientSyner::COMMAND_ROC, 64);
+    TunnelOutputStream* stream = _invoke_from->get_command_stream(ClientSyner::COMMAND_ROC);
     g_pls->attach(stream, 1);
     g_pls->push("Client");
     stream->write_string("querySuccess");
