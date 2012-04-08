@@ -33,6 +33,6 @@ public:
     FILE* log;
 };
 
-extern map<string, Player*> G_players;
+//extern map<string, Player*> G_players;
 
 #endif

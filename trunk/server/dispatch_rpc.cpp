@@ -1,22 +1,22 @@
 #include <string.h>
 
 #include "InputStream.h"
-#include "Param.h"
 #include "script.h"
 #include "luaapi.h"
 #include "Log.h"
 #include "Tunnel.h"
+#include "type.h"
 
 char string_buf[64];
 
 void push_param(InputStream* stream) {
     int type = stream->read_byte();
     switch (type) {
-        case Param::TYPE_INT: {
+        case TYPE_INT: {
             lua_pushinteger(L, stream->read_int());
             break;
         }
-        case Param::TYPE_STRING: {
+        case TYPE_STRING: {
             stream->read_string(string_buf);
             lua_pushstring(L, string_buf);
             break;

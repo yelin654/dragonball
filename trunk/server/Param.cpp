@@ -5,7 +5,6 @@
 #include "Object.h"
 #include "OutputStream.h"
 #include "InputStream.h"
-#include "IObjectFinder.h"
 #include "stlite.h"
 #include "Log.h"
 
@@ -91,7 +90,7 @@ void Param::serialize_object_array(OutputStream* stream) const {
 }
 
 void Param::serialize_byte_array(OutputStream* stream) const {
-    const ByteArray* bytes = to_byte_array();
+    const Array<char>* bytes = to_byte_array();
     stream->write_int(bytes->length);
     stream->write_bytes(bytes->data, bytes->length);
 }
@@ -130,7 +129,7 @@ void Param::_unserialize_object(InputStream* stream) {
     if (stream->read_byte()) {
         ParamList key;
         key.unserialize(stream);
-        _data = finder->find(&key);
+        //_data = finder->find(&key);
     } else {
         int len = stream->read_short();
         char* name = new char[len+1];
@@ -176,7 +175,7 @@ void Param::_unserialize_object_array(InputStream* stream) {
         if (stream->read_byte()) {
             ParamList key;
             key.unserialize(stream);
-            _data = finder->find(&key);
+            //_data = finder->find(&key);
         } else {
             len = stream->read_short();
             name = new char[len+1];
@@ -195,7 +194,7 @@ void Param::_unserialize_byte_array(InputStream* stream) {
     int len = stream->read_int();
     char* data = new char[len];
     stream->read_bytes(data, len);
-    _data = new ByteArray(data, len);
+    _data = new Array<char>(data, len);
 }
 
 Param::~Param() {
@@ -249,7 +248,7 @@ void Param::_delete_object_array() {
 }
 
 void Param::_delete_byte_array() {
-    const ByteArray* bytes = to_byte_array();
+    const Array<char>* bytes = to_byte_array();
     delete [] bytes->data;
     delete bytes;
 }

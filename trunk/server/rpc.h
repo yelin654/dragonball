@@ -3,6 +3,7 @@
 
 #include "generation.h"
 #include "ParamListRecv.h"
+#include "stlite.h"
 
 typedef void (*METHOD)(ParamListRecv& params);
 
@@ -34,15 +35,6 @@ typedef void (*__##Method)(__VA_ARGS__); \
 METHOD_INDEX[#Method] = &call< __##Method, Method, ##__VA_ARGS__ >;
 
 void call_func(const char* name, ParamListRecv* pl);
-
-const int TYPE_INT = 0;
-const int TYPE_STRING = 1;
-const int TYPE_OBJECT = 2;
-const int TYPE_INT_ARRAY = 3;
-const int TYPE_STRING_ARRAY = 4;
-const int TYPE_OBJECT_ARRAY = 5;
-const int TYPE_BYTE_ARRAY = 6;
-const int TYPE_LUA_TABLE = 7;
 
 class ClientSyner;
 

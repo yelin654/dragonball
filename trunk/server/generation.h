@@ -4,8 +4,6 @@
 #include <map>
 using namespace std;
 
-#include "stlite.h"
-
 #define GEN_TYPE_0
 #define GEN_TYPE_1 , class T1
 #define GEN_TYPE_2 GEN_TYPE_1, class T2

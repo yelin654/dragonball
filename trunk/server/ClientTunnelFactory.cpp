@@ -1,6 +1,5 @@
 #include "ClientTunnelFactory.h"
 #include "ClientSyner.h"
-#include "ObjectFinder.h"
 
 
 Tunnel* ClientTunnelFactory::create_tunnel(int fd) {
