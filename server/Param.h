@@ -15,16 +15,6 @@ using namespace std;
 typedef unsigned int uint;
 typedef char byte;
 
-class ByteArray {
-public:
-    char* data;
-    int length;
-    ByteArray(char* data, int length) {
-        this->data = data;
-        this->length = length;
-    }
-};
-
 class Param:public Serializable {
 public:
     static const int TYPE_INT = 0;
@@ -44,7 +34,7 @@ public:
     Param(const Array<char*>* v, bool del=false):_data(v), _type(TYPE_INT_ARRAY), _delete(del){};
     Param(const Array<const char*>* v, bool del=false):_data(v), _type(TYPE_INT_ARRAY), _delete(del){};
     Param(const Array<Object*>* v):_data(&v), _type(TYPE_INT_ARRAY), _delete(false){};
-    Param(const ByteArray* v):_data(&v), _type(TYPE_INT_ARRAY), _delete(false){};
+    Param(const Array<char>* v):_data(&v), _type(TYPE_INT_ARRAY), _delete(false){};
 
     ~Param();
 
@@ -75,8 +65,8 @@ public:
         return *((Array<Object*>*)_data);
     };
 
-    const ByteArray* to_byte_array() const {
-        return (ByteArray*)_data;
+    const Array<char>* to_byte_array() const {
+        return (Array<char>*)_data;
     };
 
     template<class T>
@@ -87,7 +77,7 @@ public:
     operator const Array<int>() const {return *((Array<int>*)_data);};
     operator const Array<char*>() const {return *((Array<char*>*)_data);};
     operator const Array<Object*>() const {return *((Array<Object*>*)_data);};
-    operator const ByteArray*() const {return (ByteArray*)_data;};
+    operator const Array<char>*() const {return (Array<char>*)_data;};
 
 public:
 

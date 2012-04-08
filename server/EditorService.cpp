@@ -8,25 +8,23 @@
 #include "script.h"
 
 
-DEFINE_GAME_OBJECT(EditorService)
-
 EditorService* editor_service = new EditorService;
 
 void EditorService::login(const char* name) {
-    debug("login, name(%s)", name);
-    ParamList result;
-    success(&result);
+    // debug("login, name(%s)", name);
+    // ParamList result;
+    // success(&result);
 }
 
 void EditorService::loadMetaWork(const char* name) {
-    char filename[64]; bzero(filename, 64);
-    sprintf(filename, "db/%s/metawork", name);
-    int size; char* buf;
-    load_file(buf, size, filename);
-    ByteArray bytes(buf, size);
-    ParamList result(&bytes);
-    success(&result);
-    delete [] buf;
+    // char filename[64]; bzero(filename, 64);
+    // sprintf(filename, "db/%s/metawork", name);
+    // int size; char* buf;
+    // load_file(buf, size, filename);
+    // Array<char> bytes(buf, size);
+    // ParamList result(&bytes);
+    // success(&result);
+    // delete [] buf;
 }
 
 // void EditorService::saveMetaWork(const char* name, const ByteArray* bytes) {

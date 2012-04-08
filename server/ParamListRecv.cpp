@@ -1,8 +1,11 @@
+#include <string.h>
+
 #include "ParamListRecv.h"
 #include "InputStream.h"
-#include "rpc.h"
+#include "type.h"
 #include "Object.h"
 #include "Array.h"
+
 
 void ParamListRecv::attach(InputStream* stream) {
     bzero(datas, ARGS_LEN_MAX * sizeof(datas[0]));

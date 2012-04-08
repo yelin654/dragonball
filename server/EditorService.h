@@ -1,12 +1,7 @@
 #ifndef EDITORSERVICE_H
 #define EDITORSERVICE_H
 
-
-#include "GameObject.h"
-#include "Service.h"
-
-class EditorService: public Service {
-    DECLARE_GAME_OBJECT(EditorService, Service)
+class EditorService {
 public:
     void login(const char* name);
     void loadMetaWork(const char* name);

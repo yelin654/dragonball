@@ -22,6 +22,16 @@ public:
 
 };
 
+// class ByteArray {
+// public:
+//     char* data;
+//     int length;
+//     ByteArray(char* data, int length) {
+//         this->data = data;
+//         this->length = length;
+//     }
+// };
+
 // template<>
 // class Array<char*> {
 // public:
