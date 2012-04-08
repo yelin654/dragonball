@@ -4,7 +4,7 @@
 class OutputStream {
 public:
     OutputStream(int len);
-    ~OutputStream();
+    virtual ~OutputStream();
 
     void write_byte(char);
     void write_short(short);

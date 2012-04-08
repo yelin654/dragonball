@@ -97,7 +97,7 @@ int lua_push_params(ParamList* pl) {
 int c_rpc(lua_State* L) {
     const char* func_name = lua_tostring(L, -2);
     ClientSyner* syner = lua_context.player->syner;
-    TunnelOutputStream* stream = syner->get_command_stream(ClientSyner::COMMAND_RPC, sizeof(func_name));
+    TunnelOutputStream* stream = syner->get_command_stream(ClientSyner::COMMAND_RPC);
     stream->write_string(func_name);
     int len = lua_array_length(-1);
     g_pls->attach(stream, len);

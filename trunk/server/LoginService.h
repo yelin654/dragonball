@@ -12,4 +12,6 @@ public:
 
 extern LoginService* login_service;
 
+void login(int qid, const char* name);
+
 #endif

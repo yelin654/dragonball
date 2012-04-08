@@ -4,7 +4,6 @@
 #include "Object.h"
 #include "Param.h"
 #include "GameServer.h"
-#include "GameClient.h"
 #include "EditorService.h"
 #include "LoginService.h"
 

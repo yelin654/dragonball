@@ -26,10 +26,9 @@ void push_param(InputStream* stream) {
 
 void dispatch_lua_rpc(InputStream* stream, Player* player) {
     lua_context.player = player;
-    bzero(string_buf, 64);
-    stream->read_string(string_buf);
-    debug("begin to call lua rpc %s", string_buf);
-    lua_getglobal(L, string_buf);
+    const char* name = stream->read_string();
+    debug("begin to call lua rpc %s", name);
+    lua_getglobal(L, name);
     int num = stream->read_byte();
     for (int i = 0; i < num; ++i) {
         push_param(stream);
@@ -39,8 +38,9 @@ void dispatch_lua_rpc(InputStream* stream, Player* player) {
 
 void handle_test(TunnelInputStream* in) {
     Tunnel* tunnel = in->tunnel;
-    TunnelOutputStream* out = tunnel->get_output_stream(4);
+    TunnelOutputStream* out = tunnel->get_output_stream();
     out->write_short(9);
     out->write_bytes(in->ri, in->available());
     out->flush();
 }
+

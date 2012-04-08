@@ -4,6 +4,8 @@
 using namespace std;
 
 #include "InputStream.h"
+#include "Log.h"
+#include "Object.h"
 
 void InputStream::attach_data(char* d, int len) {
     ri = data = d;
@@ -43,8 +45,32 @@ int InputStream::read_bytes(void* buf, int len) {
 
 int InputStream::read_string(char* buf) {
     int len = read_short();
-    read_bytes(buf, len);
-    buf[len+1] = '\0';
+    read_bytes(buf, len+1);
     return len;
 }
 
+const char* InputStream::read_string(int& len) {
+    len = read_short();
+    const char* result = ri;
+    skip(len);
+    if (*ri != '\0') {
+        error("string(%s) no end symbol", result);
+    } else {
+        skip(1);
+    }
+    return result;
+}
+
+const char* InputStream::read_string() {
+    int len;
+    return read_string(len);
+}
+
+Object* InputStream::read_object() {
+    const char* name = read_string();
+    Object* ob = NEW_INSTANCE(name);
+    if (NULL != ob) {
+        ob->unserialize(this);
+    }
+    return ob;
+}

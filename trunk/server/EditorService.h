@@ -10,7 +10,7 @@ class EditorService: public Service {
 public:
     void login(const char* name);
     void loadMetaWork(const char* name);
-    void saveMetaWork(const char* name, const ByteArray* bytes);
+    //void saveMetaWork(const char* name, const Array<char*>* bytes);
     void loadStory(const char* name, int idx);
 };
 

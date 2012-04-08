@@ -5,6 +5,7 @@
 using namespace std;
 
 #include "Param.h"
+#include "ParamListSend.h"
 #include "GameObject.h"
 #include "IDataReceiver.h"
 
@@ -32,8 +33,11 @@ public:
     static const short COMMAND_LUA_RPC = 8;
     static const short COMMAND_TEST = 9;
 
+    static const short COMMAND_QUERY = 10;
+    static const short COMMAND_QUERY_SUCCESS = 11;
+
 public:
-    TunnelOutputStream* get_command_stream(short id, int size);
+    TunnelOutputStream* get_command_stream(short id);
     virtual void on_connect(Tunnel* tunnel);
     virtual void on_data(TunnelInputStream* stream);
     virtual void on_disconnect(Tunnel* tunnel);
@@ -67,17 +71,33 @@ public:
 
 public:
     void rpc(const char* method_name) {
-        ParamList params;
-        _rpc(method_name, &params);
+        ParamListSend* params = get_params_send(method_name, 0);
+        _send(params);
     };
     template<class ...ARGS>
     void rpc(const char* method_name, ARGS ...args) {
-        ParamList params(args...);
-        _rpc(method_name, &params);
+        ParamListSend* params = get_params_send(method_name, sizeof...(args));
+        params->push_params(args...);
+        _send(params);
     };
+
+    void query_success(int qid) {
+        ParamListSend* params = get_query_result(qid, 0);
+        _send(params);
+    };
+    template<class ...ARGS>
+    void query_success(int qid, ARGS ...args) {
+        ParamListSend* params = get_query_result(qid, sizeof...(args)+1);
+        params->push_params(args...);
+        _send(params);
+    };
+
+private:
+    void _send(ParamListSend* params);
+    void _rpc_recv(TunnelInputStream* stream);
+
 public:
     void _rpc(const char* method_name, ParamList* params);
-
 
 public:
     void _command(int id, ParamList* key, const char* method_name, ParamList* params);
@@ -107,6 +127,9 @@ public:
 private:
     void invoke_method_recv(TunnelInputStream* stream);
 
+public:
+    ParamListSend*  get_params_send(const char* method_name, int num);
+    ParamListSend*  get_query_result(int qid, int num);
 
 public:
     Player* player;
