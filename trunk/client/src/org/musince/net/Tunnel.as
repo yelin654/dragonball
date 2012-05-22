@@ -116,7 +116,10 @@ package org.musince.net
 					_expectLength = this.readInt();
 					_readingDataLength = false;
 				} else {
-					_receiver.on_data(this, this);
+					var buf:Stream = new Stream;
+					this.readBytes(buf, 0, _expectLength);
+					_receiver.on_data(this, buf);
+					if (!this.connected) return;
 					_expectLength = 4;
 					_readingDataLength = true;
 				}
@@ -149,6 +152,12 @@ package org.musince.net
 		
 		public function getOutputStream():OutputStream {
 			return new TunnelOutputStream(this);
+		}
+		
+		override public function readUTF():String {
+			var result:String = super.readUTF();
+			readByte();
+			return result;
 		}
 
 	}

@@ -75,7 +75,7 @@ package org.musince.logic
 							next.input[key] = action.output[key];
 						}
 						if (next.traceT)
-							$log.debug("[START_ACTION]", next.toString()+action.rtid);
+							$log.debug("[START_ACTION]", next.toString()+next.rtid);
 						next.start(_now);
 					}
 				}

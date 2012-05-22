@@ -31,21 +31,20 @@ package
     import org.musince.global.$stage;
     import org.musince.global.$syner;
     import org.musince.global.$talkPanel;
+    import org.musince.global.$tunnel;
     import org.musince.global.$ui;
     import org.musince.global.$width;
     import org.musince.load.LoadManager;
     import org.musince.logic.ObjectFinder;
-    import org.musince.net.Tunnel;
     import org.musince.query.EnterStory;
     import org.musince.rpc.ImportRPC;
     import org.musince.system.Cookie;
     import org.musince.util.TextFieldUtil;
 
-    [SWF(width="1280", height="720", backgroundColor="0x000000")]
+	[SWF(width="1280", height="720", backgroundColor="0x000000")]
 
     public class Main extends Sprite
     {
-        private var _tunnel:Tunnel;
 
         public function Main()
         {
@@ -62,11 +61,11 @@ package
 			
 			var config:LoadConfigFile = new LoadConfigFile();
 			
-			var info:Info = new Info();
-			config.appendNext(info);
+//			var info:Info = new Info();
+//			config.appendNext(info);
 			
 			var connect:ConnectToServer = new ConnectToServer();
-			info.appendNext(connect);
+			config.appendNext(connect);
 			
 			var login:Login = new Login();
 			connect.appendNext(login);
@@ -105,6 +104,8 @@ package
 			$finder = new ObjectFinder();
 			$sender = $syner;
 			$receiver = $syner;
+			$tunnel.attachReceiver($syner);
+			$syner.bind($tunnel);
 			$cookie = new Cookie();
 			$loadManager = new LoadManager();
 			$ui = new UI($root);

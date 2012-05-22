@@ -1,8 +1,8 @@
 package test
 {
-	import org.musince.net.IDataSender;
+	import org.musince.net.IRPCSender;
 	
-	public class LocalSender implements IDataSender
+	public class LocalSender implements IRPCSender
 	{
 		public function LocalSender()
 		{

@@ -4,7 +4,7 @@ package org.musince.rpc
 	
 	import org.musince.actions.FadeOutTalkAndBackground;
 	import org.musince.actions.PlayGuideText;
-	import org.musince.actions.SendRPC;
+	import org.musince.actions.SendLuaRPC;
 	import org.musince.global.$athena;
 	import org.musince.global.$guideText;
 	import org.musince.global.$ui;
@@ -14,7 +14,7 @@ package org.musince.rpc
 	{
 		var texts:Array = LuaUtil.convertToArray(guide["texts"]);
 		var play:PlayGuideText = new PlayGuideText(texts, guide["speed"]/1000, guide["stay"]);
-		var rpc:SendRPC = new SendRPC("next_main_action", []);
+		var rpc:SendLuaRPC = new SendLuaRPC("next_main_action", []);
 		play.appendNext(rpc);
 		if ($ui.backgroundLayer.numChildren == 0 && $ui.talkLayer.numChildren == 0)
 		{			

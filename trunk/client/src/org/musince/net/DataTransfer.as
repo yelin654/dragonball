@@ -15,7 +15,7 @@ package org.musince.net
 	import org.musince.logic.ObjectMirror;
 	import org.musince.logic.ParamList;
 	
-	public class DataTransfer implements IDataReceiver, IDataSender
+	public class DataTransfer implements IDataReceiver, IRPCSender
 	{
 		public static const RPC_NEW_OBJECT:int = 1;
 		public static const RPC_SYNC_METHOD:int = 2;
