@@ -3,7 +3,7 @@ package org.musince.logic
 	import flash.utils.Dictionary;
 	
 	import org.musince.core.Query;
-	import org.musince.global.$syner;
+	import org.musince.global.$sender;
 
 	public class Client extends GameObject
 	{
@@ -18,18 +18,19 @@ package org.musince.logic
 		{
 			params.unshift(query.rtid);
 			_pendingQuerys[query.rtid] = query;
-			$syner.roc([service], method, params);
+			$sender.rpc(method, params);  
+//			$sender.roc([service], method, params);
 		}
 		
-		public function querySuccess(idx:int, ...result):void
+		public function querySuccess(idx:int, result:Array):void
 		{
 			_pendingQuerys[idx].onSuccess(result);
 			delete _pendingQuerys[idx];
 		}
 		
-		public function queryFailed(idx:int, ...reason):void
+		public function queryFailed(idx:int, result:Array):void
 		{
-			_pendingQuerys[idx].onFailed(reason);
+			_pendingQuerys[idx].onFailed(result);
 			delete _pendingQuerys[idx];
 		}
 	}

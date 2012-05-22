@@ -47,7 +47,7 @@ package org.musince.actions
 			var drawline:DrawLine = new DrawLine(graphics, 0.04, {t:2, c:0xFFFFFF});
 			drawline.input["from"] = new Point(int(panel.w/3), int(panel.h/2));
 			drawline.input["to"] = new Point(int(panel.w-panel.w/3), int(panel.h/2));
-			var playText:PlayTalkAvg = new PlayTalkAvg(panel.tip, 100);
+			var playText:PlayTalkAvg = new PlayTalkAvg(panel.tip, 60);
 			TextFieldUtil.layCenter($width, panel.tip, "input login name");
 			playText.input["text"] = "input login name";
 			var query:LoginQuery = new LoginQuery();

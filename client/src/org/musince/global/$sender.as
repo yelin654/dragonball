@@ -1,6 +1,6 @@
 package org.musince.global
 {
-	import org.musince.net.IDataSender;
+	import org.musince.net.IRPCSender;
 
-	public var $sender:IDataSender;
+	public var $sender:IRPCSender;
 }

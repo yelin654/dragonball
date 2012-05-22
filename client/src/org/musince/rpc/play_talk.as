@@ -10,7 +10,7 @@ package org.musince.rpc
 	import org.musince.actions.FadeInTalk;
 	import org.musince.actions.PlayTalk;
 	import org.musince.actions.PlayTalkAvg;
-	import org.musince.actions.SendRPC;
+	import org.musince.actions.SendLuaRPC;
 	import org.musince.actions.WaitingForClick;
 	import org.musince.global.$athena;
 	import org.musince.global.$background;
@@ -23,7 +23,7 @@ package org.musince.rpc
 	{
 		var play:PlayTalk = new PlayTalkAvg($talkPanel.talkText);
 		play.input = talk;
-		var rpc:SendRPC = new SendRPC("next_main_action", null);
+		var rpc:SendLuaRPC = new SendLuaRPC("next_main_action", null);
 		var click:WaitingForClick = new WaitingForClick();
 		play.appendNext(click);
 		click.appendNext(rpc);

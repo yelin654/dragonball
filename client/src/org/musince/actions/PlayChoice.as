@@ -81,12 +81,12 @@ package org.musince.actions
 			var choose:int = int(tf.name) + 1;
 			trace("click", choose);
 			$sender.lua_rpc("on_choose", [int(tf.name)+1]);
-			if (choose == result || result == 0)
-			{
-				$talkPanel.clearChoice();
-				removeEvent();
-				isEnd = true;
-			}
+//			if (choose == result || result == 0)
+//			{
+			$talkPanel.clearChoice();
+			removeEvent();
+			isEnd = true;
+//			}
 		}
 	}
 }

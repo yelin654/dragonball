@@ -30,7 +30,7 @@ package org.musince.actions
 			var trans:SoundTransform = channel.soundTransform;
 			trans.volume = t;
 			channel.soundTransform = trans;
-			trace("channl volume", channel.soundTransform.volume);
+//			trace("channl volume", channel.soundTransform.volume);
 			if (t == 0)
 			{
 				channel.stop();

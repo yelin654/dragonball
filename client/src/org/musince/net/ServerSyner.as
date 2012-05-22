@@ -4,21 +4,25 @@ package org.musince.net
 	import flash.utils.IDataOutput;
 	import flash.utils.getDefinitionByName;
 	
+	import org.musince.global.$client;
 	import org.musince.global.$finder;
 	import org.musince.logic.GameObject;
 	import org.musince.logic.ParamList;
 
-	public class ServerSyner implements IDataReceiver, IDataSender
+	public class ServerSyner implements IDataReceiver, IRPCSender
 	{
 		private var _tunnel:Tunnel;
 		
-		public static const COMMAND_RPC:int = 1;
+		public static const COMMAND_RPC:int = 1;		
 		public static const COMMAND_ROC:int = 7;
 		public static const COMMAND_GROUP_START:int = 2;
 		public static const COMMAND_GROUP_END:int = 3;
 		public static const COMMAND_GROUP_ROC:int = 4;
 		public static const COMMAND_LUA_RPC:int = 8;
+		public static const COMMAND_TEST:int = 9;
 		
+		public static const COMMAND_QUERY:int = 10;
+		public static const COMMAND_QUERY_SUCCESS:int = 11;
 		
 		private var _group_cache:Array;
 		
@@ -49,16 +53,27 @@ package org.musince.net
 				case COMMAND_RPC:
 					invoke_global_method_recv(data);
 					break;
+				case COMMAND_QUERY_SUCCESS:
+					on_query_success(data);
+					break;
 			}
 		}
 		
-		public function roc(key:Array, method_name:String, params:Array=null):void {
-			var stream:IDataOutputNet = get_command_stream(COMMAND_ROC);
-			(new ParamList(key)).serialize(stream);
-			stream.writeUTF(method_name);
-			(new ParamList(params)).serialize(stream);
-			stream.flush();
+		public function on_query_success(stream:IDataInput):void
+		{
+			var qid:int = stream.readInt();
+			params = new ParamList;
+			params.unserialize(stream);
+			$client.querySuccess(qid, params.params); 
 		}
+		
+//		public function roc(key:Array, method_name:String, params:Array=null):void {
+//			var stream:IDataOutputNet = get_command_stream(COMMAND_ROC);
+//			(new ParamList(key)).serialize(stream);
+//			stream.writeUTF(method_name);
+//			(new ParamList(params)).serialize(stream);
+//			stream.flush();
+//		}
 		
 		public function rpc(method_name:String, params:Array=null):void {
 			var stream:IDataOutputNet = get_command_stream(COMMAND_RPC);
@@ -74,7 +89,7 @@ package org.musince.net
 			stream.flush();
 		}
 		
-		private function get_command_stream(id:int, size:int=0):IDataOutputNet {
+		public function get_command_stream(id:int):IDataOutputNet {
 			var stream:OutputStream = _tunnel.getOutputStream();
 			stream.writeShort(id);
 			return stream;

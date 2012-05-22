@@ -13,7 +13,8 @@ package org.musince.rpc
 		 change_background,
 		 play_bgm,
 		 clear_background,
-		 tip_end
+		 tip_end,
+		 query_success
 		];
 	}
 }

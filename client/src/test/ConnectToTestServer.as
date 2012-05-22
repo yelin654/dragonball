@@ -1,17 +1,15 @@
-package org.musince.actions
+package test
 {
 	import flash.events.Event;
 	
 	import org.musince.core.TimeSlice;
 	import org.musince.global.$config;
 	import org.musince.global.$log;
-	import org.musince.global.$receiver;
-	import org.musince.global.$syner;
 	import org.musince.global.$tunnel;
 	
-	public class ConnectToServer extends TimeSlice
+	public class ConnectToTestServer extends TimeSlice
 	{
-		public function ConnectToServer()
+		public function ConnectToTestServer()
 		{
 			super();
 		}
@@ -19,8 +17,10 @@ package org.musince.actions
 		override public function onStart():void 
 		{		
 			$tunnel.addEventListener(Event.CONNECT, onConnect);
+			$config.ServerPort = 12223;
+			$config.ServerAddress = "www.musince.org";
 			$log.debug("connect to", $config.ServerAddress, ":", $config.ServerPort);
-//			$log.alert("connect to " +  $config.ServerAddress +  ":" + $config.ServerPort);
+//			$log.alert("connect to " +  $config.ServerAddress +  ":" +  $config.ServerPort);
 			$tunnel.connect($config.ServerAddress, $config.ServerPort);
 		}
 		

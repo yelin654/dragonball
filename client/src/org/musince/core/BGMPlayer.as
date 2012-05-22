@@ -1,5 +1,6 @@
 package org.musince.core
 {
+	import flash.events.Event;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
@@ -38,6 +39,15 @@ package org.musince.core
 		{
 			var st:SoundTransform = new SoundTransform();
 			playing = sound.play(0, 0, st);
+			playing.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
+		}
+		
+		public function onSoundComplete(e:Event):void
+		{
+			if (e.currentTarget == playing)
+			{
+				playing = null;
+			}
 		}
 		
 		public function onFadeEnd(ts:TimeSlice):void

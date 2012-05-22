@@ -43,7 +43,7 @@ package org.musince.actions
 			if (showEnter == null)
 			{
 				TextFieldUtil.layCenter($width, tip, "press enter to submit");
-				showEnter = new PlayTalkAvg(tip, 100);
+				showEnter = new PlayTalkAvg(tip, 60);
 				showEnter.input = new Dictionary();
 				showEnter.input["text"] = "press enter to submit";
 				$athena.addTimeSlice(showEnter);

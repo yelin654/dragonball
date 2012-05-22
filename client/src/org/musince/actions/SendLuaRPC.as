@@ -3,12 +3,12 @@ package org.musince.actions
 	import org.musince.core.TimeSlice;
 	import org.musince.global.$sender;
 	
-	public class SendRPC extends TimeSlice
+	public class SendLuaRPC extends TimeSlice
 	{
 		public var methodName:String;
 		public var params:Array;
 		
-		public function SendRPC(name:String, args:Array)
+		public function SendLuaRPC(name:String, args:Array)
 		{
 			super();
 			this.methodName = name;
