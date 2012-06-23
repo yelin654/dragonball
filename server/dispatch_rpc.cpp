@@ -17,8 +17,8 @@ void push_param(InputStream* stream) {
             break;
         }
         case TYPE_STRING: {
-            stream->read_string(string_buf);
-            lua_pushstring(L, string_buf);
+            const char* str = stream->read_string();
+            lua_pushstring(L, str);
             break;
         }
     }

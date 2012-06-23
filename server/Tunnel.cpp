@@ -40,6 +40,7 @@ Tunnel::Tunnel(int socket_fd, IDataReceiver* receiver):connecting(true), _socket
 Tunnel::~Tunnel() {
     delete _out_cache;
     delete _in_cache;
+    debug("destory tunnel %d", _socket_fd);
 }
 
 void Tunnel::on_data_in() {
@@ -81,7 +82,7 @@ void Tunnel::on_data_in() {
     }
 
     if (0 == nread) {
-        //connecting = false;
+        connecting = false;
         read_pending = false;
         debug("nread 0, socket(%d)", _socket_fd);
         return;
@@ -92,7 +93,7 @@ void Tunnel::on_data_in() {
         if (errno == EAGAIN) {
             debug("read socket(%d) buff end", _socket_fd);
         } else {
-            //connecting = false;
+            connecting = false;
         }
         read_pending = true;
         return;

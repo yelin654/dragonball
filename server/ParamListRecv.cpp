@@ -6,7 +6,6 @@
 #include "Object.h"
 #include "Array.h"
 
-
 void ParamListRecv::attach(InputStream* stream) {
     bzero(datas, ARGS_LEN_MAX * sizeof(datas[0]));
     bzero(lens, ARGS_LEN_MAX * sizeof(lens[0]));

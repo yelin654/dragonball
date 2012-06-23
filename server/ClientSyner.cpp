@@ -16,6 +16,7 @@ ClientSyner::ClientSyner() {
 }
 
 ClientSyner::~ClientSyner() {
+    debug("destory syner %d", _tunnel->_socket_fd);
     if (NULL != player) {
         if (NULL != player->log) {
             fclose(player->log);

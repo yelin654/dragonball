@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Log.h"
 
 //map<string, Player*> G_players;
 
@@ -11,4 +12,5 @@ void Player::start_story(int idx) {
 }
 
 Player::~Player() {
+    debug("destory player %s", name.c_str());
 }
