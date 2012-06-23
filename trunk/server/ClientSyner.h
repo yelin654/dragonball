@@ -86,9 +86,6 @@ private:
 //         _command(COMMAND_GROUP_START, key,  method_name, &params);
 //     };
 
-private:
-    void invoke_method_recv(TunnelInputStream* stream);
-
 public:
     ParamListSend*  get_params_send(const char* method_name, int num);
     ParamListSend*  get_query_result(int qid, int num);
