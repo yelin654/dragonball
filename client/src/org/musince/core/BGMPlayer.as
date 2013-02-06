@@ -5,10 +5,12 @@ package org.musince.core
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	
-	import org.musince.actions.FadeStopSound;
-	import org.musince.actions.StartSound;
-	import org.musince.global.$athena;
-	import org.musince.global.$log;
+	import globals.$athena;
+	import globals.$log;
+	
+	import slices.FadeStopSound;
+	import slices.StartSound;
+	import slices.TimeSlice;
 
 	public class BGMPlayer
 	{

@@ -5,7 +5,7 @@ package org.musince.logic
 	import flash.utils.IDataInput;
 	import flash.utils.IDataOutput;
 	
-	import org.musince.global.$finder;
+	import globals.$finder;
 	import org.musince.util.DataInputUtil;
 
 	public class ParamList implements ISerializable

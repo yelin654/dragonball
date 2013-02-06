@@ -7,12 +7,12 @@ package
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	
-	import org.musince.actions.ConnectToServer;
-	import org.musince.actions.LoadConfigFile;
-	import org.musince.core.TimeSlice;
-	import org.musince.global.$athena;
-	import org.musince.global.$log;
-	import org.musince.global.$loginName;
+	import slices.ConnectToServer;
+	import slices.LoadConfigFile;
+	import slices.TimeSlice;
+	import globals.$athena;
+	import globals.$log;
+	import globals.$loginName;
 	import org.musince.util.TextFieldUtil;
 	
 	[SWF(width="1280", height="720", backgroundColor="0x000000")]
@@ -53,7 +53,7 @@ package
 		{
 //			$log.error("abc");
 //			$log.error("def");
-			System.setClipboard($log._errorlog.join("\n"));
+			System.setClipboard($log._errorCache.join("\n"));
 		}
 	}
 }

@@ -3,8 +3,8 @@ package org.musince.rpc
 	import flash.media.Sound;
 	import flash.utils.Dictionary;
 	
-	import org.musince.global.$chapterResource;
-	import org.musince.global.$soundManager;
+	import globals.$chapterResource;
+	import globals.$soundManager;
 
 	public function play_sound(meta:Dictionary):void
 	{

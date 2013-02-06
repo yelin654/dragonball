@@ -3,8 +3,8 @@ package org.musince.rpc
 	import flash.media.Sound;
 	import flash.utils.Dictionary;
 	
-	import org.musince.global.$bgmPlayer;
-	import org.musince.global.$chapterResource;
+	import globals.$bgmPlayer;
+	import globals.$chapterResource;
 
 	public function play_bgm(rid:int):void
 	{

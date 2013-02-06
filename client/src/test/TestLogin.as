@@ -2,10 +2,10 @@ package test
 {
 	import flash.display.Sprite;
 	
-	import org.musince.actions.InputLogin;
+	import slices.InputLogin;
 	import org.musince.display.LoginPanel;
-	import org.musince.global.$athena;
-	import org.musince.global.$root;
+	import globals.$athena;
+	import globals.$root;
 	
 	[SWF(width='1280',height='720', backgroundColor='0x000000')]
 	public class TestLogin extends Sprite

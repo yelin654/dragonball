@@ -2,9 +2,9 @@ package org.musince.util
 {
 	import flash.utils.Dictionary;
 	
-	import org.musince.core.TimeSlice;
-	import org.musince.global.$athena;
-	import org.musince.global.$log;
+	import slices.TimeSlice;
+	import globals.$athena;
+	import globals.$log;
 
 	public class Benchmark
 	{

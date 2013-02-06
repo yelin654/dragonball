@@ -1,10 +1,10 @@
 package org.musince.rpc
 {
-	import org.musince.actions.FadeInDisplayObject;
-	import org.musince.actions.FadeOutTalkAndBackground;
-	import org.musince.global.$athena;
-	import org.musince.global.$guideText;
-	import org.musince.global.$ui;
+	import slices.FadeInDisplayObject;
+	import slices.FadeOutTalkAndBackground;
+	import globals.$athena;
+	import globals.$guideText;
+	import globals.$ui;
 
 	public function tip_end(content:String):void
 	{

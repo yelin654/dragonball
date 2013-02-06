@@ -4,11 +4,11 @@ package test
 	
 	import flashx.textLayout.edit.SelectionState;
 	
-	import org.musince.actions.SelectStory;
+	import slices.SelectStory;
 	import org.musince.data.StoryProgress;
 	import org.musince.display.StoryList;
-	import org.musince.global.$athena;
-	import org.musince.global.$root;
+	import globals.$athena;
+	import globals.$root;
 	
 	[SWF(width='1280',height='720', backgroundColor='0x000000')]
 	

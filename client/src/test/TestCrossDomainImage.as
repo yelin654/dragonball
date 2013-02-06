@@ -13,8 +13,8 @@ package test
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 	
-	import org.musince.global.$log;
-	import org.musince.system.RLog;
+	import globals.$log;
+	import logs.RLog;
 	
 	public class TestCrossDomainImage extends Sprite
 	{

@@ -10,12 +10,12 @@ package org.musince.display
 	import flash.text.TextFormatAlign;
 	import flash.utils.Dictionary;
 	
-	import org.musince.actions.AlphaFadeIn;
-	import org.musince.actions.DrawLine;
-	import org.musince.actions.PlayTalkAvg;
-	import org.musince.core.TimeSlice;
-	import org.musince.global.$athena;
-	import org.musince.global.$root;
+	import slices.AlphaFadeIn;
+	import slices.DrawLine;
+	import slices.PlayTalkAvg;
+	import slices.TimeSlice;
+	import globals.$athena;
+	import globals.$root;
 	
 	public class LoginPanel extends UC
 	{

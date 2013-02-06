@@ -2,8 +2,8 @@ package
 {
 	import flash.display.Sprite;
 	
-	import org.musince.actions.ConnectToServer;
-	import org.musince.actions.GenTestMetaWork;
+	import slices.ConnectToServer;
+	import slices.GenTestMetaWork;
 	import org.musince.editor.EditorClient;
 	import org.musince.editor.EditorConfig;
 	import org.musince.editor.EditorLog;
@@ -11,19 +11,19 @@ package
 	import org.musince.editor.EditorObjectFinder;
 	import org.musince.editor.LoadMetaWorks;
 	import org.musince.editor.SaveMetaWork;
-	import org.musince.logic.Athena;
+	import slices.Athena;
 	import org.musince.net.ServerSyner;
 	import org.musince.net.Tunnel;
-	import org.musince.system.Cookie;
-	import org.musince.global.$athena;
-	import org.musince.global.$cookie;
-	import org.musince.global.$eclient;
-	import org.musince.global.$editorConfig;
-	import org.musince.global.$finder;
-	import org.musince.global.$log;
-	import org.musince.global.$root;
-	import org.musince.global.$syner;
-	import org.musince.global.$tunnel;
+	import utils.Cookie;
+	import globals.$athena;
+	import globals.$cookie;
+	import globals.$eclient;
+	import globals.$editorConfig;
+	import globals.$finder;
+	import globals.$log;
+	import globals.$root;
+	import globals.$syner;
+	import globals.$tunnel;
 	
 	public class Editor extends Sprite
 	{

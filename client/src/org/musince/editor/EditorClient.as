@@ -3,7 +3,7 @@ package org.musince.editor
 	import flash.utils.Dictionary;
 	
 	import org.musince.core.Query;
-	import org.musince.global.$syner;
+	import globals.$syner;
 	import org.musince.logic.Client;
 	import org.musince.logic.GameObject;
 	

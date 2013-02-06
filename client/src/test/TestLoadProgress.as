@@ -2,8 +2,8 @@ package test
 {
 	import flash.display.Sprite;
 	
-	import org.musince.actions.LoadChapterResource;
-	import org.musince.actions.LoadMetaResource;
+	import slices.LoadChapterResource;
+	import slices.LoadMetaResource;
 	
 	public class TestLoadProgress extends Sprite
 	{

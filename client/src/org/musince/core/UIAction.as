@@ -2,7 +2,7 @@ package org.musince.core
 {
 	import flash.events.MouseEvent;
 	
-	import org.musince.global.$sender;
+	import globals.$sender;
 
 	public class UIAction extends TimeSlice
 	{

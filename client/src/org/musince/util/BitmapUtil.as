@@ -29,5 +29,11 @@ package org.musince.util
 			rect.height = Math.ceil(rect.height);
 			return rect;
 		}
+		
+		public static function fitTo(bitmap:Bitmap, w:int, h:int):void {
+			bitmap.smoothing = true;
+			bitmap.width = w;
+			bitmap.height = h;
+		}
 	}
 }

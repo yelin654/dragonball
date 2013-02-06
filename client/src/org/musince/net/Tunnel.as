@@ -8,7 +8,7 @@ package org.musince.net
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 	
-	import org.musince.global.$log;
+	import globals.$log;
 	
 	public class Tunnel extends Socket implements IDataOutputNet
 	{

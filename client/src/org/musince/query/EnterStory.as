@@ -1,12 +1,12 @@
 package org.musince.query
 {
 	import org.musince.core.Query;
-	import org.musince.core.TimeSlice;
+	import slices.TimeSlice;
 	import org.musince.display.StoryList;
-	import org.musince.global.$athena;
-	import org.musince.global.$client;
-	import org.musince.global.$log;
-	import org.musince.global.$loginName;
+	import globals.$athena;
+	import globals.$client;
+	import globals.$log;
+	import globals.$loginName;
 	
 	public class EnterStory extends Query
 	{
@@ -32,7 +32,7 @@ package org.musince.query
 		{
 			$log.debug("get success");
 			output["chapter"] = 0;
-			isEnd = true;
+			isDone = true;
 		}
 	}
 }

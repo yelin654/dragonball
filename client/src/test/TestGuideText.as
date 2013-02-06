@@ -4,13 +4,13 @@ package test
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	
-	import org.musince.actions.FadeInDisplayObject;
-	import org.musince.actions.FadeInOutDisplayObject;
-	import org.musince.actions.FadeOutDisplayObject;
-	import org.musince.actions.PlayGuideText;
-	import org.musince.global.$athena;
-	import org.musince.global.$guideText;
-	import org.musince.global.$root;
+	import slices.FadeInDisplayObject;
+	import slices.FadeInOutDisplayObject;
+	import slices.FadeOutDisplayObject;
+	import slices.PlayGuideText;
+	import globals.$athena;
+	import globals.$guideText;
+	import globals.$root;
 	import org.musince.util.TextFieldUtil;
 
 	[SWF(width='1280',height='720', backgroundColor='0x000000')]

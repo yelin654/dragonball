@@ -4,9 +4,9 @@ package org.musince.rpc
 	import flash.display.BitmapData;
 	import flash.utils.Dictionary;
 	
-	import org.musince.global.$chapterResource;
-	import org.musince.global.$ui;
-	import org.musince.util.DisplayUtil;
+	import globals.$chapterResource;
+	import globals.$ui;
+	import utils.DisplayUtil;
 
 	public function change_background(rid:int):void
 	{

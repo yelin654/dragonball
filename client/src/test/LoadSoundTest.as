@@ -3,12 +3,12 @@ package test
 	import flash.display.Sprite;
 	import flash.media.Sound;
 	
-	import org.musince.global.$loadManager;
-	import org.musince.global.$log;
-	import org.musince.load.LoadItem;
-	import org.musince.load.LoadManager;
-	import org.musince.load.SimpleLoader;
-	import org.musince.system.Log;
+	import globals.$loadManager;
+	import globals.$log;
+	import loaders.LoadItem;
+	import loaders.LoadManager;
+	import loaders.SimpleLoader;
+	import logs.Log;
 	
 	public class LoadSoundTest extends Sprite
 	{

@@ -1,7 +1,7 @@
 package org.musince.query
 {
 	import org.musince.core.Query;
-	import org.musince.global.$client;
+	import globals.$client;
 	
 	public class GetStoryList extends Query
 	{
@@ -17,7 +17,7 @@ package org.musince.query
 		
 		override public function onSuccess(result:Array):void
 		{
-			isEnd = true;
+			isDone = true;
 			output["list"] = result[0];
 		}
 		

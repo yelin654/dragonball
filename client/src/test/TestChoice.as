@@ -6,15 +6,15 @@ package test
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	
-	import org.musince.actions.Choosing;
-	import org.musince.actions.PlayChoice;
+	import slices.Choosing;
+	import slices.PlayChoice;
 	import org.musince.display.TalkPanel;
 	import org.musince.display.UI;
-	import org.musince.global.$athena;
-	import org.musince.global.$root;
-	import org.musince.global.$sender;
-	import org.musince.global.$talkPanel;
-	import org.musince.global.$ui;
+	import globals.$athena;
+	import globals.$root;
+	import globals.$sender;
+	import globals.$talkPanel;
+	import globals.$ui;
 	import org.musince.util.LuaUtil;
 	
 	[SWF(width="1280", height="720", backgroundColor="0xFFFFFF")]

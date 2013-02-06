@@ -5,19 +5,19 @@ package org.musince.rpc
 	
 	import flashx.textLayout.formats.BackgroundColor;
 	
-	import org.musince.actions.BlankTime;
-	import org.musince.actions.FadeInDisplayObject;
-	import org.musince.actions.FadeInTalk;
-	import org.musince.actions.PlayTalk;
-	import org.musince.actions.PlayTalkAvg;
-	import org.musince.actions.SendLuaRPC;
-	import org.musince.actions.WaitingForClick;
-	import org.musince.global.$athena;
-	import org.musince.global.$background;
-	import org.musince.global.$colorMap;
-	import org.musince.global.$log;
-	import org.musince.global.$talkPanel;
-	import org.musince.global.$ui;
+	import slices.BlankTime;
+	import slices.FadeInDisplayObject;
+	import slices.FadeInTalk;
+	import slices.PlayTalk;
+	import slices.PlayTalkAvg;
+	import slices.SendLuaRPC;
+	import slices.WaitingForClick;
+	import globals.$athena;
+	import globals.$background;
+	import globals.$colorMap;
+	import globals.$log;
+	import globals.$talkPanel;
+	import globals.$ui;
 
 	public function play_talk(talk:Dictionary):void
 	{

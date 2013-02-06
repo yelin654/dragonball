@@ -3,10 +3,10 @@ package test
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
-	import org.musince.actions.MoveTo;
+	import slices.MoveTo;
 	import org.musince.display.ClickIcon;
-	import org.musince.global.$athena;
-	import org.musince.global.$playClickIcon;
+	import globals.$athena;
+	import globals.$playClickIcon;
 	
 	[SWF(width='1280',height='720', backgroundColor='0x000000')]
 	public class TestClickIcon extends Sprite

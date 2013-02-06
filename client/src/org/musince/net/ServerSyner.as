@@ -4,8 +4,8 @@ package org.musince.net
 	import flash.utils.IDataOutput;
 	import flash.utils.getDefinitionByName;
 	
-	import org.musince.global.$client;
-	import org.musince.global.$finder;
+	import globals.$client;
+	import globals.$finder;
 	import org.musince.logic.GameObject;
 	import org.musince.logic.ParamList;
 

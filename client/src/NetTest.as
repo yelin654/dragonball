@@ -2,10 +2,10 @@ package
 {
 	import flash.display.Sprite;
 	
-	import org.musince.actions.ConnectToServer;
-	import org.musince.actions.LoadConfigFile;
-	import org.musince.global.$athena;
-	import org.musince.global.$root;
+	import slices.ConnectToServer;
+	import slices.LoadConfigFile;
+	import globals.$athena;
+	import globals.$root;
 	
 	import test.ConnectToTestServer;
 	import test.TestNet;

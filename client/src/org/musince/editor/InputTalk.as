@@ -9,9 +9,11 @@ package org.musince.editor
 	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
 	
-	import org.musince.core.TimeSlice;
+	import globals.$log;
+	
 	import org.musince.data.MetaTalkText;
-	import org.musince.global.$log;
+	
+	import slices.TimeSlice;
 	
 	public class InputTalk extends TimeSlice
 	{
@@ -73,7 +75,7 @@ package org.musince.editor
 			meta.text = outputText.text;
 			output = new Dictionary();
 			output["meta"] = meta;
-			isEnd = true;
+			isDone = true;
 		}
 		
 		override public function onEnd():void

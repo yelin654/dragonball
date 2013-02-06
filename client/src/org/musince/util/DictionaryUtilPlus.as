@@ -11,5 +11,12 @@ package org.musince.util
 				result++;
 			return result;
 		}
+		
+		public static function getFirst(d:Dictionary):Object {
+			for each (var v:Object in d) {
+				return v;
+			}
+			return null;
+		}
 	}
 }
