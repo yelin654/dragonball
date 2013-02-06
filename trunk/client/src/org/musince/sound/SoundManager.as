@@ -5,8 +5,8 @@ package org.musince.sound
 	import flash.media.SoundTransform;
 	import flash.utils.Dictionary;
 	
-	import org.musince.actions.FadeStopSound;
-	import org.musince.global.$log;
+	import slices.FadeStopSound;
+	import globals.$log;
 
 	public class SoundManager
 	{

@@ -5,9 +5,9 @@ package org.musince.display
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	
-	import org.musince.global.$height;
-	import org.musince.global.$root;
-	import org.musince.global.$width;
+	import globals.$height;
+	import globals.$root;
+	import globals.$width;
 	import org.musince.util.TextFieldUtil;
 	
 	public class ProgressPanel extends Sprite

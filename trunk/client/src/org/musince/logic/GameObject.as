@@ -11,8 +11,8 @@ package org.musince.logic
 	
 	import org.musince.net.ISynchronizer;
 	import org.musince.net.Stream;
-	import org.musince.system.Log;
-	import org.musince.global.$log;
+	import logs.Log;
+	import globals.$log;
 
 	public class GameObject extends EventDispatcher implements ISerializable
 	{

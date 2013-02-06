@@ -3,7 +3,7 @@ package org.musince.logic
 	import flash.utils.Dictionary;
 	
 	import org.musince.core.Query;
-	import org.musince.global.$sender;
+	import globals.$sender;
 
 	public class Client extends GameObject
 	{

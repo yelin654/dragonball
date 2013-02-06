@@ -7,9 +7,9 @@ package test
 	import flash.text.TextFormat;
 	import flash.utils.Dictionary;
 	
-	import org.musince.actions.PlayTalk;
-	import org.musince.actions.PlayTalkAvg;
-	import org.musince.global.$athena;
+	import slices.PlayTalk;
+	import slices.PlayTalkAvg;
+	import globals.$athena;
 	
 	[SWF(width='800',height='600', backgroundColor='0x000000')]
 	

@@ -12,9 +12,9 @@ package org.musince.display
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	
-	import org.musince.global.$stage;
-	import org.musince.global.$width;
-	import org.musince.util.DisplayUtil;
+	import globals.$stage;
+	import globals.$width;
+	import utils.DisplayUtil;
 	import org.musince.util.TextFieldUtil;
 	
 	public class TalkPanel extends UC

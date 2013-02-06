@@ -5,17 +5,17 @@ package
 	import flash.utils.IDataInput;
 	import flash.utils.getDefinitionByName;
 	
-	import org.musince.actions.BlankTime;
-	import org.musince.actions.ConnectToServer;
-	import org.musince.actions.LoadConfigFile;
-	import org.musince.actions.Login;
-	import org.musince.actions.SendLuaRPC;
-	import org.musince.global.$athena;
-	import org.musince.global.$client;
-	import org.musince.global.$finder;
-	import org.musince.global.$sender;
-	import org.musince.global.$syner;
-	import org.musince.global.$tunnel;
+	import slices.BlankTime;
+	import slices.ConnectToServer;
+	import slices.LoadConfigFile;
+	import slices.Login;
+	import slices.SendLuaRPC;
+	import globals.$athena;
+	import globals.$client;
+	import globals.$finder;
+	import globals.$sender;
+	import globals.$syner;
+	import globals.$tunnel;
 	import org.musince.logic.GameObject;
 	import org.musince.logic.ParamList;
 	import org.musince.net.IDataOutputNet;

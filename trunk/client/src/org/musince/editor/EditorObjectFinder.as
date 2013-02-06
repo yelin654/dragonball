@@ -1,6 +1,6 @@
 package org.musince.editor
 {
-	import org.musince.global.$eclient;
+	import globals.$eclient;
 	import org.musince.logic.GameObject;
 	import org.musince.logic.IObjectFinder;
 

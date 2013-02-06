@@ -5,13 +5,13 @@ package org.musince.logic
 	import flash.utils.IDataOutput;
 	import flash.utils.getDefinitionByName;
 	
-	import org.musince.actions.Login;
+	import slices.Login;
 	import org.musince.data.MetaStory;
-	import org.musince.global.$athena;
-	import org.musince.global.$log;
+	import globals.$athena;
+	import globals.$log;
 	import org.musince.net.ILocal;
 	import org.musince.net.ISynchronizer;
-	import org.musince.system.Log;
+	import logs.Log;
 
 	public class GameClient extends Client
 	{

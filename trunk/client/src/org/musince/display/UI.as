@@ -7,23 +7,23 @@ package org.musince.display
 	import flash.text.TextFieldAutoSize;
 	import flash.utils.Dictionary;
 	
-	import org.musince.actions.BlankTime;
-	import org.musince.actions.Choosing;
-	import org.musince.actions.FadeDisplayObject;
-	import org.musince.actions.FadeInDisplayObject;
-	import org.musince.actions.FadeInTalk;
-	import org.musince.actions.FadeOutDisplayObject;
-	import org.musince.actions.PlayChoice;
-	import org.musince.actions.PlayTalk;
-	import org.musince.actions.PlayTalkAvg;
-	import org.musince.actions.Progress;
-	import org.musince.actions.UpdateProgress;
-	import org.musince.core.TimeSlice;
-	import org.musince.global.$athena;
-	import org.musince.global.$background;
-	import org.musince.global.$guideText;
+	import slices.BlankTime;
+	import slices.Choosing;
+	import slices.FadeDisplayObject;
+	import slices.FadeInDisplayObject;
+	import slices.FadeInTalk;
+	import slices.FadeOutDisplayObject;
+	import slices.PlayChoice;
+	import slices.PlayTalk;
+	import slices.PlayTalkAvg;
+	import slices.Progress;
+	import slices.UpdateProgress;
+	import slices.TimeSlice;
+	import globals.$athena;
+	import globals.$background;
+	import globals.$guideText;
 	import org.musince.logic.GameObject;
-	import org.musince.util.DisplayUtil;
+	import utils.DisplayUtil;
 	import org.musince.util.TextFieldUtil;
 	
 	public class UI extends GameObject

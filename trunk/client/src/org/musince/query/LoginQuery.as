@@ -1,9 +1,9 @@
 package org.musince.query
 {
 	import org.musince.core.Query;
-	import org.musince.global.$client;
-	import org.musince.global.$log;
-	import org.musince.global.$syner;
+	import globals.$client;
+	import globals.$log;
+	import globals.$syner;
 	
 	public class LoginQuery extends Query
 	{
@@ -21,7 +21,7 @@ package org.musince.query
 		
 		override public function onSuccess(result:Array):void
 		{
-			isEnd = true;
+			isDone = true;
 			output["r"] = true;
 			output["u"] = input["u"];
 			$log.debug("login success");
@@ -29,7 +29,7 @@ package org.musince.query
 		
 		override public function onFailed(reason:Array):void
 		{
-			isEnd = true;
+			isDone = true;
 			output["r"] = false;
 			output["u"] = input["u"];
 		}

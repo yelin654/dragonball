@@ -1,7 +1,7 @@
 package org.musince.editor
 {
-	import org.musince.system.ILog;
-	import org.musince.system.Log;
+	import logs.ILog;
+	import logs.Log;
 	
 	public class EditorLog extends Log
 	{

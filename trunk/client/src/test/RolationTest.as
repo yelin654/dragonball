@@ -8,7 +8,7 @@ package test
 	import flash.net.URLRequest;
 	
 	import org.musince.util.BitmapUtil;
-	import org.musince.util.DisplayUtil;
+	import utils.DisplayUtil;
 	
 	[SWF(width='800',height='600', backgroundColor='0x000000')]
 	

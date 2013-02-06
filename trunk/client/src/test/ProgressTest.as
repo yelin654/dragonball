@@ -4,11 +4,11 @@ package test
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import org.musince.actions.Progress;
-	import org.musince.actions.UpdateProgress;
-	import org.musince.logic.Athena;
-	import org.musince.global.$athena;
-	import org.musince.global.$root;
+	import slices.Progress;
+	import slices.UpdateProgress;
+	import slices.Athena;
+	import globals.$athena;
+	import globals.$root;
 	
 	[SWF(width='1280',height='720', backgroundColor='0x000000')]
 	

@@ -8,12 +8,12 @@ package test
 	import flash.utils.Timer;
 	import flash.utils.flash_proxy;
 	
-	import org.musince.core.TimeSlice;
-	import org.musince.global.$log;
-	import org.musince.global.$root;
-	import org.musince.global.$syner;
-	import org.musince.global.$tunnel;
-	import org.musince.load.BinaryLoader;
+	import slices.TimeSlice;
+	import globals.$log;
+	import globals.$root;
+	import globals.$syner;
+	import globals.$tunnel;
+	import loaders.BinaryLoader;
 	import org.musince.net.IDataOutputNet;
 	import org.musince.net.IDataReceiver;
 	import org.musince.net.IDataSender;

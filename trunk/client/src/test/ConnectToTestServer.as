@@ -2,10 +2,11 @@ package test
 {
 	import flash.events.Event;
 	
-	import org.musince.core.TimeSlice;
-	import org.musince.global.$config;
-	import org.musince.global.$log;
-	import org.musince.global.$tunnel;
+	import globals.$config;
+	import globals.$log;
+	import globals.$tunnel;
+	
+	import slices.TimeSlice;
 	
 	public class ConnectToTestServer extends TimeSlice
 	{
@@ -27,7 +28,7 @@ package test
 		private function onConnect(e:Event):void
 		{
 			$log.debug("connected");
-			isEnd = true;
+			isDone = true;
 		}
 	}
 }

@@ -9,12 +9,12 @@ package test
 	
 	import org.musince.display.TalkPanel;
 	import org.musince.display.UI;
-	import org.musince.global.$athena;
-	import org.musince.global.$log;
-	import org.musince.load.GroupLoader;
-	import org.musince.load.LoadManager;
+	import globals.$athena;
+	import globals.$log;
+	import loaders.GroupLoader;
+	import loaders.LoadManager;
 	import org.musince.rpc.rpc_test;
-	import org.musince.system.Log;
+	import logs.Log;
 	
 	[SWF(width='1280',height='720', backgroundColor='0x000000')]
 	

@@ -10,35 +10,35 @@ package
     import flash.text.TextFieldAutoSize;
     import flash.ui.Keyboard;
     
-    import org.musince.actions.ConnectToServer;
-    import org.musince.actions.Info;
-    import org.musince.actions.LoadConfigFile;
-    import org.musince.actions.Login;
+    import slices.ConnectToServer;
+    import slices.Info;
+    import slices.LoadConfigFile;
+    import slices.Login;
     import org.musince.data.ColorMap;
     import org.musince.display.UI;
-    import org.musince.global.$athena;
-    import org.musince.global.$benchmark;
-    import org.musince.global.$clickIcon;
-    import org.musince.global.$colorMap;
-    import org.musince.global.$cookie;
-    import org.musince.global.$finder;
-    import org.musince.global.$guideText;
-    import org.musince.global.$loadManager;
-    import org.musince.global.$log;
-    import org.musince.global.$receiver;
-    import org.musince.global.$root;
-    import org.musince.global.$sender;
-    import org.musince.global.$stage;
-    import org.musince.global.$syner;
-    import org.musince.global.$talkPanel;
-    import org.musince.global.$tunnel;
-    import org.musince.global.$ui;
-    import org.musince.global.$width;
-    import org.musince.load.LoadManager;
+    import globals.$athena;
+    import globals.$benchmark;
+    import globals.$clickIcon;
+    import globals.$colorMap;
+    import globals.$cookie;
+    import globals.$finder;
+    import globals.$guideText;
+    import globals.$loadManager;
+    import globals.$log;
+    import globals.$receiver;
+    import globals.$root;
+    import globals.$sender;
+    import globals.$stage;
+    import globals.$syner;
+    import globals.$talkPanel;
+    import globals.$tunnel;
+    import globals.$ui;
+    import globals.$width;
+    import loaders.LoadManager;
     import org.musince.logic.ObjectFinder;
     import org.musince.query.EnterStory;
     import org.musince.rpc.ImportRPC;
-    import org.musince.system.Cookie;
+    import utils.Cookie;
     import org.musince.util.TextFieldUtil;
 
 	[SWF(width="1280", height="720", backgroundColor="0x000000")]
@@ -85,7 +85,7 @@ package
 			switch (e.keyCode)
 			{
 				case Keyboard.E:
-					System.setClipboard($log._errorlog.join("\n"));
+					System.setClipboard($log._errorCache.join("\n"));
 					break;
 				case Keyboard.T:
 					$benchmark.traceActiveSlice();

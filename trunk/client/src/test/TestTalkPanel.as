@@ -5,13 +5,13 @@ package test
 	import flash.filters.GlowFilter;
 	import flash.utils.Timer;
 	
-	import org.musince.actions.FadeInTalk;
-	import org.musince.actions.PlayTalk;
-	import org.musince.actions.PlayTalkAvg;
+	import slices.FadeInTalk;
+	import slices.PlayTalk;
+	import slices.PlayTalkAvg;
 	import org.musince.display.TalkPanel;
-	import org.musince.global.$athena;
-	import org.musince.global.$root;
-	import org.musince.global.$stage;
+	import globals.$athena;
+	import globals.$root;
+	import globals.$stage;
 	
 	[SWF(width='1280',height='720')]
 	

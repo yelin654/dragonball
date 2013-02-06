@@ -2,12 +2,12 @@ package org.musince.rpc
 {
 	import flash.utils.Dictionary;
 	
-	import org.musince.actions.FadeOutTalkAndBackground;
-	import org.musince.actions.PlayGuideText;
-	import org.musince.actions.SendLuaRPC;
-	import org.musince.global.$athena;
-	import org.musince.global.$guideText;
-	import org.musince.global.$ui;
+	import slices.FadeOutTalkAndBackground;
+	import slices.PlayGuideText;
+	import slices.SendLuaRPC;
+	import globals.$athena;
+	import globals.$guideText;
+	import globals.$ui;
 	import org.musince.util.LuaUtil;
 
 	public function play_guide(guide:Dictionary):void

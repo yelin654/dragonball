@@ -1,9 +1,9 @@
 package org.musince.rpc
 {
-	import org.musince.actions.FadeOutTalkAndBackground;
-	import org.musince.actions.LoadChapterResource;
-	import org.musince.global.$athena;
-	import org.musince.global.$ui;
+	import slices.FadeOutTalkAndBackground;
+	import slices.LoadChapterResource;
+	import globals.$athena;
+	import globals.$ui;
 	
 	public function load_chapter(idx:int):void
 	{

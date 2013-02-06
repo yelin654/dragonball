@@ -6,11 +6,11 @@ package test
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	
-	import org.musince.actions.PlayTalk;
-	import org.musince.actions.PlayTalkVar;
+	import slices.PlayTalk;
+	import slices.PlayTalkVar;
 	import org.musince.editor.InputTalk;
-	import org.musince.global.$athena;
-	import org.musince.logic.Athena;
+	import globals.$athena;
+	import slices.Athena;
 	
 	[SWF(width='800',height='600', backgroundColor='0x000000')]
 	

@@ -1,5 +1,6 @@
 package org.musince.net
 {
+
 	public class TunnelInputStream extends Stream
 	{
 		public function TunnelInputStream(Tunnel* tunnel)

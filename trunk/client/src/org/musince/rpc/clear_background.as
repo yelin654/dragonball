@@ -1,6 +1,6 @@
 package org.musince.rpc
 {
-	import org.musince.global.$background;
+	import globals.$background;
 
 	public function clear_background():void
 	{

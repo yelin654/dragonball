@@ -3,16 +3,16 @@ package test
 	import flash.display.Sprite;
 	
 	import org.musince.Config;
-	import org.musince.actions.LoadChapterResource;
+	import slices.LoadChapterResource;
 	import org.musince.display.UI;
-	import org.musince.global.$athena;
-	import org.musince.global.$config;
-	import org.musince.global.$loadManager;
-	import org.musince.global.$log;
-	import org.musince.global.$root;
-	import org.musince.global.$ui;
-	import org.musince.load.LoadManager;
-	import org.musince.system.Log;
+	import globals.$athena;
+	import globals.$config;
+	import globals.$loadManager;
+	import globals.$log;
+	import globals.$root;
+	import globals.$ui;
+	import loaders.LoadManager;
+	import logs.Log;
 	
 	[SWF(width="1280", height="720", backgroundColor="0x000000")]
 	
@@ -26,10 +26,10 @@ package test
 			$config.ResourceRoot = "../res/";
 			$ui = new UI($root);
 			
-			var load:LoadChapterResource = new LoadChapterResource();
-			load.input["chapter"] = 0;
+			var loader:LoadChapterResource = new LoadChapterResource();
+			loader.input["chapter"] = 0;
 			$athena.start(stage);
-			$athena.addTimeSlice(load);
+			$athena.addTimeSlice(loader);
 		}
 	}
 }

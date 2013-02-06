@@ -1,7 +1,10 @@
 package org.musince.core
 {
-	import org.musince.global.$log;
+	import globals.$log;
+	
 	import org.musince.logic.Client;
+	
+	import slices.TimeSlice;
 	
 	public class Query extends TimeSlice
 	{

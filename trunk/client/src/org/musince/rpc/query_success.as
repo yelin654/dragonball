@@ -1,6 +1,6 @@
 package org.musince.rpc
 {
-	import org.musince.global.$client;
+	import globals.$client;
 
 	public function query_success(...args):void
 	{

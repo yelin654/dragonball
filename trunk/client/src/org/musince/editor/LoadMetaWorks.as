@@ -4,8 +4,8 @@ package org.musince.editor
 	
 	import org.musince.core.Query;
 	import org.musince.data.MetaWork;
-	import org.musince.global.$eclient;
-	import org.musince.global.$log;
+	import globals.$eclient;
+	import globals.$log;
 	
 	public class LoadMetaWorks extends Query
 	{
@@ -23,7 +23,7 @@ package org.musince.editor
 		{
 			var bytes:ByteArray = result[0];
 			$log.debug("load metawork length:", bytes.length);
-			isEnd = true;
+			isDone = true;
 		}
 	}
 }

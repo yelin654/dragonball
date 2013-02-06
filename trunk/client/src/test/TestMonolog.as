@@ -2,9 +2,9 @@ package test
 {
 	import flash.display.Sprite;
 	
-	import org.musince.actions.PlayMonolog;
-	import org.musince.global.$athena;
-	import org.musince.global.$stage;
+	import slices.PlayMonolog;
+	import globals.$athena;
+	import globals.$stage;
 	
 	[SWF(width='1280',height='800', backgroundColor='0x000000')]
 	
